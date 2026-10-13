@@ -1,0 +1,41 @@
+{
+  "name": "ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["scope:lib"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "coverage/libs/ui"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "configDir": "libs/ui/.storybook",
+        "compodoc": false,
+        "styles": [],
+        "port": 6006,
+        "tsConfig": "libs/ui/.storybook/tsconfig.json"
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "configDir": "libs/ui/.storybook",
+        "compodoc": false,
+        "styles": [],
+        "outputDir": "dist/storybook/ui",
+        "tsConfig": "libs/ui/.storybook/tsconfig.json"
+      }
+    }
+  }
+}

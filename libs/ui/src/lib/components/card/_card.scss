@@ -1,0 +1,15 @@
+.card {
+  border: 1px solid #d0d5dd;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  background: #fff;
+
+  &__heading {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+  }
+
+  &__body {
+    display: block;
+  }
+}

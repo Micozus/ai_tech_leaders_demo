@@ -1,0 +1,12 @@
+node_modules
+dist
+tmp
+.nx
+.angular
+storybook-static
+test-output
+playwright-report
+.ai
+.npm
+
+vitest.config.*.timestamp*
