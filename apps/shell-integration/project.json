@@ -1,0 +1,19 @@
+{
+  "name": "shell-integration",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/shell-integration/src",
+  "tags": ["scope:app"],
+  "implicitDependencies": ["shell"],
+  "targets": {
+    "integration": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["shell:build"],
+      "cache": false,
+      "options": {
+        "command": "vitest run --config apps/shell-integration/vitest.config.mts",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  }
+}

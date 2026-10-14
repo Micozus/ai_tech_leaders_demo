@@ -1,0 +1,4 @@
+{
+  "*.{ts,html,scss,json,md,mjs}": "prettier --write",
+  "*.ts": "nx affected -t lint --uncommitted"
+}

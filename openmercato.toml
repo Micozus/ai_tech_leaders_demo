@@ -1,0 +1,6 @@
+version = 2
+
+prepare = [["npm", "install"]]
+
+[preview]
+command = ["npm", "start"]
