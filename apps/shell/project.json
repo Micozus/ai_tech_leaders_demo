@@ -20,7 +20,12 @@
             "input": "apps/shell/public"
           }
         ],
-        "styles": ["apps/shell/src/styles.scss"]
+        "styles": ["apps/shell/src/styles.scss"],
+        "server": "apps/shell/src/main.server.ts",
+        "ssr": {
+          "entry": "apps/shell/src/server.ts"
+        },
+        "outputMode": "server"
       },
       "configurations": {
         "production": {

@@ -5,6 +5,7 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 ## Layout
 
 - `apps/shell/src/app/` — `core/` (API, global services), `features/` (route-level), `shared/` (app-only reusable; create when needed), `store/` (NgRx), `integration/` (library adapters, host providers).
+- `apps/shell/src/server/` — Node-only code (PostgreSQL `pg` pool, repositories, Express routers). Wired in `src/server.ts`; never imported by `src/app` except as types.
 - `libs/ui` — generic visual components. `libs/form-engine` — form contracts and runtime. Inside libs, group by role: `components/ directives/ services/ helpers/ models/ validators/ pipes/ integration/ testing/` (create only when used).
 - `apps/shell-e2e` — Playwright.
 
@@ -17,6 +18,11 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 - Transformations: pure, typed helpers. Variable behavior lives in configuration, not product-specific conditions.
 - Single source of truth: no duplicated contracts, redundant adapters or compat re-exports.
 - Path aliases (`@org/ui`, `@org/form-engine`) across projects; relative imports inside a library.
+
+## SSR and data access
+
+- The app is server-rendered (`RenderMode.Server`) with hydration. `TasksApi` is the abstraction: `ServerTasksApi` (SSR) calls the repository passed through `REQUEST_CONTEXT` — no HTTP loopback — and publishes results via `TransferState`; `HttpTasksApi` (browser) consumes that state, then calls `/api/*`.
+- Database: `DATABASE_URL` (defaults to the sandbox PostgreSQL). Schema bootstrap lives in `server/database`. Use parameterized queries only.
 
 ## Conventions
 

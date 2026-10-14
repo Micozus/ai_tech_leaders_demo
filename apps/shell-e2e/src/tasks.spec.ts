@@ -1,14 +1,16 @@
 import { expect, test } from '@playwright/test';
 
-test('lists seeded tasks and adds a new one', async ({ page }) => {
+test('renders tasks from the database and adds a new one', async ({ page }) => {
   await page.goto('/');
 
-  const list = page.getByTestId('tasks-list');
-  await expect(list.getByRole('listitem')).toHaveCount(2);
+  const items = page.getByTestId('tasks-list').getByRole('listitem');
+  await expect(items.first()).toBeVisible();
+  const before = await items.count();
 
-  await page.getByTestId('field-title').fill('Ship it');
+  const title = `Ship it ${Date.now()}`;
+  await page.getByTestId('field-title').fill(title);
   await page.getByTestId('form-submit').click();
 
-  await expect(list.getByRole('listitem')).toHaveCount(3);
-  await expect(list).toContainText('Ship it');
+  await expect(items).toHaveCount(before + 1);
+  await expect(page.getByTestId('tasks-list')).toContainText(title);
 });

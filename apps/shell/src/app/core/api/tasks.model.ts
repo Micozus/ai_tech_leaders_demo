@@ -3,7 +3,17 @@ export interface Task {
   title: string;
 }
 
-export const SEED_TASKS: readonly Task[] = [
-  { id: 'seed-1', title: 'Read AGENTS.md' },
-  { id: 'seed-2', title: 'Add your first feature' },
-];
+export const TASKS_API_URL = '/api/tasks';
+export const TASKS_TRANSFER_KEY = 'tasks:list';
+export const MAX_TASK_TITLE_LENGTH = 200;
+
+/** Data-source contract shared by the Express server and the SSR facade. */
+export interface TasksDataSource {
+  list(): Promise<Task[]>;
+  create(title: string): Promise<Task>;
+}
+
+/** Passed to `AngularNodeAppEngine.handle()` and read via `REQUEST_CONTEXT`. */
+export interface ServerRequestContext {
+  tasksDataSource: TasksDataSource;
+}
