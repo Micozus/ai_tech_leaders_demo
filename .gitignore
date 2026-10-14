@@ -6,7 +6,7 @@ tmp
 storybook-static
 test-output
 playwright-report
-.ai
+.ai/cezar
 .npm
 
 vitest.config.*.timestamp*

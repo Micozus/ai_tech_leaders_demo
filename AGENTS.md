@@ -42,6 +42,37 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 - Reusable UI components get Storybook stories.
 - Commits follow Conventional Commits (commitlint + Husky).
 
+## Working agreement
+
+- **Plan first.** For multi-file or architectural changes, state a short plan (files to touch, layer ownership, success criteria) before coding; unresolved technical doubt is settled with a small prototype. Non-trivial work gets a spec (see AI workspace). If the work goes sideways, stop and re-plan instead of pushing on.
+- **Split big work** into testable steps: contracts/models → logic/helpers → integration (store, API) → tests. Keep changes minimal and in scope.
+- **Verify, don't claim.** A change is done only after you ran the checks: `npm run lint`, `npm test`, `npm run build`, plus `npm run e2e` for UI or SSR/data-flow changes. Report commands and results; separate confirmed facts from hypotheses. Never present unrun checks as passing.
+- **Bugs:** reproduce with a failing Vitest spec first when feasible, then fix. For failing CI/tests, read the logs, find the first real cause and fix it — no workarounds that hide the failure.
+- **Simplify after implementing:** remove needless layers, duplication and out-of-scope edits (single source of truth, no speculative abstractions) without changing behavior; re-run tests.
+- **Learn from corrections:** after any user correction or fixed bug, record the rule via the Lessons step below; if it is a standing convention, add one line to this file instead and remove outdated lines. Keep this file short — procedures belong in skills.
+- **Risky actions** (push, merge, destructive Git or DB operations, secrets) need explicit user approval.
+
 ## Commands
 
 `npm start` · `npm run build` · `npm run lint` · `npm test` · `npm run e2e` · `npm run storybook`
+
+## AI workspace (`.ai/`) — mandatory
+
+```text
+.ai/
+  specs/                 # SDD specifications, named YYYY-MM-DD-slug.md
+    implemented/         # specs whose implementation has shipped
+    archive/             # abandoned or superseded specs
+  runs/                  # logs of autonomous AI runs, named YYYY-MM-DD-slug.md
+  lessons.md             # index of lessons (long-term memory)
+  lessons/               # lesson details, named YYYY-MM-DD-slug.md
+```
+
+Rules (all names: date `YYYY-MM-DD` = creation day, `slug` = lowercase kebab-case):
+
+1. **Before work**: read `.ai/lessons.md` and open the lessons relevant to the task.
+2. **Spec-driven development**: for a non-trivial feature or change, find its spec in `.ai/specs/`. If none exists, write one there first (goal, scope, acceptance criteria, open questions) and implement against it. Do not contradict a spec; change the spec instead and say so.
+3. **After implementing a spec**: move it to `.ai/specs/implemented/` (keep the filename). Move dropped or superseded specs to `.ai/specs/archive/`.
+4. **Autonomous runs**: every autonomous (unattended or multi-step) run writes a log to `.ai/runs/YYYY-MM-DD-slug.md` — objective, spec used, steps/decisions, files changed, commands run and results, open issues. Update it as you work, not only at the end.
+5. **Lessons**: after fixing a bug, hitting a surprising failure, receiving a correction, or discovering a non-obvious project fact, write `.ai/lessons/YYYY-MM-DD-slug.md` (context, root cause, fix/rule) and add a one-line entry to `.ai/lessons.md`. Update an existing lesson instead of duplicating it.
+6. Never delete specs, runs or lessons; archive instead. Do not store secrets in `.ai/`.
