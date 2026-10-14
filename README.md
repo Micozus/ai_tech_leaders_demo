@@ -11,13 +11,13 @@ Production-ready Angular monorepo. Priorities: readability, clear ownership, mai
 | Language    | TypeScript 5.9.3 — strict mode                                          |
 | State       | NgRx 21.1.1 — Store, Effects, Selectors                                 |
 | UI          | PrimeNG 21.0.4                                                          |
-| Styling     | SCSS + BEM                                                              |
+| Styling     | Tailwind CSS 4 (utilities first) + SCSS with BEM for component styles   |
 | Unit tests  | Vitest 4.1.11 + `@analogjs/vitest-angular`                              |
 | E2E         | Playwright                                                              |
 | Docs        | Storybook 10.2.4 (reusable components)                                  |
 | Quality     | ESLint, Prettier, Husky, lint-staged, commitlint (Conventional Commits) |
 | Package mgr | npm                                                                     |
-| Backend     | Express + PostgreSQL (`pg`), co-located with the app for SSR            |
+| Backend     | Express + MikroORM 7 + PostgreSQL, co-located with the app for SSR      |
 
 Packages are kept version-compatible; unnecessary dependencies are avoided.
 
@@ -32,7 +32,7 @@ apps/
       shared/         # Application-specific reusable code (created when needed)
       store/          # NgRx state management
       integration/    # Library adapters and host-specific providers
-    src/server/       # Node-only: PostgreSQL pool, repositories, Express routers
+    src/server/       # Node-only: MikroORM entities, repositories, Express routers
   shell-e2e/          # Playwright tests
 
 libs/
@@ -40,12 +40,13 @@ libs/
   ui/                 # Generic visual components and styles
 ```
 
-| Project       | Path               | Role                                  |
-| ------------- | ------------------ | ------------------------------------- |
-| `shell`       | `apps/shell`       | Application (routing, NgRx, API)      |
-| `shell-e2e`   | `apps/shell-e2e`   | Playwright tests                      |
-| `ui`          | `libs/ui`          | Generic visual components + Storybook |
-| `form-engine` | `libs/form-engine` | Config-driven form renderer           |
+| Project             | Path                     | Role                                                                          |
+| ------------------- | ------------------------ | ----------------------------------------------------------------------------- |
+| `shell`             | `apps/shell`             | Application (routing, NgRx, API)                                              |
+| `shell-e2e`         | `apps/shell-e2e`         | Playwright tests                                                              |
+| `shell-integration` | `apps/shell-integration` | Vitest + testcontainers (PostgreSQL) + agent-browser against the built server |
+| `ui`                | `libs/ui`                | Generic visual components + Storybook                                         |
+| `form-engine`       | `libs/form-engine`       | Config-driven form renderer                                                   |
 
 Inside libraries, code is grouped by technical role: `components/`, `directives/`, `services/`, `helpers/`, `models/`, `validators/`, `pipes/`, `integration/`, `testing/` (created only when used). Application features may keep their own local `components/`, `services/`, `models/` and tests. No empty abstractions or directories.
 
@@ -70,7 +71,7 @@ Inside libraries, code is grouped by technical role: `components/`, `directives/
 - No `any`, unsafe casts, magic indexes or needless generic abstractions.
 - Private fields use `#`; private methods use `private`.
 - Early returns, named helpers, shallow nesting.
-- SCSS uses BEM; styles are co-located in `_component-name.scss`.
+- Tailwind utilities in templates first; component SCSS (BEM, co-located `_component-name.scss`) only when utilities are not enough.
 - Filenames: `*.component.ts`, `*.service.ts`, `*.helper.ts`, `*.model.ts`, `*.spec.ts`.
 - NgRx: functional effects, `createActionGroup`, memoized selectors.
 - Prefer existing patterns over new abstractions; never hand-edit generated code.
@@ -82,7 +83,7 @@ The app is server-rendered (`RenderMode.Server`) with hydration. `TasksApi` is t
 - `ServerTasksApi` (SSR) calls the repository passed through `REQUEST_CONTEXT` — no HTTP loopback — and publishes results via `TransferState`.
 - `HttpTasksApi` (browser) consumes that state first, then calls `/api/*`.
 
-Database: `DATABASE_URL` (default `postgres://postgres:postgres@127.0.0.1:5432/open-mercato`). The `tasks` table is created and seeded on server start (`server/database`). Only parameterized queries are used.
+Database: `DATABASE_URL` (default `postgres://postgres:postgres@127.0.0.1:5432/open-mercato`) through MikroORM 7 with `EntitySchema` mappings. The `tasks` table is created (`schema.update()`) and seeded on server start (`server/database`); no string-built SQL.
 
 ## Reference feature
 
@@ -95,7 +96,9 @@ The sample `tasks` feature demonstrates the full flow: component → ViewModel s
 - Playwright uses `data-testid` or accessibility selectors; no arbitrary sleeps — synchronize on observable state.
 - Reusable UI components get Storybook stories.
 - Commits follow Conventional Commits (commitlint + Husky + lint-staged).
-- Nx provides independent `build`, `lint`, `test` and `e2e` targets.
+- Nx provides independent `build`, `lint`, `test` and `e2e` targets; `integration` runs the black-box suite.
+- **100% unit-test coverage is mandatory** for every new feature; `npm run test:coverage` enforces it.
+- **CI** (`.github/workflows/ci.yml`) runs on every pull request: build, lint, unit tests with the coverage gate, and integration tests (PostgreSQL via testcontainers, UI driven by agent-browser).
 
 ## Commands
 
@@ -105,6 +108,8 @@ npm start            # dev server on 0.0.0.0:3000
 npm run build
 npm run lint
 npm test
+npm run test:coverage # unit tests, fails below 100%
+npm run integration  # needs Docker; first run: npx agent-browser install --with-deps
 npm run e2e          # first run: npx playwright install chromium
 npm run storybook    # ui library stories on :6006
 ```

@@ -1,13 +1,13 @@
 # AGENTS.md
 
-Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict · NgRx 21 · PrimeNG 21 · SCSS + BEM · Vitest · Playwright · Storybook · npm.
+Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict · NgRx 21 · PrimeNG 21 · Tailwind CSS 4 + SCSS (BEM for component styles) · Vitest · Playwright · Storybook · npm.
 
 ## Layout
 
 - `apps/shell/src/app/` — `core/` (API, global services), `features/` (route-level), `shared/` (app-only reusable; create when needed), `store/` (NgRx), `integration/` (library adapters, host providers).
-- `apps/shell/src/server/` — Node-only code (PostgreSQL `pg` pool, repositories, Express routers). Wired in `src/server.ts`; never imported by `src/app` except as types.
+- `apps/shell/src/server/` — Node-only code (MikroORM 7 + PostgreSQL, entities, repositories, Express routers). Wired in `src/server.ts`; never imported by `src/app` except as types.
 - `libs/ui` — generic visual components. `libs/form-engine` — form contracts and runtime. Inside libs, group by role: `components/ directives/ services/ helpers/ models/ validators/ pipes/ integration/ testing/` (create only when used).
-- `apps/shell-e2e` — Playwright.
+- `apps/shell-e2e` — Playwright. `apps/shell-integration` — Vitest + testcontainers + agent-browser against the built server.
 
 ## Architecture
 
@@ -22,7 +22,7 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 ## SSR and data access
 
 - The app is server-rendered (`RenderMode.Server`) with hydration. `TasksApi` is the abstraction: `ServerTasksApi` (SSR) calls the repository passed through `REQUEST_CONTEXT` — no HTTP loopback — and publishes results via `TransferState`; `HttpTasksApi` (browser) consumes that state, then calls `/api/*`.
-- Database: `DATABASE_URL` (defaults to the sandbox PostgreSQL). Schema bootstrap lives in `server/database`. Use parameterized queries only.
+- Database: `DATABASE_URL` (defaults to the sandbox PostgreSQL) via MikroORM 7 (`@mikro-orm/postgresql`). Entities use `EntitySchema` (no decorators: esbuild has no decorator metadata), types live in `*.model.ts`. Repositories fork the `EntityManager` per operation; never use a global one. Schema bootstrap (`schema.update()` + seed) lives in `server/database`; move to MikroORM migrations once schema history matters. No string-built SQL.
 
 ## Conventions
 
@@ -30,23 +30,31 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 - Types, interfaces and named constants go in `*.model.ts`. `interface` for objects, `type` for unions/mapped types.
 - No `any`, unsafe casts or magic indexes. Private fields use `#`; private methods use `private`.
 - Early returns, named helpers, shallow nesting.
-- SCSS: BEM, co-located `_component-name.scss`.
+- Styling: Tailwind utility classes in templates first; component SCSS (BEM, co-located `_component-name.scss`) only for what utilities cannot express. Tailwind is wired in `apps/shell/.postcssrc.json` and `styles.scss`.
 - Filenames: `*.component.ts`, `*.service.ts`, `*.helper.ts`, `*.model.ts`, `*.spec.ts`.
 - NgRx: functional effects, `createActionGroup`, memoized selectors.
 - Never hand-edit generated code. Prefer existing patterns over new abstractions.
+
+## Standards
+
+Full naming table, layering rules, security minimums, concept scaffold recipe and review checklist: [.ai/docs/engineering-standards.md](.ai/docs/engineering-standards.md). Read it before adding a domain concept, router, store slice or shared component; keep it and this file in sync.
 
 ## Testing
 
 - Vitest specs next to the code. Mock external boundaries (HTTP, Store, browser APIs), not internal helpers.
 - Test behavior, not implementation. Playwright uses `data-testid` or accessibility selectors; no sleeps.
 - Reusable UI components get Storybook stories.
+- **Every new feature must ship with 100% unit-test coverage** (statements, branches, functions, lines). No exceptions and no coverage-ignore comments; a feature without complete unit tests is not done. `npm run test:coverage` enforces it per project (thresholds in each `vite.config.mts`) and CI fails the pull request otherwise.
+- Only process entrypoints are excluded from coverage (`main.ts`, `main.server.ts`, `server.ts`, stories, specs); they are exercised by the integration suite. Keep logic out of them.
+- Each project's `coverage-guard.spec.ts` imports every source file; never remove it — Vitest otherwise reports unimported files as 100% covered.
+- Integration tests live in `apps/shell-integration` (`*.integration.spec.ts`): a throwaway PostgreSQL (testcontainers) plus the built server, driven through `agent-browser`. Every new route/page gets a happy-path integration test. Run: `npm run integration` (needs Docker, or `INTEGRATION_DATABASE_URL` pointing at a disposable database, and `npx agent-browser install --with-deps` once).
 - Commits follow Conventional Commits (commitlint + Husky).
 
 ## Working agreement
 
 - **Plan first.** For multi-file or architectural changes, state a short plan (files to touch, layer ownership, success criteria) before coding; unresolved technical doubt is settled with a small prototype. Non-trivial work gets a spec (see AI workspace). If the work goes sideways, stop and re-plan instead of pushing on.
 - **Split big work** into testable steps: contracts/models → logic/helpers → integration (store, API) → tests. Keep changes minimal and in scope.
-- **Verify, don't claim.** A change is done only after you ran the checks: `npm run lint`, `npm test`, `npm run build`, plus `npm run e2e` for UI or SSR/data-flow changes. Report commands and results; separate confirmed facts from hypotheses. Never present unrun checks as passing.
+- **Verify, don't claim.** A change is done only after you ran the checks: `npm run lint`, `npm run test:coverage` (must stay at 100%), `npm run build`, plus `npm run integration` for UI, SSR or data-flow changes. Report commands and results; separate confirmed facts from hypotheses. Never present unrun checks as passing.
 - **Bugs:** reproduce with a failing Vitest spec first when feasible, then fix. For failing CI/tests, read the logs, find the first real cause and fix it — no workarounds that hide the failure.
 - **Simplify after implementing:** remove needless layers, duplication and out-of-scope edits (single source of truth, no speculative abstractions) without changing behavior; re-run tests.
 - **Learn from corrections:** after any user correction or fixed bug, record the rule via the Lessons step below; if it is a standing convention, add one line to this file instead and remove outdated lines. Keep this file short — procedures belong in skills.
@@ -54,7 +62,7 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 
 ## Commands
 
-`npm start` · `npm run build` · `npm run lint` · `npm test` · `npm run e2e` · `npm run storybook`
+`npm start` · `npm run build` · `npm run lint` · `npm test` · `npm run test:coverage` · `npm run integration` · `npm run e2e` · `npm run storybook`
 
 ## AI workspace (`.ai/`) — mandatory
 
@@ -66,6 +74,7 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
   runs/                  # logs of autonomous AI runs, named YYYY-MM-DD-slug.md
   lessons.md             # index of lessons (long-term memory)
   lessons/               # lesson details, named YYYY-MM-DD-slug.md
+  docs/                  # reference docs (engineering-standards.md)
 ```
 
 Rules (all names: date `YYYY-MM-DD` = creation day, `slug` = lowercase kebab-case):

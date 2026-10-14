@@ -1,34 +1,30 @@
-import type { Pool } from 'pg';
+import type { EntityManager } from '@mikro-orm/postgresql';
 import type { Task, TasksDataSource } from '../../app/core/api/tasks.model';
+import { TaskEntity } from './task.entity';
+import type { TaskRecord } from './task.model';
 
-interface TaskRow {
-  id: string;
-  title: string;
-}
-
-function toTask(row: TaskRow): Task {
-  return { id: row.id, title: row.title };
+function toTask(record: TaskRecord): Task {
+  return { id: String(record.id), title: record.title };
 }
 
 export class TasksRepository implements TasksDataSource {
-  readonly #pool: Pick<Pool, 'query'>;
+  readonly #em: Pick<EntityManager, 'fork'>;
 
-  constructor(pool: Pick<Pool, 'query'>) {
-    this.#pool = pool;
+  constructor(em: Pick<EntityManager, 'fork'>) {
+    this.#em = em;
   }
 
   async list(): Promise<Task[]> {
-    const { rows } = await this.#pool.query<TaskRow>(
-      'SELECT id::text, title FROM tasks ORDER BY id',
-    );
-    return rows.map(toTask);
+    const records = await this.#em
+      .fork()
+      .find(TaskEntity, {}, { orderBy: { id: 'asc' } });
+    return records.map(toTask);
   }
 
   async create(title: string): Promise<Task> {
-    const { rows } = await this.#pool.query<TaskRow>(
-      'INSERT INTO tasks (title) VALUES ($1) RETURNING id::text, title',
-      [title],
-    );
-    return toTask(rows[0]);
+    const em = this.#em.fork();
+    const record = em.create(TaskEntity, { title });
+    await em.flush();
+    return toTask(record);
   }
 }

@@ -5,12 +5,15 @@ import { tasksActions } from '../../../store/tasks/tasks.actions';
 import { TasksPageComponent } from './tasks-page.component';
 
 describe('TasksPageComponent', () => {
-  async function setup(tasks: { id: string; title: string }[]) {
+  async function setup(
+    tasks: { id: string; title: string }[],
+    error: { code: string; message: string } | null = null,
+  ) {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
         provideMockStore({
-          initialState: { tasks: { tasks, loading: false } },
+          initialState: { tasks: { tasks, loading: false, error } },
         }),
       ],
     });
@@ -35,5 +38,17 @@ describe('TasksPageComponent', () => {
     const { element } = await setup([]);
 
     expect(element.querySelector('[data-testid="tasks-empty"]')).not.toBeNull();
+  });
+
+  it('shows an error message instead of the empty state when loading failed', async () => {
+    const { element } = await setup([], {
+      code: 'unknown_error',
+      message: 'Something went wrong.',
+    });
+
+    expect(
+      element.querySelector('[data-testid="tasks-error"]')?.textContent,
+    ).toContain('Something went wrong.');
+    expect(element.querySelector('[data-testid="tasks-empty"]')).toBeNull();
   });
 });

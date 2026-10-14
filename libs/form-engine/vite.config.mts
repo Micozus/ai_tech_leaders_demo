@@ -23,6 +23,14 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../coverage/libs/form-engine',
       provider: 'v8' as const,
+      include: ['src/**/*.ts'],
+      exclude: ['**/*.spec.ts', '**/*.stories.ts', 'src/test-setup.ts'],
+      thresholds: {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      },
     },
   },
 }));

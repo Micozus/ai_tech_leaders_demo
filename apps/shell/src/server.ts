@@ -6,7 +6,8 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import type { ServerRequestContext } from './app/core/api/tasks.model';
-import { createPool, ensureSchema } from './server/database/database';
+import { createOrm, ensureSchema } from './server/database/database';
+import { apiErrorHandler } from './server/http/error-handler';
 import { createTasksRouter } from './server/tasks/tasks.router';
 import { TasksRepository } from './server/tasks/tasks.repository';
 import { dirname, resolve } from 'node:path';
@@ -18,15 +19,16 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-const pool = createPool();
-const tasksRepository = new TasksRepository(pool);
-const schemaReady = ensureSchema(pool);
+const orm = createOrm();
+const tasksRepository = new TasksRepository(orm.em);
+const schemaReady = ensureSchema(orm);
 
 app.use('/api/tasks', async (_req, _res, next) => {
   await schemaReady;
   next();
 });
 app.use('/api/tasks', createTasksRouter(tasksRepository));
+app.use('/api', apiErrorHandler);
 
 /**
  * Serve static files from /browser

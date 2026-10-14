@@ -11,7 +11,11 @@ describe('TasksViewModelService', () => {
         provideZonelessChangeDetection(),
         provideMockStore({
           initialState: {
-            tasks: { tasks: [{ id: '1', title: 'A' }], loading: false },
+            tasks: {
+              tasks: [{ id: '1', title: 'A' }],
+              loading: false,
+              error: null,
+            },
           },
         }),
         TasksViewModelService,
@@ -28,6 +32,7 @@ describe('TasksViewModelService', () => {
     expect(service.vm()).toEqual({
       tasks: [{ id: '1', title: 'A' }],
       loading: false,
+      errorMessage: null,
       isEmpty: false,
     });
   });

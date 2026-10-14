@@ -1,22 +1,41 @@
+import type { EntityManager } from '@mikro-orm/postgresql';
+import { TaskEntity } from './task.entity';
 import { TasksRepository } from './tasks.repository';
 
-describe('TasksRepository', () => {
-  it('maps rows to tasks', async () => {
-    const query = vi.fn().mockResolvedValue({
-      rows: [{ id: '1', title: 'A', extra: 'ignored' }],
-    });
-    const repository = new TasksRepository({ query } as never);
+function createEntityManager(overrides: Partial<EntityManager>) {
+  const em = { ...overrides, fork: () => em };
+  return em as unknown as EntityManager;
+}
 
-    expect(await repository.list()).toEqual([{ id: '1', title: 'A' }]);
+describe('TasksRepository', () => {
+  it('lists tasks ordered by id and maps them to the API shape', async () => {
+    const find = vi.fn().mockResolvedValue([
+      { id: 1, title: 'A', createdAt: new Date() },
+      { id: 2, title: 'B', createdAt: new Date() },
+    ]);
+    const repository = new TasksRepository(createEntityManager({ find }));
+
+    expect(await repository.list()).toEqual([
+      { id: '1', title: 'A' },
+      { id: '2', title: 'B' },
+    ]);
+    expect(find).toHaveBeenCalledWith(
+      TaskEntity,
+      {},
+      { orderBy: { id: 'asc' } },
+    );
   });
 
-  it('inserts with a parameterized query and returns the created task', async () => {
-    const query = vi
-      .fn()
-      .mockResolvedValue({ rows: [{ id: '7', title: 'B' }] });
-    const repository = new TasksRepository({ query } as never);
+  it('persists a new task and returns it with the generated id', async () => {
+    const record = { id: '7', title: 'B', createdAt: new Date() };
+    const create = vi.fn().mockReturnValue(record);
+    const flush = vi.fn().mockResolvedValue(undefined);
+    const repository = new TasksRepository(
+      createEntityManager({ create, flush }),
+    );
 
     expect(await repository.create('B')).toEqual({ id: '7', title: 'B' });
-    expect(query).toHaveBeenCalledWith(expect.stringContaining('$1'), ['B']);
+    expect(create).toHaveBeenCalledWith(TaskEntity, { title: 'B' });
+    expect(flush).toHaveBeenCalled();
   });
 });

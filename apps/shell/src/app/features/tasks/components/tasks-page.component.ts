@@ -24,6 +24,9 @@ import { TasksViewModelService } from '../services/tasks-view-model.service';
       @if (vm.loading) {
         <p data-testid="tasks-loading">Loading…</p>
       }
+      @if (vm.errorMessage) {
+        <p role="alert" data-testid="tasks-error">{{ vm.errorMessage }}</p>
+      }
       @if (vm.isEmpty) {
         <p data-testid="tasks-empty">No tasks yet.</p>
       }

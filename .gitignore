@@ -10,3 +10,4 @@ playwright-report
 .npm
 
 vitest.config.*.timestamp*
+coverage
