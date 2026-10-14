@@ -48,7 +48,8 @@ Full naming table, layering rules, security minimums, concept scaffold recipe an
 - Only process entrypoints are excluded from coverage (`main.ts`, `main.server.ts`, `server.ts`, stories, specs); they are exercised by the integration suite. Keep logic out of them.
 - Each project's `coverage-guard.spec.ts` imports every source file; never remove it — Vitest otherwise reports unimported files as 100% covered.
 - Integration tests live in `apps/shell-integration` (`*.integration.spec.ts`): a throwaway PostgreSQL (testcontainers) plus the built server, driven through `agent-browser`. Every new route/page gets a happy-path integration test. Run: `npm run integration` (needs Docker, or `INTEGRATION_DATABASE_URL` pointing at a disposable database, and `npx agent-browser install --with-deps` once).
-- Commits follow Conventional Commits (commitlint + Husky).
+- E2E is Playwright (`apps/shell-e2e`, `npm run e2e`, `data-testid`/role selectors, runs in CI against a PostgreSQL service). Every new route/page gets an e2e happy path next to its integration test.
+- Commits and PR titles follow Conventional Commits (commitlint + Husky locally, enforced again in CI). GitHub Actions are pinned to commit SHAs; Dependabot updates them.
 
 ## Working agreement
 

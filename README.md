@@ -98,7 +98,7 @@ The sample `tasks` feature demonstrates the full flow: component → ViewModel s
 - Commits follow Conventional Commits (commitlint + Husky + lint-staged).
 - Nx provides independent `build`, `lint`, `test` and `e2e` targets; `integration` runs the black-box suite.
 - **100% unit-test coverage is mandatory** for every new feature; `npm run test:coverage` enforces it.
-- **CI** (`.github/workflows/ci.yml`) runs on every pull request: build, lint, unit tests with the coverage gate, and integration tests (PostgreSQL via testcontainers, UI driven by agent-browser).
+- **CI** (`.github/workflows/ci.yml`) runs on pull requests, pushes to `main` and merge queues: build, lint, unit tests with the 100% coverage gate, integration tests (PostgreSQL via testcontainers, UI driven by agent-browser), Playwright e2e (PostgreSQL service), a dependency audit (`npm audit --omit=dev`, high and above) and Conventional Commits checks for PR title and commits. Dependabot (`.github/dependabot.yml`) and `CODEOWNERS` live next to it. Mark these jobs as required status checks in the branch protection rules.
 
 ## Commands
 

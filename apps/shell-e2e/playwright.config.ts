@@ -16,6 +16,8 @@ const baseURL = process.env['BASE_URL'] || 'http://localhost:4200';
  */
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: './src' }),
+  forbidOnly: !!process.env['CI'],
+  retries: process.env['CI'] ? 2 : 0,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,
@@ -27,6 +29,8 @@ export default defineConfig({
     command: 'npx nx run shell:serve --port 4200',
     url: baseURL,
     reuseExistingServer: true,
+    // Cold dev-server compile on a CI runner can exceed the 60s default.
+    timeout: 180_000,
     cwd: workspaceRoot,
   },
   projects: [

@@ -1,0 +1,36 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      angular:
+        patterns: ['@angular/*', '@angular-devkit/*', '@schematics/angular']
+      nx:
+        patterns: ['nx', '@nx/*']
+      ngrx:
+        patterns: ['@ngrx/*']
+      testing:
+        patterns:
+          [
+            'vitest',
+            '@vitest/*',
+            '@analogjs/*',
+            '@playwright/*',
+            'testcontainers',
+            '@testcontainers/*',
+            'agent-browser',
+          ]
+      mikro-orm:
+        patterns: ['@mikro-orm/*']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: 'ci'
