@@ -11,3 +11,8 @@ playwright-report
 
 vitest.config.*.timestamp*
 coverage
+
+# agent pipeline: generated per run, not source
+.ai/qa/artifacts_*/
+.ai/qa/test-env.json
+.ai/qa/test-env.env
