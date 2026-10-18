@@ -2,6 +2,18 @@
 
 Production-ready Angular monorepo. Priorities: readability, clear ownership, maintainability and minimal complexity. Architecture rules for contributors and agents are summarized in [AGENTS.md](AGENTS.md).
 
+## Getting started
+
+```sh
+npm run setup
+```
+
+Installs dependencies and the browsers needed for `npm run integration` and `npm run e2e`. Safe to re-run: it detects what is already done and skips it.
+
+### Manual steps
+
+Prefer to do it by hand, or need just one piece of it? See [Commands](#commands) below for the individual steps (`npm install`, the browser installs `integration`/`e2e` need on first run, then `npm start`).
+
 ## Technology stack
 
 | Area        | Choice                                                                  |
@@ -103,6 +115,7 @@ The sample `tasks` feature demonstrates the full flow: component → ViewModel s
 ## Commands
 
 ```sh
+npm run setup        # one-shot, idempotent: see Getting started above
 npm install
 npm start            # dev server on 0.0.0.0:3000
 npm run build
