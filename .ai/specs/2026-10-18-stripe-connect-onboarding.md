@@ -84,7 +84,7 @@ Mentor routes under `/api/payouts`, JSON, errors in the shared envelope `{ messa
 | --- | --- | --- | --- |
 | `GET /api/payouts/account` | — | `200` `{ status, payoutsEnabled, missingSteps: [{ code, label }] }` from the stored snapshot; `not_started` when no row | `401`/`403` per auth |
 | `POST /api/payouts/account/refresh` | — | `200` same body after re-retrieving from Stripe and updating the snapshot | `502` `code: payments_unavailable` when Stripe fails — stored snapshot unchanged |
-| `POST /api/payouts/onboarding-link` | — | `200` `{ url }` — a fresh single-use Account Link; creates the Stripe account first when the mentor has none | `502` `payments_unavailable`; `409` `code: already_enabled` is **not** used — a mentor may reopen Stripe to update details, the link is allowed |
+| `POST /api/payouts/onboarding-link` | — | `200` `{ url }` — a fresh single-use Account Link; creates the Stripe account first when the mentor has none | `502` `payments_unavailable`. Allowed in every status, including `payouts_enabled` (a mentor may reopen Stripe to update details) |
 | `POST /api/webhooks/stripe-connect` | raw body + `Stripe-Signature` | `200` empty body after processing (also for duplicates, unknown events and unknown accounts) | `400` bad/missing signature (nothing parsed, nothing changed); `500` on a transient internal failure so Stripe retries |
 
 `return_url` = `${APP_BASE_URL}/mentor/payouts?stripe=return`, `refresh_url` = `${APP_BASE_URL}/mentor/payouts?stripe=refresh` — fixed server-side constants, never taken from the request (no open redirect). Stripe passes no status on return; the page reacts to `?stripe=return` by calling `refresh`, and to `?stripe=refresh` (expired/used link) by requesting a new link.
@@ -157,7 +157,7 @@ Flows only; no mockups (no test-environment descriptor exists, so this spec is t
 | SQ7 | Country handling | No country sent at account creation; Stripe's default (platform country) plus country-based onboarding enabled in Dashboard; mentors' countries to be confirmed ⚠ NEEDS HUMAN CONFIRMATION | Country is immutable per account; D04 names an unserved country as a reopen trigger; no data on mentors' countries. |
 | SQ8 | Webhook endpoint | Separate Connect endpoint `/api/webhooks/stripe-connect` with its own secret | Connect events and platform events use different listeners and secrets. |
 | SQ9 | Mentor operator visibility | None in this spec | Operator screens are E05 (1.1); D19 hand-work until then. |
-| SQ10 | Mentor country-of-service, KYC prompts, payout schedule UI | Not built; Stripe hosted pages and Express-style dashboard link cover them | Smallest scope for "sees whether payouts are enabled". |
+| SQ10 | KYC prompts, payout schedule, balance UI | Not built; Stripe's hosted pages cover them | Smallest scope for "sees whether payouts are enabled". |
 | SQ11 | Rate limiting | In-process 10/hour per mentor on link and refresh | No new infrastructure; protects Stripe quota. |
 | SQ12 | Where does the mentor's status screen live? | `/mentor/payouts`, linked from the auth spec's `/mentor` home | Smallest surface; fits the role-home model. |
 
