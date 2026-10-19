@@ -14,7 +14,9 @@ describe('CardComponent', () => {
     await fixture.whenStable();
     const element = fixture.nativeElement as HTMLElement;
 
-    expect(element.querySelector('.card__heading')?.textContent).toBe('Title');
+    expect(element.querySelector('.card__heading')?.textContent?.trim()).toBe(
+      'Title',
+    );
     expect(element.querySelector('.card__body p')?.textContent).toBe(
       'Projected',
     );

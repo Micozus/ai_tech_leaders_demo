@@ -1,0 +1,40 @@
+/* Element defaults that every DevMentor surface shares. Values come from tokens.css. */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    /* Light only: resolves every `light-dark()` value (PrimeNG Aura) to its light side. */
+    color-scheme: light;
+    color: var(--color-ink);
+    background: var(--color-canvas);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 20rem;
+  }
+
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  :where(button, [role='button']):disabled {
+    cursor: not-allowed;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
