@@ -21,7 +21,7 @@
       "options": {
         "configDir": "libs/ui/.storybook",
         "compodoc": false,
-        "styles": [],
+        "styles": ["libs/ui/.storybook/styles.scss"],
         "port": 6006,
         "tsConfig": "libs/ui/.storybook/tsconfig.json"
       }
@@ -32,7 +32,7 @@
       "options": {
         "configDir": "libs/ui/.storybook",
         "compodoc": false,
-        "styles": [],
+        "styles": ["libs/ui/.storybook/styles.scss"],
         "outputDir": "dist/storybook/ui",
         "tsConfig": "libs/ui/.storybook/tsconfig.json"
       }

@@ -1,7 +1,7 @@
 import { EnvironmentProviders } from '@angular/core';
-import Aura from '@primeuix/themes/aura';
+import { DEVMENTOR_PRESET } from '@org/ui';
 import { providePrimeNG } from 'primeng/config';
 
 export function provideAppPrimeNG(): EnvironmentProviders {
-  return providePrimeNG({ theme: { preset: Aura } });
+  return providePrimeNG({ theme: { preset: DEVMENTOR_PRESET } });
 }

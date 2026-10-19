@@ -1,1 +1,6 @@
 @use 'tailwindcss';
+@use '../../../libs/ui/src/lib/styles/tokens.css';
+@use '../../../libs/ui/src/lib/styles/base.css';
+
+/* Utilities used inside `libs/ui` inline templates live outside this project's root. */
+@source '../../../libs/ui/src';
