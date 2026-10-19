@@ -74,7 +74,7 @@
   --color-danger-tint: var(--color-red-50);
   --color-warning: var(--color-amber-600);
   --color-warning-tint: var(--color-amber-50);
-  --color-focus: var(--color-accent-400);
+  --color-focus: var(--color-accent-500);
 
   /* ---- Typography ---- */
   --font-sans:

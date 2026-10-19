@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 /**
  * Label, hint and error around one projected control. The control keeps its own `id`;
  * pass the same value as `controlId` so the label targets it. The error is announced
- * (`role="alert"`) and must be referenced by the control through `aria-describedby`
- * using `errorId`/`hintId`.
+ * (`role="alert"`); the control should reference them through `aria-describedby`
+ * using the ids `<controlId>-hint` and `<controlId>-error`.
  */
 @Component({
   selector: 'ui-field',
