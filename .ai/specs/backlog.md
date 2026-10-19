@@ -23,7 +23,7 @@ Tracker: https://github.com/Micozus/ai_tech_leaders_demo (GitHub). Filed by `om-
 | E02-S02 | [#21](https://github.com/Micozus/ai_tech_leaders_demo/issues/21) | A mentor fills the mentor page (public-work link, description, stack tags) and gets a share link; no ratings | #12 | E02-S01 (#20) | no | first (D13) |
 | E02-S03 | [#22](https://github.com/Micozus/ai_tech_leaders_demo/issues/22) | A mentor publishes slots and sees them taken as they are booked | #12 | E02-S01 (#20) | no | first (D13) |
 | E02-S04 | [#23](https://github.com/Micozus/ai_tech_leaders_demo/issues/23) | A mentor sets 25- and 50-minute prices within the operator's bounds | #12 | E02-S01 (#20) | no | first (D13) |
-| E02-S05 | [#24](https://github.com/Micozus/ai_tech_leaders_demo/issues/24) | A mentor completes Stripe Connect onboarding and sees whether payouts are enabled | #12 | E01-S01 (#17) | no | 1.1 (D13) |
+| E02-S05 | [#24](https://github.com/Micozus/ai_tech_leaders_demo/issues/24) | A mentor completes Stripe Connect onboarding and sees whether payouts are enabled | #12 | E01-S01 (#17), E01-S03 (#19), E02-S01 (#20) | no | 1.1 (D13) |
 | E02-S05-T01 | [#39](https://github.com/Micozus/ai_tech_leaders_demo/issues/39) | Stripe Connect integration | #24 | E03-S03-T01 (#38) | no | 1.1 (D13) |
 | E03 | [#13](https://github.com/Micozus/ai_tech_leaders_demo/issues/13) | Booking and payment |  |  | no |  |
 | E03-S01 | [#25](https://github.com/Micozus/ai_tech_leaders_demo/issues/25) | A mentee finds a mentor in a list filtered by stack tag, ordered by most recent published availability; no search, no ranking | #13 | E02-S02 (#21), E02-S03 (#22) | no | 1.1 (D13) |
@@ -54,6 +54,23 @@ For the three tasks (`E02-S05-T01`, `E03-S03-T01`) the Epic column holds the par
 
 ## Open questions carried on issues
 - Q18 on E04-S01 ([#31](https://github.com/Micozus/ai_tech_leaders_demo/issues/31)), Q19 on E02-S05 ([#24](https://github.com/Micozus/ai_tech_leaders_demo/issues/24)) and E03-S06 ([#30](https://github.com/Micozus/ai_tech_leaders_demo/issues/30)), Q20 on E03-S01 ([#25](https://github.com/Micozus/ai_tech_leaders_demo/issues/25)); mentee vs `student` naming on E01-S01 ([#17](https://github.com/Micozus/ai_tech_leaders_demo/issues/17)).
+
+## Id reconciliation (brief vs tracker)
+The brief and the decision records use two ids that differ from the tracker, which stays the authority. Decision records are not edited; read them through this table.
+
+| Brief / decisions | Tracker | Issue |
+|---|---|---|
+| E02-S06 (Connect onboarding) | E02-S05 | [#24](https://github.com/Micozus/ai_tech_leaders_demo/issues/24) |
+| E06-S01 (fee split) | E03-S06 | [#30](https://github.com/Micozus/ai_tech_leaders_demo/issues/30) |
+
+## Implementation order
+Specs: [auth-and-roles](2026-10-18-auth-and-roles.md) (PR #46), [mentors-bookable](2026-10-18-mentors-bookable.md) (PR #47), [stripe-connect-onboarding](2026-10-18-stripe-connect-onboarding.md) (PR #48). Phases ship in this order; a later item needs the earlier ones merged.
+
+1. auth-and-roles Phase 1 (E01-S01, #17): users, sessions, GitHub sign-in.
+2. auth-and-roles Phases 2 and 3 (E01-S02 #18, E01-S03 #19): email fallback, `requireRole`, operator allowlist. Phase 3 comes before step 4 because invitations and mentor screens are role-gated.
+3. mentors-bookable (E02-S01 to S04, #20 to #23): invitation upgrade to `mentor`, mentor page, slots, prices.
+4. Booking and payment (E03-S02 #26, E03-S03 #27 with T01 #38) in the first iteration.
+5. stripe-connect-onboarding (E02-S05 #24, T01 #39), 1.1 per D13: shares one Stripe adapter file with #38, so it follows #38.
 
 ## Notes
 - Brief used: the existing `product-brief.md` (older than the research corpus in commit 21dc89f); E00 tasks flag that part of that material may already exist.
