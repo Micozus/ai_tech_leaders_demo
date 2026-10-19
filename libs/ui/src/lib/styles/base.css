@@ -3,6 +3,8 @@
   html {
     font-family: var(--font-sans);
     font-synthesis: none;
+    /* Light only: resolves every `light-dark()` value (PrimeNG Aura) to its light side. */
+    color-scheme: light;
     color: var(--color-ink);
     background: var(--color-canvas);
     scroll-behavior: smooth;

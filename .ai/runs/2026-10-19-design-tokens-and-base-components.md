@@ -17,4 +17,4 @@ Spec: `.ai/specs/implemented/2026-10-19-design-tokens-and-base-components.md`
 - Not run: `npm run integration`, `npm run e2e` (no route or page changed; Docker unavailable here).
 
 ## Open issues
-- Inter not loaded/self-hosted. No dark mode. Visual check of Storybook in a browser not done (build only).
+- Inter not loaded/self-hosted. Dark mode removed on request (light only). Visual check of Storybook in a browser not done (build only).

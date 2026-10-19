@@ -32,7 +32,8 @@ Spacing uses Tailwind's default 4 px scale; the prototype's 7/9/13 px gaps round
 2. **A new colour is a token first.** Add it to `tokens.css`, then use the utility. A literal in a template or SCSS file is a review blocker.
 3. **Retune in one place.** The PrimeNG preset ([`devmentor.preset.ts`](../../libs/ui/src/lib/theme/devmentor.preset.ts)) points Aura's primary palette and radii at `var(--…)` references, and a spec fails if it references a token that does not exist.
 4. **Tailwind first, BEM SCSS only for what utilities cannot express** (AGENTS.md). Variant class maps live in `*.model.ts` so Tailwind's scanner sees every class.
-5. **Accessibility is part of the token set:** `--color-focus` drives a 3 px focus ring on `a`, `button`, `[tabindex]`; `prefers-reduced-motion` shortens transitions (`styles/base.css`).
+5. **Light theme only.** There is no dark mode and none is planned: `base.css` sets `color-scheme: light` and the app passes `darkModeSelector: 'none'` to PrimeNG, so a dark OS setting changes nothing. Do not add `dark:` variants or dark token sets.
+6. **Accessibility is part of the token set:** `--color-focus` drives a 3 px focus ring on `a`, `button`, `[tabindex]`; `prefers-reduced-motion` shortens transitions (`styles/base.css`).
 
 ### Wiring
 

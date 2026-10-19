@@ -9,7 +9,8 @@ Give feature work one visual vocabulary: design tokens extracted from the concep
 - Tokens in `libs/ui/src/lib/styles/tokens.css` (Tailwind 4 `@theme static`): colour scales and semantic roles, type scale, radius, elevation, motion, breakpoints, layering. Element defaults in `styles/base.css`.
 - `DEVMENTOR_PRESET` (PrimeNG Aura) referencing tokens by `var(--…)`; provided in the app.
 - Components: button, badge, avatar, alert, spinner, skeleton, empty state, field, page header; card restyled. Specs and stories for each; a *Foundations / Design tokens* gallery story.
-- Out of scope: domain components, dark mode, product behaviour in the prototype (ratings, chat, video, admin console, search, 12 h cancellation, USD): they contradict N01, N02, R08, R09, R13 and D19 (see the style guide).
+- Light theme only (no dark mode, decided by the requester): `color-scheme: light` and PrimeNG `darkModeSelector: 'none'`.
+- Out of scope: domain components, product behaviour in the prototype (ratings, chat, video, admin console, search, 12 h cancellation, USD): they contradict N01, N02, R08, R09, R13 and D19 (see the style guide).
 
 ## Acceptance criteria
 - No colour, radius or shadow literal outside `tokens.css`; templates use semantic utilities.
@@ -23,5 +24,4 @@ Give feature work one visual vocabulary: design tokens extracted from the concep
 - PrimeNG `borderRadius` is a *primitive* token, not a semantic one.
 
 ## Open questions
-- Dark mode: the prototype is light-only; roles make it possible later.
 - Font: Inter is declared but not self-hosted or loaded; load it (self-hosted, per CSP) before the first public page.
