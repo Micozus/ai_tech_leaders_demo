@@ -4,3 +4,17 @@
 @use '../src/lib/styles/tokens.css';
 @use '../src/lib/styles/base.css';
 @source '../src';
+
+/*
+ * Documentation only: the frozen hover and focus previews in the state matrices.
+ * `data-preview-state` makes the component's own `hover:` and `focus-visible:` utilities match,
+ * so the preview uses the same declarations as the real states. Never used in the app.
+ */
+@custom-variant hover (&:is(:hover, [data-preview-state~='hover']));
+@custom-variant active (&:is(:active, [data-preview-state~='pressed']));
+@custom-variant focus-visible (&:is(:focus-visible, [data-preview-state~='focus']));
+
+[data-preview-state~='focus'] {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}

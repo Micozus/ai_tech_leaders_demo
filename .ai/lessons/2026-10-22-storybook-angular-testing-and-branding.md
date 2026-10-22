@@ -9,3 +9,8 @@ Context: building the design-system Storybook in `libs/ui` (`@storybook/angular`
 - Disable the checklist and update notices with `features.sidebarOnboardingChecklist: false` and `core.disableWhatsNewNotifications`, `disableTelemetry`.
 - `primeicons` 8 ships under the PrimeUI licence (licence key, eligibility limits); 7.0.0 is MIT. Pin `7.0.0` exactly.
 - Docs-only Angular blocks live in `libs/ui/.storybook/blocks` and are shown through `!dev` stories embedded in MDX with `<Canvas of>`; their selectors still need the `ui` prefix for lint.
+- Frozen hover/focus/pressed previews: override Tailwind's `hover`, `active` and `focus-visible` variants in the Storybook stylesheet only (`@custom-variant hover (&:is(:hover, [data-preview-state~='hover']))`). The component's own utilities then match the attribute, with no duplicated declarations. Keep `has-*` focus rings working with one generic `[data-preview-state~='focus']` outline rule.
+- Markdown tables in MDX: a `|` inside a code span splits the cell. Escape it as `\|` (union types in API tables), and keep the cell count equal to the header.
+- A loading control at reduced opacity fails WCAG 1.4.3; keep text opaque and only ignore pointer events.
+- Never `pkill -f` or `pgrep -f` with a string that also appears in your own command line: it kills the shell.
+

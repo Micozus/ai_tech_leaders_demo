@@ -1,18 +1,18 @@
 # POSTEP — DevMentor design system
 
-Last updated: 2026-10-22 · Current stage: **2 (base components) — differences from the PrimeNG default proposed, awaiting approval before batch 1**
+Last updated: 2026-10-22 · Current stage: **2 (base components) — batch 1 done (button, link, text field, textarea, select, checkbox, radio group); waiting for "dalej" before batch 2**
 Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/docs`). Branch `feat/design-tokens-and-base-components` (PR #51, open, not merged). Nothing is pushed by this work.
 
 ## Stages
 
-| Stage                                   | Status                                  |
-| --------------------------------------- | --------------------------------------- |
-| 0 Inventory and plan                    | done, approved                          |
-| 1 Foundations                           | done                                    |
-| 2 Base components                       | differences proposed, awaiting approval |
-| 3 Product components, patterns, screens | not started                             |
-| 4 Teaching pages                        | not started                             |
-| 5 Verification and report               | not started                             |
+| Stage                                   | Status            |
+| --------------------------------------- | ----------------- |
+| 0 Inventory and plan                    | done, approved    |
+| 1 Foundations                           | done              |
+| 2 Base components                       | batch 1 of 3 done |
+| 3 Product components, patterns, screens | not started       |
+| 4 Teaching pages                        | not started       |
+| 5 Verification and report               | not started       |
 
 ## Approved decisions
 
@@ -59,12 +59,29 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 
 ## Stage 2 state (2026-10-22)
 
-- Measured the Aura defaults (`@primeuix/themes/aura`) and wrote the difference list D1–D24 with a decision source for each. Q-A…Q-D answered (see Approved decisions). Explicit approval of D1–D24 as a whole is still to be confirmed with "dalej". No component built yet.
-- Proposed batches: 1 button, text field, textarea, select, checkbox, radio group · 2 field, card/panel, status badge, avatar, alert, skeleton, empty state, error state · 3 dialog, confirm dialog, menu, popover, tooltip, tabs, toast.
+- D1–D24 (differences from the PrimeNG default) approved by "dalej"; Q-A…Q-D answered (see Approved decisions).
+- **Batch 1 done:** button (+ text action = ghost variant), link (new), text field (new), textarea (new), select (new), checkbox (new), radio group (new). Each has a documentation page with the 13 sections (`*.mdx` next to the component), stories (Playground, variants, state matrix with frozen hover/focus/pressed, long text, narrow screen, do and don't, interaction test), a unit spec at 100% coverage.
+- **New tokens:** `scrim` (dialog backdrop, not used yet), `accent-pressed`.
+- **Preview states:** `data-preview-state` works through custom `hover`, `active` and `focus-visible` variants defined only in `libs/ui/.storybook/styles.scss`. Verified that the frozen hover and focus computed styles equal the real ones.
+- Batches left: 2 field (restyle, optional marking), card/panel, status badge, avatar, alert, skeleton (pulse), empty state, error state · 3 dialog, confirm dialog, menu, popover, tooltip, tabs, toast.
+
+### Deviations (batch 1), for the requester
+
+- **Select, checkbox and radio are native elements** (`<select>`, `<input type="checkbox|radio">`) styled with tokens, not PrimeNG components. Reason: the platform control is keyboard, touch and screen-reader complete, and fewer parts to keep accessible. A PrimeNG combobox is for searchable lists and is not built ("What is missing"). The arrow of the select and the box of the checkbox/radio are the platform's (accent colour only).
+- **Components as attribute selectors:** `input[ui-text-field]`, `textarea[ui-textarea]`, `select[ui-select]`, `a[ui-link]`, `label[ui-checkbox]`, `label[ui-radio]`, `fieldset[ui-radio-group]`.
+- **Pressed `danger`** has only a border change (a red fill would fail contrast with red text).
+- **PrimeNG preset (D24 surface scale)** is deferred to batch 3, when the first PrimeNG component (dialog) appears.
+- **Docs tables** scroll inside themselves at 320 px (one CSS rule in `preview-head.html`); component pages themselves have a narrow-screen story.
+
+### Checks (batch 1)
+
+- `npm run lint` pass · `npm run test:coverage` 100% (ui 107/107 statements, 12/12 branches) · `npx nx build shell` pass · `npx nx build-storybook ui` pass · `npm run tokens:lint` clean.
+- `npm run test-storybook`: 80 of 80 stories pass render, `play` and axe. Earlier runs caught real defects that were fixed: loading button at reduced opacity failed contrast; ghost hover and danger pressed failed contrast; a select keyboard test that cannot work with synthetic events was removed.
+- Browser: the seven docs pages at 1440 and 320 px: tables render as tables (no raw pipes), no horizontal page scroll at 320.
 
 ## Next step
 
-After "dalej": stage 2. List the differences from the default PrimeNG look with the decision behind each (control height, radius, borders, padding, focus), then build base components in batches of about six, each with the 13-section page, state matrix and `play` tests.
+After "dalej": batch 2 of stage 2 (field, card/panel, status badge, avatar, alert, skeleton, empty state, error state), then stop.
 
 ---
 

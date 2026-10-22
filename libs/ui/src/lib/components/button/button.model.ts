@@ -7,11 +7,14 @@ export const BUTTON_BASE_CLASSES =
 
 export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
-    'border-accent bg-accent text-on-accent hover:border-accent-strong hover:bg-accent-strong',
-  soft: 'border-transparent bg-accent-tint text-accent-strong hover:border-accent',
-  quiet: 'border-border-control bg-surface text-ink hover:bg-surface-muted',
-  danger: 'border-danger-border bg-danger-tint text-danger hover:border-danger',
-  ghost: 'border-transparent bg-transparent text-accent hover:bg-accent-tint',
+    'border-accent bg-accent text-on-accent hover:border-accent-strong hover:bg-accent-strong active:border-accent-pressed active:bg-accent-pressed',
+  soft: 'border-transparent bg-accent-tint text-accent-strong hover:border-accent active:border-accent-strong',
+  quiet:
+    'border-border-control bg-surface text-ink hover:bg-surface-muted active:bg-line',
+  danger:
+    'border-danger-border bg-danger-tint text-danger hover:border-danger active:border-danger',
+  ghost:
+    'border-transparent bg-transparent text-accent hover:bg-accent-tint hover:text-accent-strong active:text-accent-strong',
 };
 
 export const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
@@ -20,4 +23,5 @@ export const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {
 };
 
 export const BUTTON_BLOCK_CLASSES = 'w-full';
-export const BUTTON_BUSY_CLASSES = 'pointer-events-none opacity-70';
+/** Busy text stays fully legible (WCAG 1.4.3): no opacity, only no pointer events. */
+export const BUTTON_BUSY_CLASSES = 'pointer-events-none';

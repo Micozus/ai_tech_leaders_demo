@@ -1,0 +1,165 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './radio-group.component.stories';
+
+<Meta of={Stories} />
+
+# Radio group
+
+Native radios in a `<fieldset>` with a `<legend>`. The legend is the visible question; each row is the click target.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '200px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A radio group lets a person choose exactly one option from a few that stay visible.
+
+## When to use
+
+- Session length: 25 or 50 minutes (E03-S02).
+- Approve the note or decline it (E04-S04).
+- Any single choice of two to five options.
+
+## When not to use
+
+| Situation                      | Use instead    |
+| ------------------------------ | -------------- |
+| Six or more options            | Select         |
+| Several choices                | Checkbox group |
+| An action                      | Button         |
+| Two options that are on or off | Checkbox       |
+
+## Anatomy
+
+| Part                                  | Required | Notes                                              |
+| ------------------------------------- | -------- | -------------------------------------------------- |
+| Fieldset (`fieldset[ui-radio-group]`) | yes      | Groups the radios                                  |
+| Legend                                | yes      | First child; names the group                       |
+| Radio row (`label[ui-radio]`)         | yes      | The click target; 32px high                        |
+| Input                                 | yes      | Native radio, 20px, accent colour; shares a `name` |
+
+## Variants
+
+There is one look.
+
+| Variant | Choose it when   | Source |
+| ------- | ---------------- | ------ |
+| default | All radio groups | D21    |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '420px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                         | Source |
+| -------- | ---------------------------------------------------- | ------ |
+| Default  | Unselected: the platform circle in the accent colour | D21    |
+| Hover    | Row background turns `surface-muted`                 | D8     |
+| Focus    | 3px `focus` ring around the row                      | D6     |
+| Pressed  | Platform behaviour                                   | n/a    |
+| Disabled | 50% opacity, reason as text beside the group         | D9     |
+| Loading  | Not applicable                                       | n/a    |
+| Selected | Filled circle                                        | D21    |
+| Error    | Show the error under the group                       | D22    |
+
+**Disabled:** a disabled option says why in text beside it (for example "50 minutes is not offered by this mentor"). Source: Q-A.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                             | Source                    |
+| ------------- | ------------------------------------------------------------------------------------------------ | ------------------------- |
+| Keyboard      | Tab moves into the group (to the checked radio); Arrow keys move and check; Tab leaves the group | WAI-ARIA APG: Radio Group |
+| Focus order   | One tab stop for the group                                                                       | WCAG 2.4.3                |
+| Role and name | Native `fieldset` is a group named by its `legend`; each radio is named by its row text          | WCAG 1.3.1, 4.1.2         |
+| Screen reader | Announces "Session length, group", then "25 minutes, radio button, 1 of 2"                       | native                    |
+| Colour        | Selection is also the filled circle, not only colour                                             | WCAG 1.4.1                |
+| Target size   | The whole row, at least 32px high                                                                | WCAG 2.5.8                |
+
+## Content
+
+| Topic          | Rule                                                        | Source    |
+| -------------- | ----------------------------------------------------------- | --------- |
+| Legend         | The question: "Session length"                              | task rule |
+| Options        | Short and parallel: "25 minutes · €25.00"                   | R08, R14  |
+| Length         | Up to about 60 characters; longer text wraps                | proposal  |
+| Default choice | Do not preselect where the choice has a cost or consequence | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '260px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                                  | Source     |
+| ------- | --------------------------------------------------------- | ---------- |
+| 320 px  | One per line; whole row tappable                          | WCAG 2.5.8 |
+| 768 px  | One per line                                              | proposal   |
+| 1440 px | One per line; a horizontal row only for two short options | proposal   |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '260px' }} />
+</Unstyled>
+
+## API
+
+| Input  | Type | Default | Description                                                                                                                               |
+| ------ | ---- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| (none) |      |         | `fieldset[ui-radio-group]` and `label[ui-radio]` only style the group and the row. The inputs keep `name`, `value`, `checked`, `disabled` |
+
+Selectors: `fieldset[ui-radio-group]` (first child a `<legend>`), `label[ui-radio]` with a direct-child radio input sharing a `name`.
+
+## Code
+
+Minimal:
+
+```html
+<fieldset ui-radio-group>
+  <legend>Session length</legend>
+  <label ui-radio
+    ><input type="radio" name="len" value="25" /> 25 minutes</label
+  >
+  <label ui-radio
+    ><input type="radio" name="len" value="50" /> 50 minutes</label
+  >
+</fieldset>
+```
+
+In DevMentor:
+
+```html
+<fieldset ui-radio-group>
+  <legend>Session length</legend>
+  <label ui-radio
+    ><input type="radio" name="len" value="25" /> 25 minutes · €25.00</label
+  >
+  <label ui-radio
+    ><input type="radio" name="len" value="50" checked /> 50 minutes ·
+    €45.00</label
+  >
+</fieldset>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- A legend names the group. Source: WCAG 1.3.1.
+- Two to five visible options. Source: proposal.
+- A disabled option says why in text. Source: Q-A.
+
+## Related
+
+- [Select](?path=/docs/primitives-select--docs): six or more options
+- [Checkbox](?path=/docs/primitives-checkbox--docs): several choices
+- Patterns: form, booking flow (session length)
+
+## Interaction test
+
+The story `ChooseByClickAndArrowKeys` runs in the test script (`npm run test-storybook`): click chooses an option and the Arrow key moves the choice.

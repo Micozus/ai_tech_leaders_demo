@@ -19,3 +19,8 @@ Spec: none new; the plan is `libs/ui/POSTEP.md`.
 
 ## Not checked
 - Foundations pages other than Color at 320 and 768 px; keyboard and overlays (no overlays yet); `npm run integration` and e2e (no route changed).
+
+## Stage 2, batch 1 (same day)
+- Added button states (pressed), link, text field, textarea, select, checkbox, radio group; docs MDX generated from structured content (13 sections each); stories with frozen states; specs.
+- Checks: lint pass; `test:coverage` 100% (ui 107/107, 12/12); build shell pass; `tokens:lint` clean; `test-storybook` 80/80 after fixing three real contrast and test defects the runner found; frozen-state computed styles equal real hover and focus; docs pages checked at 1440 and 320 px.
+- Not done: PrimeNG-based components (batch 3), preset surface scale (D24).

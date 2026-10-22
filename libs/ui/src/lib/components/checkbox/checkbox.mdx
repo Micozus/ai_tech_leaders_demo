@@ -1,0 +1,156 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './checkbox.component.stories';
+
+<Meta of={Stories} />
+
+# Checkbox
+
+A native checkbox in a labelled row with the accent colour. The whole row is the click target.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '140px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A checkbox lets a person turn an independent option on or off, or pick any number from a group.
+
+## When to use
+
+- Stack tags in the mentor list filter (E03-S01): any number can be on.
+- Agreeing to a statement before submitting.
+- Choosing several slots to publish (E02-S03).
+
+## When not to use
+
+| Situation                                   | Use instead                                |
+| ------------------------------------------- | ------------------------------------------ |
+| One choice from several                     | Radio group                                |
+| An action that happens at once              | Button                                     |
+| A single on or off that applies immediately | A switch: not built, see "What is missing" |
+| Many options in a long list                 | Select or a list with search               |
+
+## Anatomy
+
+| Part                       | Required    | Notes                                |
+| -------------------------- | ----------- | ------------------------------------ |
+| Row (`label[ui-checkbox]`) | yes         | The click target; 32px high          |
+| Input                      | yes         | Native checkbox, 20px, accent colour |
+| Label text                 | yes         | Next to the input, inside the row    |
+| Group legend               | for a group | A `<fieldset>` with a `<legend>`     |
+
+## Variants
+
+There is one look. A group of checkboxes sits in a `<fieldset>` with a legend.
+
+| Variant | Choose it when | Source |
+| ------- | -------------- | ------ |
+| default | All checkboxes | D21    |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '420px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                                                  | Source |
+| -------- | ----------------------------------------------------------------------------- | ------ |
+| Default  | Unchecked: the platform box in the accent colour                              | D21    |
+| Hover    | Row background turns `surface-muted`                                          | D8     |
+| Focus    | 3px `focus` ring around the row                                               | D6     |
+| Pressed  | Platform behaviour                                                            | n/a    |
+| Disabled | 50% opacity, `not-allowed` cursor, reason as text                             | D9     |
+| Loading  | Not applicable                                                                | n/a    |
+| Selected | Checked: filled box with a tick                                               | D21    |
+| Error    | Not applicable here: put the error on the group (`ui-field` or a legend hint) | D22    |
+
+**Disabled:** the row is dimmed and the reason is written next to it. Source: Q-A.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                        | Source                 |
+| ------------- | ----------------------------------------------------------- | ---------------------- |
+| Keyboard      | Tab focuses; Space toggles                                  | WAI-ARIA APG: Checkbox |
+| Focus order   | Visual order; one tab stop per checkbox                     | WCAG 2.4.3             |
+| Role and name | Native checkbox named by its row text; a group has a legend | WCAG 1.3.1, 4.1.2      |
+| Screen reader | Announces "TypeScript, checkbox, checked"                   | native                 |
+| Colour        | State is also the tick, not only colour                     | WCAG 1.4.1             |
+| Target size   | The whole row, at least 32px high                           | WCAG 2.5.8             |
+
+## Content
+
+| Topic            | Rule                                                      | Source    |
+| ---------------- | --------------------------------------------------------- | --------- |
+| Label            | A short noun or statement: "TypeScript"; positive wording | proposal  |
+| Length           | Up to about 60 characters; longer text wraps              | proposal  |
+| Group legend     | A question or noun: "Stack tags"                          | task rule |
+| Longer languages | Wraps; the box stays aligned to the first line            | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '180px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                       | Source     |
+| ------- | ---------------------------------------------- | ---------- |
+| 320 px  | One per line; the whole row stays tappable     | WCAG 2.5.8 |
+| 768 px  | One per line; a long group may use two columns | proposal   |
+| 1440 px | Same as 768                                    | proposal   |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '320px' }} />
+</Unstyled>
+
+## API
+
+| Input  | Type | Default | Description                                                                                                         |
+| ------ | ---- | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| (none) |      |         | `label[ui-checkbox]` only styles the row. The input keeps `checked`, `disabled`, `name`, `value` and forms bindings |
+
+Selector: `label[ui-checkbox]`. The input must be a direct child of the label.
+
+## Code
+
+Minimal:
+
+```html
+<label ui-checkbox><input type="checkbox" /> TypeScript</label>
+```
+
+In DevMentor:
+
+```html
+<fieldset class="m-0 border-0 p-0">
+  <legend class="mb-group text-label">Stack tags</legend>
+  <label ui-checkbox
+    ><input type="checkbox" name="tag" value="ts" /> TypeScript</label
+  >
+  <label ui-checkbox
+    ><input type="checkbox" name="tag" value="react" /> React</label
+  >
+</fieldset>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- Checkboxes for independent choices. Source: WAI-ARIA APG.
+- The whole row is clickable. Source: WCAG 2.5.8.
+- A disabled option says why in text. Source: Q-A.
+
+## Related
+
+- [Radio group](?path=/docs/primitives-radio-group--docs): one choice
+- [Select](?path=/docs/primitives-select--docs): long lists
+- Patterns: list with filters
+
+## Interaction test
+
+The story `ToggleByClickAndKeyboard` runs in the test script (`npm run test-storybook`): click and Space toggle the checkbox.
