@@ -11,11 +11,11 @@ describe('AvatarComponent', () => {
 
     expect(host.getAttribute('aria-label')).toBe('Ada Lovelace');
     expect(circle.textContent?.trim()).toBe('AL');
-    expect(circle.className).toContain('size-14');
+    expect(circle.className).toContain('size-avatar-md');
 
     fixture.componentRef.setInput('size', 'lg');
     await fixture.whenStable();
 
-    expect(circle.className).toContain('size-20');
+    expect(circle.className).toContain('size-avatar-lg');
   });
 });

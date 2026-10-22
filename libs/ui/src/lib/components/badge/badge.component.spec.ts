@@ -9,7 +9,7 @@ describe('BadgeComponent', () => {
       'span',
     ) as HTMLElement;
 
-    expect(badge.className).toContain('bg-neutral-100');
+    expect(badge.className).toContain('bg-surface-muted');
 
     fixture.componentRef.setInput('tone', 'success');
     await fixture.whenStable();

@@ -4,7 +4,7 @@ import { PageHeaderComponent } from './page-header.component';
 
 const meta: Meta<PageHeaderComponent> = {
   decorators: [moduleMetadata({ imports: [ButtonComponent] })],
-  title: 'UI/Page header',
+  title: 'Primitives/Page header',
   component: PageHeaderComponent,
   render: (args) => ({
     props: args,

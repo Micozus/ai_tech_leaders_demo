@@ -10,21 +10,21 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   selector: 'ui-field',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="mb-4 last:mb-0">
+    <div class="mb-groups last:mb-0">
       <label
-        class="mb-1.5 block text-xs font-bold text-neutral-700"
+        class="mb-group block text-label text-ink"
         [attr.for]="controlId()"
         >{{ label() }}</label
       >
       <ng-content />
       @if (hint(); as text) {
-        <p class="mt-1 text-xs text-muted" [id]="controlId() + '-hint'">
+        <p class="mt-group text-meta text-muted" [id]="controlId() + '-hint'">
           {{ text }}
         </p>
       }
       @if (error(); as text) {
         <p
-          class="mt-1.5 text-xs text-danger"
+          class="mt-group text-meta text-danger"
           role="alert"
           [id]="controlId() + '-error'"
         >

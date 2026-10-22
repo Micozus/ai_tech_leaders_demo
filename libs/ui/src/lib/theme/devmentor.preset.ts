@@ -24,11 +24,11 @@ export const DEVMENTOR_PRESET = definePreset(Aura, {
   primitive: {
     borderRadius: {
       none: '0',
-      xs: 'var(--radius-sm)',
-      sm: 'var(--radius-sm)',
-      md: 'var(--radius-md)',
-      lg: 'var(--radius-lg)',
-      xl: 'var(--radius-xl)',
+      xs: 'var(--radius-control)',
+      sm: 'var(--radius-control)',
+      md: 'var(--radius-control)',
+      lg: 'var(--radius-panel)',
+      xl: 'var(--radius-overlay)',
     },
   },
 });

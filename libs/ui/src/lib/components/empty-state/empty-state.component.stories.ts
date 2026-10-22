@@ -4,7 +4,7 @@ import { EmptyStateComponent } from './empty-state.component';
 
 const meta: Meta<EmptyStateComponent> = {
   decorators: [moduleMetadata({ imports: [ButtonComponent] })],
-  title: 'UI/Empty state',
+  title: 'Primitives/Empty state',
   component: EmptyStateComponent,
   render: (args) => ({
     props: args,

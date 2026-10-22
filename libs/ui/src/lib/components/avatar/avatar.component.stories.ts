@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { AvatarComponent } from './avatar.component';
 
 const meta: Meta<AvatarComponent> = {
-  title: 'UI/Avatar',
+  title: 'Primitives/Avatar',
   component: AvatarComponent,
   args: { name: 'Ada Lovelace', size: 'md' },
   argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] } },

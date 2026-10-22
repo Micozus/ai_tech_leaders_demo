@@ -6,13 +6,13 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section
-      class="rounded-lg border border-dashed border-neutral-300 bg-surface px-6 py-14 text-center"
+      class="rounded-panel border border-dashed border-border-control bg-surface px-panel-roomy py-section text-center"
     >
-      <h3 class="mb-1.5 text-lg font-bold tracking-tight">{{ heading() }}</h3>
+      <h3 class="mb-group text-section-title">{{ heading() }}</h3>
       @if (description(); as text) {
-        <p class="mb-4 text-sm text-muted">{{ text }}</p>
+        <p class="mb-groups text-body text-muted">{{ text }}</p>
       }
-      <div class="flex flex-wrap justify-center gap-2"><ng-content /></div>
+      <div class="flex flex-wrap justify-center gap-group"><ng-content /></div>
     </section>
   `,
 })

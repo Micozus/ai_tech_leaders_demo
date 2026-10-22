@@ -1,0 +1,24 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Icons" />
+
+# Icons
+
+Icons come from **PrimeIcons** (the `pi pi-*` font, self-hosted, MIT). They support text; they do not replace it.
+
+## Rules
+
+| Rule                                                                                         | Source               |
+| -------------------------------------------------------------------------------------------- | -------------------- |
+| Use an icon only from the list below. A new icon is added here first.                        | Contributing rules   |
+| Never an emoji instead of an icon; never sparkles as a symbol of AI.                         | A01                  |
+| No camera or phone icons in session screens: sessions are text.                              | A05, N01             |
+| An icon next to text is decorative: `aria-hidden="true"`.                                    | WAI-ARIA, WCAG 1.1.1 |
+| An icon-only button has an accessible name (`aria-label`) and a tooltip with the same words. | WCAG 4.1.2, 1.1.1    |
+| Sizes: 16px beside body text, 19px beside a section title. Targets stay at least 24px.       | WCAG 2.5.8, proposal |
+| Status icons always sit next to a word.                                                      | WCAG 1.4.1           |
+
+<Unstyled>
+  <Canvas of={Blocks.Icons} />
+</Unstyled>

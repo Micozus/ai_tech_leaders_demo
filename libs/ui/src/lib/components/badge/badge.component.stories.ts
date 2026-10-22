@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { BadgeComponent } from './badge.component';
 
 const meta: Meta<BadgeComponent> = {
-  title: 'UI/Badge',
+  title: 'Primitives/Badge',
   component: BadgeComponent,
   render: (args) => ({
     props: args,

@@ -1,12 +1,13 @@
 export type AvatarSize = 'sm' | 'md' | 'lg';
 
+/** P11 (referencje.md): flat fill, no gradient (A01). */
 export const AVATAR_BASE_CLASSES =
-  'inline-grid shrink-0 place-items-center bg-linear-to-br from-accent-200 to-mint-300 font-extrabold text-neutral-900';
+  'inline-grid shrink-0 place-items-center rounded-control border border-solid border-line bg-surface-muted font-extrabold text-ink';
 
 export const AVATAR_SIZE_CLASSES: Record<AvatarSize, string> = {
-  sm: 'size-10 rounded-md text-xs',
-  md: 'size-14 rounded-lg text-lg',
-  lg: 'size-20 rounded-xl text-2xl',
+  sm: 'size-avatar-sm text-label',
+  md: 'size-avatar-md text-section-title',
+  lg: 'size-avatar-lg text-page-title',
 };
 
 export const MAX_INITIALS = 2;

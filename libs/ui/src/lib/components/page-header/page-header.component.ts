@@ -5,17 +5,19 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   selector: 'ui-page-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <header class="mb-6 flex flex-wrap items-end justify-between gap-5">
+    <header
+      class="mb-panel-roomy flex flex-wrap items-end justify-between gap-panel-roomy"
+    >
       <div>
         @if (eyebrow(); as text) {
-          <p class="text-xs font-bold tracking-tight text-accent">{{ text }}</p>
+          <p class="text-label text-accent">{{ text }}</p>
         }
-        <h1 class="text-xl font-extrabold tracking-tighter">{{ heading() }}</h1>
+        <h1 class="text-page-title">{{ heading() }}</h1>
         @if (description(); as text) {
-          <p class="mt-2 text-sm text-muted">{{ text }}</p>
+          <p class="mt-group text-body text-muted">{{ text }}</p>
         }
       </div>
-      <div class="flex flex-wrap items-center gap-2"><ng-content /></div>
+      <div class="flex flex-wrap items-center gap-group"><ng-content /></div>
     </header>
   `,
 })

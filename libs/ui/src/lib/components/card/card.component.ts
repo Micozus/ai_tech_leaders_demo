@@ -5,9 +5,9 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section
-      class="card rounded-xl border border-solid border-line bg-surface p-6 shadow-card"
+      class="card rounded-panel border border-solid border-line bg-surface p-panel"
     >
-      <h2 class="card__heading mb-4 text-lg font-bold tracking-tight">
+      <h2 class="card__heading mb-groups text-section-title">
         {{ heading() }}
       </h2>
       <div class="card__body block"><ng-content /></div>

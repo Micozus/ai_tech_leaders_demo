@@ -10,7 +10,7 @@ describe('AlertComponent', () => {
     ) as HTMLElement;
 
     expect(box.getAttribute('role')).toBe('status');
-    expect(box.className).toContain('bg-accent-50');
+    expect(box.className).toContain('bg-surface-muted');
 
     fixture.componentRef.setInput('tone', 'danger');
     await fixture.whenStable();

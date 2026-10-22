@@ -1,0 +1,22 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Shape and depth" />
+
+# Shape and depth
+
+Shapes are small and plain. Separation comes from **lines**, not from shadow. There is one shadow, for things that float above the page.
+
+## Rules
+
+| Rule                                                                                             | Source                  |
+| ------------------------------------------------------------------------------------------------ | ----------------------- |
+| Corners: 6px for controls, 8px for panels, 12px for menus and popovers.                          | proposal (no reference) |
+| No pills: nothing is fully rounded, including badges and avatars.                                | A01                     |
+| Panels and rows are separated by a 1px `line`. Shadow is never the only separator.               | R01.1, A01              |
+| `shadow-overlay` is for dialogs, menus, popovers and toasts, always together with `border-line`. | A01, proposal           |
+| No glow, blur or glass behind or around anything.                                                | A01                     |
+
+<Unstyled>
+  <Canvas of={Blocks.ShapeDepth} />
+</Unstyled>

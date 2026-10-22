@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { AlertComponent } from './alert.component';
 
 const meta: Meta<AlertComponent> = {
-  title: 'UI/Alert',
+  title: 'Primitives/Alert',
   component: AlertComponent,
   render: (args) => ({
     props: args,

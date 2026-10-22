@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { CardComponent } from './card.component';
 
 const meta: Meta<CardComponent> = {
-  title: 'UI/Card',
+  title: 'Primitives/Card',
   component: CardComponent,
   render: (args) => ({
     props: args,

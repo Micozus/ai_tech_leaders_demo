@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/angular';
 import { FieldComponent } from './field.component';
 
 const meta: Meta<FieldComponent> = {
-  title: 'UI/Field',
+  title: 'Primitives/Field',
   component: FieldComponent,
   render: (args) => ({
     props: args,

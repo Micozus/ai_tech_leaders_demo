@@ -4,7 +4,7 @@ import { ButtonComponent } from './button.component';
 
 const meta: Meta<ButtonComponent> = {
   decorators: [moduleMetadata({ imports: [ButtonComponent] })],
-  title: 'UI/Button',
+  title: 'Primitives/Button',
   component: ButtonComponent,
   render: (args) => ({
     props: args,

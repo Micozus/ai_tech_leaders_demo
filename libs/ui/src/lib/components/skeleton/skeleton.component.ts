@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'aria-hidden': 'true' },
   template: `<span
-    class="block animate-pulse rounded-sm bg-neutral-200"
+    class="block animate-pulse rounded-control bg-line"
     [style.width]="width()"
     [style.height]="height()"
   ></span>`,

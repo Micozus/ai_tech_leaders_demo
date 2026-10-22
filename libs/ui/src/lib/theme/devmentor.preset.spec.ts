@@ -27,8 +27,8 @@ describe('DEVMENTOR_PRESET', () => {
 
   it('maps the radius scale onto the radius tokens', () => {
     expect(DEVMENTOR_PRESET.primitive?.borderRadius).toMatchObject({
-      md: 'var(--radius-md)',
-      xl: 'var(--radius-xl)',
+      md: 'var(--radius-control)',
+      xl: 'var(--radius-overlay)',
     });
   });
 

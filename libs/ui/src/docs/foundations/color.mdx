@@ -1,0 +1,35 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Color" />
+
+# Color
+
+Colour in DevMentor is **warm and quiet, with one clear place for the main action** on a screen area. Use the **roles** below in templates (`text-muted`, `bg-surface`, `border-line`), never the raw scale (`neutral-500`) and never a literal. Every role is a token in `libs/ui/src/lib/styles/tokens.css`.
+
+## Rules
+
+| Rule                                                                                                                   | Source              |
+| ---------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Greys are warm, not cold. The page is `canvas`, panels are `surface`.                                                  | R01.3               |
+| One main action per screen area uses `accent`; other actions are `quiet`, `soft` or `ghost`.                           | R01.3               |
+| Rows are separated by a 1px `line`, not by cards.                                                                      | R01.1               |
+| A field, select or checkbox has a `border-control` border (3:1). `line` is never the only boundary of a control.       | WCAG 1.4.11         |
+| No gradients, glass, blur or glow. Violet as a decoration is out.                                                      | A01                 |
+| Colour is never the only carrier of meaning: status always has a word or an icon next to it.                           | WCAG 1.4.1          |
+| Warning text uses `warning` (amber 800). `amber-600` is for icons only (4.38:1 on white).                              | WCAG 1.4.3          |
+| The accent value (violet, `accent-600`) is **provisional**: the question "is solid violet allowed under A01?" is open. | referencje.md, Luki |
+
+## Roles
+
+<Unstyled>
+  <Canvas of={Blocks.ColorRoles} />
+</Unstyled>
+
+## Contrast
+
+<Unstyled>
+  <Canvas of={Blocks.ContrastTable} />
+</Unstyled>
+
+Any pair below 4.5:1 for text or 3:1 for interface elements is marked **Fail** and has a rule above. The "Row line" pair fails on purpose: it is decorative and exempt (WCAG 1.4.11 covers only elements needed to understand the interface).

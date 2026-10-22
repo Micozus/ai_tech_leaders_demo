@@ -1,0 +1,31 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Spacing and layout" />
+
+# Spacing and layout
+
+Spacing expresses **relation**: closer means more related. Pick the token by the relation, not by the number. The base unit is 4px; every token below is a multiple.
+
+## Rules
+
+| Rule                                                                                       | Source                        |
+| ------------------------------------------------------------------------------------------ | ----------------------------- |
+| Dense in lists and data (rows, filters), roomy in sessions and forms.                      | P10, R01.1 vs R02.1           |
+| Within a group 8px, between groups 16px, inside a roomy panel 24px, between sections 48px. | R01.1, proposal for the scale |
+| A list row is about 46px tall (12px vertical padding, 14px text) and sits on a 1px line.   | R01.1                         |
+| Controls are at least 24px in both directions; ours are 40px (32px in dense lists).        | WCAG 2.5.8                    |
+| Panels are not nested: a panel inside a panel is a sign to split the screen.               | A01                           |
+| Nothing scrolls sideways at 320px.                                                         | WCAG 1.4.10                   |
+
+## Relations
+
+<Unstyled>
+  <Canvas of={Blocks.Spacing} />
+</Unstyled>
+
+## Layout
+
+<Unstyled>
+  <Canvas of={Blocks.Layout} />
+</Unstyled>

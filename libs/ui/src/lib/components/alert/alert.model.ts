@@ -1,10 +1,10 @@
 export type AlertTone = 'info' | 'success' | 'danger';
 
 export const ALERT_BASE_CLASSES =
-  'rounded-md border border-solid px-4 py-3 text-xs leading-relaxed';
+  'rounded-panel border border-solid px-groups py-3 text-body';
 
 export const ALERT_TONE_CLASSES: Record<AlertTone, string> = {
-  info: 'border-accent-200 bg-accent-50 text-accent-800',
-  success: 'border-green-200 bg-success-tint text-green-800',
-  danger: 'border-red-200 bg-danger-tint text-danger',
+  info: 'border-line bg-surface-muted text-ink',
+  success: 'border-success bg-success-tint text-success',
+  danger: 'border-danger-border bg-danger-tint text-danger',
 };

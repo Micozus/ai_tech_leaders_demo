@@ -38,7 +38,7 @@ describe('ButtonComponent', () => {
     const { button, root } = await render();
 
     expect(button.className).toContain('bg-accent');
-    expect(button.className).toContain('px-4');
+    expect(button.className).toContain('h-control-md');
     expect(button.className).not.toContain('w-full');
     expect(button.getAttribute('aria-busy')).toBeNull();
     expect(button.querySelector('ui-spinner')).toBeNull();
@@ -53,7 +53,7 @@ describe('ButtonComponent', () => {
     await fixture.whenStable();
 
     expect(button.className).toContain('text-danger');
-    expect(button.className).toContain('px-3');
+    expect(button.className).toContain('h-control-sm');
     expect(button.className).toContain('w-full');
   });
 

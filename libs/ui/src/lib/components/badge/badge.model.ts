@@ -1,12 +1,13 @@
 export type BadgeTone = 'neutral' | 'accent' | 'success' | 'warning' | 'danger';
 
+/** A1 (referencje.md): no pills; the badge uses radius-control. */
 export const BADGE_BASE_CLASSES =
-  'inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs whitespace-nowrap';
+  'inline-flex items-center gap-1 rounded-control border border-solid px-2 py-1 text-label whitespace-nowrap';
 
 export const BADGE_TONE_CLASSES: Record<BadgeTone, string> = {
-  neutral: 'bg-neutral-100 text-neutral-600',
-  accent: 'bg-accent-100 text-accent-800',
-  success: 'bg-success-tint text-green-800',
-  warning: 'bg-warning-tint text-amber-800',
-  danger: 'bg-red-100 text-red-800',
+  neutral: 'border-line bg-surface-muted text-muted',
+  accent: 'border-transparent bg-accent-tint text-accent-strong',
+  success: 'border-transparent bg-success-tint text-success',
+  warning: 'border-transparent bg-warning-tint text-warning',
+  danger: 'border-transparent bg-danger-tint text-danger',
 };
