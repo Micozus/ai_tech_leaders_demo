@@ -1,0 +1,150 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './popover.component.stories';
+
+<Meta of={Stories} />
+
+# Popover
+
+A small panel of optional background opened by a button. Built on PrimeNG, themed by the DevMentor preset.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '320px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A popover offers extra explanation without leaving the page, for people who want it.
+
+## When to use
+
+- "How booking works": the two-hour rule and the 24-hour cancellation window (R09, R14).
+- A short definition of a term.
+- Background that the person does not need to finish the task.
+
+## When not to use
+
+| Situation                           | Use instead      |
+| ----------------------------------- | ---------------- |
+| Information needed to decide or act | Text on the page |
+| A short hint on an icon button      | Tooltip          |
+| A decision or a task                | Dialog           |
+| An error or a warning               | Alert            |
+
+## Anatomy
+
+| Part    | Required | Notes                                                        |
+| ------- | -------- | ------------------------------------------------------------ |
+| Trigger | yes      | A ghost button with a visible label                          |
+| Panel   | yes      | `radius-overlay`, 1px `line`, `shadow-overlay`, 16px padding |
+| Content | yes      | A few sentences                                              |
+
+## Variants
+
+One popover.
+
+| Variant | Choose it when          | Source |
+| ------- | ----------------------- | ------ |
+| default | All optional background | D3     |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '320px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                         | Source |
+| -------- | ---------------------------------------------------- | ------ |
+| Closed   | The trigger button                                   | n/a    |
+| Open     | The panel next to the trigger                        | D3, D7 |
+| Focus    | The ring shows on the trigger and on controls inside | D6     |
+| Disabled | Not applicable                                       | n/a    |
+| Loading  | Not applicable                                       | n/a    |
+| Error    | Not applicable                                       | n/a    |
+
+**Disabled:** a popover trigger is not disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                               | Source                           |
+| ------------- | ---------------------------------------------------------------------------------- | -------------------------------- |
+| Keyboard      | Enter or Space opens; Esc closes; Tab moves through the content                    | WAI-ARIA APG: Dialog (non-modal) |
+| Focus order   | The panel follows the trigger in the order                                         | WCAG 2.4.3                       |
+| Role and name | Trigger `aria-haspopup="dialog"`; panel `role="dialog"` named by the trigger label | WCAG 4.1.2                       |
+| Screen reader | Announces the label, then the content                                              | WAI-ARIA                         |
+| Dismissal     | Esc or a click outside closes it; hover is not required                            | WCAG 1.4.13                      |
+| Target size   | The trigger is 40px high                                                           | WCAG 2.5.8                       |
+
+## Content
+
+| Topic            | Rule                                       | Source    |
+| ---------------- | ------------------------------------------ | --------- |
+| Trigger label    | What it explains: "How booking works"      | task rule |
+| Content          | At most three short sentences              | proposal  |
+| Never            | The only place for something needed to act | task rule |
+| Longer languages | The panel wraps within its max width       | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '360px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                            | Source      |
+| ------- | ----------------------------------- | ----------- |
+| 320 px  | The panel stays inside the viewport | WCAG 1.4.10 |
+| 768 px  | Opens next to the trigger           | proposal    |
+| 1440 px | Same                                | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '320px' }} />
+</Unstyled>
+
+## API
+
+| Input    | Type     | Default  | Description                     |
+| -------- | -------- | -------- | ------------------------------- |
+| label    | `string` | required | Trigger text and the panel name |
+| appendTo | `string` | `body`   | Where the panel renders         |
+
+Selector: `ui-popover`. The panel content is projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-popover label="How booking works"><p class="text-body">…</p></ui-popover>
+```
+
+In DevMentor:
+
+```html
+<ui-popover label="How booking works">
+  <p class="max-w-measure text-body">
+    A slot must start at least two hours after it is booked. Free cancellation
+    ends 24 hours before the session.
+  </p>
+</ui-popover>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- Only optional background lives in a popover. Source: task rule.
+- Closes with Esc and a click outside; hover is not required. Source: WCAG 1.4.13.
+- Never an error or a decision. Source: task rule.
+
+## Related
+
+- [Tooltip](?path=/docs/primitives-tooltip--docs): a short hint on a control
+- [Dialog](?path=/docs/primitives-dialog--docs): a task that must be settled
+
+## Interaction test
+
+The story `OpensAndClosesWithEscape` runs in the test script (`npm run test-storybook`): the popover opens from its button and closes with Esc.

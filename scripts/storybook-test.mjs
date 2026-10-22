@@ -84,7 +84,7 @@ const HOOK = () => {
 async function runAxe(page) {
   for (let attempt = 0; ; attempt += 1) {
     try {
-      return await getViolations(page, '#storybook-root', {
+      return await getViolations(page, 'body', {
         runOnly: { type: 'tag', values: WCAG_TAGS },
       });
     } catch (error) {

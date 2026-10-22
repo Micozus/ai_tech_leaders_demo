@@ -1,5 +1,9 @@
 import type { Preview } from '@storybook/angular';
+import { applicationConfig } from '@storybook/angular';
+import { providePrimeNG } from 'primeng/config';
 import { create } from 'storybook/theming';
+import { DEVMENTOR_PRESET } from '../src/lib/theme/devmentor.preset';
+import { provideToast } from '../src/lib/services/toast/toast.service';
 
 // Docs pages use the product fonts (no colours here: see tokens.css).
 const DOCS_THEME = create({
@@ -10,6 +14,19 @@ const DOCS_THEME = create({
 });
 
 const preview: Preview = {
+  decorators: [
+    applicationConfig({
+      providers: [
+        providePrimeNG({
+          theme: {
+            preset: DEVMENTOR_PRESET,
+            options: { darkModeSelector: 'none' },
+          },
+        }),
+        provideToast(),
+      ],
+    }),
+  ],
   parameters: {
     // Accessibility violations fail the story (run by `npm run test-storybook`).
     a11y: { test: 'error' },

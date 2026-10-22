@@ -1,18 +1,18 @@
 # POSTEP — DevMentor design system
 
-Last updated: 2026-10-22 · Current stage: **2 (base components) — batches 1 and 2 done; waiting for "dalej" before batch 3**
+Last updated: 2026-10-22 · Current stage: **2 done (batch 3 included); stage 3 in progress. The requester said to continue without stopping (2026-10-22), so stage gates are skipped; decisions that are the requester's are logged as proposals**
 Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/docs`). Branch `feat/design-tokens-and-base-components` (PR #51, open, not merged). Nothing is pushed by this work.
 
 ## Stages
 
-| Stage                                   | Status                    |
-| --------------------------------------- | ------------------------- |
-| 0 Inventory and plan                    | done, approved            |
-| 1 Foundations                           | done                      |
-| 2 Base components                       | batches 1 and 2 of 3 done |
-| 3 Product components, patterns, screens | not started               |
-| 4 Teaching pages                        | not started               |
-| 5 Verification and report               | not started               |
+| Stage                                   | Status           |
+| --------------------------------------- | ---------------- |
+| 0 Inventory and plan                    | done, approved   |
+| 1 Foundations                           | done             |
+| 2 Base components                       | done (3 batches) |
+| 3 Product components, patterns, screens | not started      |
+| 4 Teaching pages                        | not started      |
+| 5 Verification and report               | not started      |
 
 ## Approved decisions
 
@@ -86,6 +86,13 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 - `npm run lint` pass · `npm run test:coverage` 100% (ui 107/107 statements, 12/12 branches) · `npx nx build shell` pass · `npx nx build-storybook ui` pass · `npm run tokens:lint` clean.
 - `npm run test-storybook`: 80 of 80 stories pass render, `play` and axe. Earlier runs caught real defects that were fixed: loading button at reduced opacity failed contrast; ghost hover and danger pressed failed contrast; a select keyboard test that cannot work with synthetic events was removed.
 - Browser: the seven docs pages at 1440 and 320 px: tables render as tables (no raw pipes), no horizontal page scroll at 320.
+
+### Batch 3 (done)
+
+- Dialog, confirm dialog, menu, popover, tooltip (`uiTooltip`), tabs, toast (+ `ToastService`, `provideToast`), all on PrimeNG, themed by the extended `DEVMENTOR_PRESET`: warm surface scale (D24), 3px focus ring, 50% disabled, overlay and modal shapes, `scrim` backdrop, tooltip, tabs, toast without blur.
+- Storybook gets PrimeNG through a global `applicationConfig` decorator; story tests run axe on the whole body so overlays are checked.
+- 167 of 167 stories pass render, `play` and axe; lint, 100% coverage (ui 205/205 statements, 27/27 branches), shell build and `tokens:lint` pass.
+- Notes: the confirm dialog moves focus to the way-out button when shown (no `autofocus`, lint forbids it); `ResizeObserver` is stubbed in the lib's test setup (jsdom); `ToastService` has no error tone by design.
 
 ## Next step
 

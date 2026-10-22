@@ -1,0 +1,169 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './confirm-dialog.component.stories';
+
+<Meta of={Stories} />
+
+# Confirm dialog
+
+A dialog that asks before something that cannot be undone. It names the object, offers the way out first and says what the confirming button does.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '500px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A confirm dialog prevents a costly slip: cancelling a booking, declining a note, removing a slot.
+
+## When to use
+
+- Cancel a booking, especially inside 24 hours when the fee is forfeited (E03-S05, R09).
+- Decline a note, which sends it back to the mentor (E04-S04).
+- Any action that cannot be undone or costs money.
+
+## When not to use
+
+| Situation                    | Use instead                                    |
+| ---------------------------- | ---------------------------------------------- |
+| An action that can be undone | Act, then confirm with a toast, and offer undo |
+| A harmless confirmation      | Nothing                                        |
+| A choice between two options | Radio group or two buttons                     |
+| Anything that needs a form   | Dialog or a page                               |
+
+## Anatomy
+
+| Part              | Required | Notes                                                 |
+| ----------------- | -------- | ----------------------------------------------------- |
+| Heading           | yes      | The question: "Cancel this booking?"                  |
+| Object            | yes      | The name of what is affected, in bold                 |
+| Consequence       | no       | What will happen, in `muted` text                     |
+| Way out           | yes      | The first button; takes focus; "Keep booking"         |
+| Confirming button | yes      | A verb phrase in the danger variant: "Cancel booking" |
+
+## Variants
+
+The confirming button is `danger` by default.
+
+| Variant | Choose it when                                                     | Source   |
+| ------- | ------------------------------------------------------------------ | -------- |
+| danger  | Destructive or costly (default)                                    | R09, D12 |
+| primary | A consequential but not destructive decision: set `confirmVariant` | proposal |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '500px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                                                        | Source     |
+| -------- | ----------------------------------------------------------------------------------- | ---------- |
+| Closed   | Not rendered                                                                        | n/a        |
+| Open     | As the dialog; the way out has focus                                                | D12        |
+| Focus    | The way out takes focus on open so a stray Enter does not destroy                   | WCAG 3.3.4 |
+| Disabled | Not applicable                                                                      | n/a        |
+| Loading  | Set the confirming action in progress by closing and showing the result on the page | proposal   |
+| Error    | Show the failure in an alert on the page after closing                              | proposal   |
+
+**Disabled:** the dialog is not disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                    | Source                     |
+| ------------- | --------------------------------------------------------------------------------------- | -------------------------- |
+| Keyboard      | Esc or the way-out button cancels; Tab cycles; Enter on the focused button activates it | WAI-ARIA APG: Alert Dialog |
+| Focus order   | The way out is first and focused                                                        | WCAG 3.3.4                 |
+| Role and name | `role="dialog"`, named by the heading                                                   | WCAG 4.1.2                 |
+| Screen reader | Reads the heading, the object, the consequence, then the buttons                        | WAI-ARIA                   |
+| Target size   | Both buttons are 40px high                                                              | WCAG 2.5.8                 |
+| Colour        | The destructive action also says it in words                                            | WCAG 1.4.1                 |
+
+## Content
+
+| Topic             | Rule                                                                     | Source    |
+| ----------------- | ------------------------------------------------------------------------ | --------- |
+| Heading           | The question with the verb: "Cancel this booking?"                       | task rule |
+| Object            | Name it exactly: "Architecture review with Ada Lovelace, Thursday 14:00" | task rule |
+| Confirming button | The action, not "OK" or "Yes": "Cancel booking"                          | task rule |
+| Way out           | What happens if they stay: "Keep booking"                                | task rule |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '560px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                     | Source      |
+| ------- | -------------------------------------------- | ----------- |
+| 320 px  | Fills the width; buttons wrap, way out first | WCAG 1.4.10 |
+| 768 px  | 32rem wide                                   | proposal    |
+| 1440 px | Same                                         | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '560px' }} />
+</Unstyled>
+
+## API
+
+| Input                 | Type                | Default   | Description                          |
+| --------------------- | ------------------- | --------- | ------------------------------------ |
+| heading               | `string`            | required  | The question                         |
+| objectName            | `string`            | required  | Name of the affected object          |
+| confirmLabel          | `string`            | required  | Verb phrase on the confirming button |
+| description           | `string`            | `""`      | The consequence                      |
+| cancelLabel           | `string`            | `Keep it` | Text of the way-out button           |
+| confirmVariant        | `ButtonVariant`     | `danger`  | Variant of the confirming button     |
+| open                  | `boolean` (two-way) | `false`   | Shows or hides                       |
+| confirmed / cancelled | `output`            |           | Emitted before the dialog closes     |
+
+Selector: `ui-confirm-dialog`.
+
+## Code
+
+Minimal:
+
+```html
+<ui-confirm-dialog
+  heading="Cancel this booking?"
+  objectName="Architecture review, Thursday 14:00"
+  confirmLabel="Cancel booking"
+  [(open)]="open"
+  (confirmed)="cancel()"
+/>
+```
+
+In DevMentor:
+
+```html
+<ui-confirm-dialog
+  heading="Cancel this booking?"
+  objectName="Architecture review with Ada Lovelace, Thursday 14:00"
+  description="You are inside the 24 hours before the session, so the fee is not refunded."
+  confirmLabel="Cancel booking"
+  cancelLabel="Keep booking"
+  [(open)]="open"
+  (confirmed)="cancelBooking()"
+/>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '460px' }} />
+</Unstyled>
+
+- The question names the object. Source: task rule.
+- The way out is easy to find and takes focus. Source: task rule, WCAG 3.3.4.
+- The confirming button is a verb phrase, never "OK". Source: task rule.
+
+## Related
+
+- [Dialog](?path=/docs/primitives-dialog--docs): the base
+- [Button](?path=/docs/primitives-button--docs): danger variant
+- Patterns: destructive confirmation
+
+## Interaction test
+
+The story `CancelTakesFocusAndConfirmEmits` runs in the test script (`npm run test-storybook`): the way out takes focus, and the confirming button emits and closes.

@@ -1,0 +1,156 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './tabs.component.stories';
+
+<Meta of={Stories} />
+
+# Tabs
+
+A row of tabs that switches between views of the same page. Built on PrimeNG, themed by the DevMentor preset.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '260px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Tabs let a person move between a few parallel views without leaving the page or losing their place.
+
+## When to use
+
+- Upcoming and past sessions on a mentee home (E03-S04).
+- Sections of a settings page that share one heading.
+- Two to five parallel views.
+
+## When not to use
+
+| Situation                            | Use instead                                                  |
+| ------------------------------------ | ------------------------------------------------------------ |
+| Steps in a flow (pick, pay, confirm) | A stepper or separate pages: steps are ordered, tabs are not |
+| Views with their own address         | Pages with navigation links                                  |
+| Many views                           | A select or a list                                           |
+| Filtering a list                     | Checkboxes                                                   |
+
+## Anatomy
+
+| Part     | Required | Notes                                                                |
+| -------- | -------- | -------------------------------------------------------------------- |
+| Tab list | yes      | Tabs with 1px bottom line; the active tab has a 2px accent underline |
+| Tab      | yes      | A label, 40px high, bold                                             |
+| Panel    | yes      | The content of the selected tab                                      |
+
+## Variants
+
+One look.
+
+| Variant | Choose it when | Source |
+| ------- | -------------- | ------ |
+| default | All tab sets   | D18    |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '300px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State           | What changes                                              | Source   |
+| --------------- | --------------------------------------------------------- | -------- |
+| Default         | Muted label, no underline                                 | D18      |
+| Hover           | Label turns `ink`                                         | D8       |
+| Focus           | 3px ring on the tab (inside the list)                     | D6       |
+| Selected        | Accent label with a 2px underline, `aria-selected="true"` | D18      |
+| Disabled        | Not used                                                  | n/a      |
+| Loading / Error | Show a skeleton or an error state inside the panel        | proposal |
+
+**Disabled:** do not disable tabs; remove one that does not apply.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                | Source             |
+| ------------- | ----------------------------------------------------------------------------------- | ------------------ |
+| Keyboard      | Tab enters the tab list; Arrow Left and Right move and select; Tab enters the panel | WAI-ARIA APG: Tabs |
+| Focus order   | One tab stop for the list, then the panel                                           | WCAG 2.4.3         |
+| Role and name | `tablist`, `tab` with `aria-selected`, `tabpanel` labelled by its tab               | WCAG 4.1.2         |
+| Screen reader | Announces "Past, tab, 2 of 2, selected"                                             | WAI-ARIA           |
+| Colour        | The selected tab also has an underline and `aria-selected`                          | WCAG 1.4.1         |
+| Target size   | Tabs are 40px high                                                                  | WCAG 2.5.8         |
+
+## Content
+
+| Topic            | Rule                                                     | Source    |
+| ---------------- | -------------------------------------------------------- | --------- |
+| Label            | A noun: "Upcoming", "Past"                               | task rule |
+| Length           | One or two words; long labels wrap                       | proposal  |
+| Count            | Three to five tabs                                       | proposal  |
+| Longer languages | The list scrolls sideways inside itself at narrow widths | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '320px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                              | Source      |
+| ------- | ----------------------------------------------------- | ----------- |
+| 320 px  | The tab list scrolls inside itself; the page does not | WCAG 1.4.10 |
+| 768 px  | All tabs visible                                      | proposal    |
+| 1440 px | Same                                                  | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '260px' }} />
+</Unstyled>
+
+## API
+
+| Input              | Type               | Default   | Description             |
+| ------------------ | ------------------ | --------- | ----------------------- |
+| value              | `string` (two-way) | first tab | The selected tab        |
+| ui-tab-panel value | `string`           | required  | Identifier of the panel |
+| ui-tab-panel label | `string`           | required  | Text of the tab         |
+
+Selectors: `ui-tabs` and `ui-tab-panel` (children). Panel content is projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-tabs>
+  <ui-tab-panel value="upcoming" label="Upcoming">…</ui-tab-panel>
+  <ui-tab-panel value="past" label="Past">…</ui-tab-panel>
+</ui-tabs>
+```
+
+In DevMentor:
+
+```html
+<ui-tabs [(value)]="view">
+  <ui-tab-panel value="upcoming" label="Upcoming"
+    ><!-- upcoming session rows --></ui-tab-panel
+  >
+  <ui-tab-panel value="past" label="Past"
+    ><!-- past sessions and written answers --></ui-tab-panel
+  >
+</ui-tabs>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- Tabs are parallel views of one page. Source: WAI-ARIA APG.
+- Steps of a flow are not tabs. Source: proposal.
+- Two to five tabs. Source: proposal.
+
+## Related
+
+- [Radio group](?path=/docs/primitives-radio-group--docs): choosing one value
+- Patterns: booking flow (steps, not tabs)
+
+## Interaction test
+
+The story `SwitchesWithClickAndArrowKeys` runs in the test script (`npm run test-storybook`): click selects a tab and the Arrow key moves focus between tabs.
