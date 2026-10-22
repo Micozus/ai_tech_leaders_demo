@@ -9,6 +9,7 @@ export * from './lib/components/button/button.model';
 export * from './lib/components/card/card.component';
 export * from './lib/components/checkbox/checkbox.component';
 export * from './lib/components/empty-state/empty-state.component';
+export * from './lib/components/error-state/error-state.component';
 export * from './lib/components/field/field.component';
 export * from './lib/components/link/link.component';
 export * from './lib/components/page-header/page-header.component';

@@ -24,3 +24,8 @@ Spec: none new; the plan is `libs/ui/POSTEP.md`.
 - Added button states (pressed), link, text field, textarea, select, checkbox, radio group; docs MDX generated from structured content (13 sections each); stories with frozen states; specs.
 - Checks: lint pass; `test:coverage` 100% (ui 107/107, 12/12); build shell pass; `tokens:lint` clean; `test-storybook` 80/80 after fixing three real contrast and test defects the runner found; frozen-state computed styles equal real hover and focus; docs pages checked at 1440 and 320 px.
 - Not done: PrimeNG-based components (batch 3), preset surface scale (D24).
+
+## Stage 2, batch 2 (same day)
+- Field (aria-describedby sync, optional mark, error icon), card (density, heading level), badge, avatar, alert (icons, heading), skeleton, empty state, error state (new); docs pages generated from structured content; stories with matrices, do and don't, play tests; specs.
+- Checks: lint pass; `test:coverage` 100% (ui 134/134, 22/22); build shell pass; `tokens:lint` clean; `test-storybook` 125/125; 15 docs pages at 1440 and 320 px.
+- Next: batch 3 with PrimeNG (dialog, confirm dialog, menu, popover, tooltip, tabs, toast).

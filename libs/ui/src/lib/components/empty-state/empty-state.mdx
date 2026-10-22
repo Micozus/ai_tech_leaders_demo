@@ -1,0 +1,151 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './empty-state.component.stories';
+
+<Meta of={Stories} />
+
+# Empty state
+
+The block that says why a list or a page is empty and offers the next step. There are two different empty states.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '300px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+An empty state turns "nothing here" into a reason and a next step.
+
+## When to use
+
+- "Nothing yet": no sessions, no slots, no invitations (E02-S03, E03-S04). Action: create or go.
+- "Nothing for these filters": no mentors match the stack tags (E03-S01). Action: clear filters. Source: task rule (list pattern).
+- A first visit to a screen that fills up with use.
+
+## When not to use
+
+| Situation                  | Use instead                           |
+| -------------------------- | ------------------------------------- |
+| The content failed to load | Error state                           |
+| Content is loading         | Skeleton                              |
+| The person has no access   | Error state with the reason (E01-S03) |
+
+## Anatomy
+
+| Part        | Required | Notes                   |
+| ----------- | -------- | ----------------------- |
+| Heading     | yes      | What is empty           |
+| Description | no       | Why it is empty         |
+| Actions     | no       | The next step, a button |
+
+## Variants
+
+The component is one block; the two empty states differ in content, not in look.
+
+| Variant             | Choose it when                                                | Source    |
+| ------------------- | ------------------------------------------------------------- | --------- |
+| nothing yet         | Heading names the thing, description explains, action creates | task rule |
+| nothing for filters | Heading says no results for the filters, action clears them   | task rule |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '600px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                                     | Source |
+| ----------------------- | ------------------------------------------------ | ------ |
+| Default                 | Dashed 1px border, `surface` fill, centered text | D17    |
+| Hover / Focus / Pressed | Belong to the action button                      | n/a    |
+| Disabled                | Not applicable                                   | n/a    |
+| Loading                 | Not applicable; show a skeleton first            | n/a    |
+| Selected                | Not applicable                                   | n/a    |
+| Error                   | Use the error state                              | n/a    |
+
+**Disabled:** the empty state is not disabled; its action may be, with the reason in text.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                           | Source     |
+| ------------- | ---------------------------------------------- | ---------- |
+| Keyboard      | Tab reaches the action button                  | WAI-ARIA   |
+| Focus order   | The action follows the text                    | WCAG 2.4.3 |
+| Role and name | A `section` with a heading (`h3`)              | WCAG 1.3.1 |
+| Screen reader | Reads the heading, the reason, then the button | WAI-ARIA   |
+| Colour        | No colour meaning                              | WCAG 1.4.1 |
+| Target size   | The action is a standard 40px button           | WCAG 2.5.8 |
+
+## Content
+
+| Topic            | Rule                                                                 | Source    |
+| ---------------- | -------------------------------------------------------------------- | --------- |
+| Heading          | Name the empty thing: "No sessions yet"                              | task rule |
+| Description      | Why and what next: "Book a mentor to get your first written answer." | task rule |
+| Action           | A verb and an object: "Find a mentor", "Clear filters"               | task rule |
+| Longer languages | Wraps; the action grows with its label                               | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '400px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                | Source      |
+| ------- | --------------------------------------- | ----------- |
+| 320 px  | Full width; the action can be `block`   | WCAG 1.4.10 |
+| 768 px  | Up to the measure                       | proposal    |
+| 1440 px | Does not stretch past the content width | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '300px' }} />
+</Unstyled>
+
+## API
+
+| Input       | Type     | Default  | Description     |
+| ----------- | -------- | -------- | --------------- |
+| heading     | `string` | required | What is empty   |
+| description | `string` | `""`     | Why it is empty |
+
+Selector: `ui-empty-state`. Actions are projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-empty-state heading="No sessions yet" />
+```
+
+In DevMentor:
+
+```html
+<ui-empty-state
+  heading="No mentors for these filters"
+  description="Remove a stack tag to see more mentors."
+>
+  <button ui-button variant="quiet">Clear filters</button>
+</ui-empty-state>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '460px' }} />
+</Unstyled>
+
+- Say why it is empty and give the next step. Source: task rule.
+- Two empty states, two texts: nothing yet, and nothing for the filters. Source: task rule.
+- No illustration or emoji. Source: A01.
+
+## Related
+
+- [Error state](?path=/docs/primitives-error-state--docs): the load failed
+- [Skeleton](?path=/docs/primitives-skeleton--docs): the load is in progress
+- Patterns: list with filters
+
+## Interaction test
+
+The story `NextStepIsReachable` runs in the test script (`npm run test-storybook`): the heading is present and Tab reaches the next step.

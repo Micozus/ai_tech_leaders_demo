@@ -1,0 +1,152 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './error-state.component.stories';
+
+<Meta of={Stories} />
+
+# Error state
+
+The block that replaces content that failed to load: what happened and what to do.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '300px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+An error state keeps the person from being stuck: it says what failed and offers the way forward.
+
+## When to use
+
+- A list or a page that did not load: "Sessions did not load" with "Try again".
+- A page that does not exist or has no access (E01-S03): "This page does not exist or you cannot open it".
+- Any region whose data came back with an error.
+
+## When not to use
+
+| Situation                    | Use instead                                              |
+| ---------------------------- | -------------------------------------------------------- |
+| An error in one field        | Field error                                              |
+| An error about a form submit | Alert above the form                                     |
+| A message that may disappear | Not allowed: an error that needs action is never a toast |
+| Content that is merely empty | Empty state                                              |
+
+## Anatomy
+
+| Part        | Required | Notes                           |
+| ----------- | -------- | ------------------------------- |
+| Icon        | yes      | Decorative; repeats the tone    |
+| Heading     | yes      | What happened                   |
+| Description | no       | What to do or what was not lost |
+| Actions     | no       | Usually a retry button          |
+
+## Variants
+
+One block.
+
+| Variant | Choose it when    | Source    |
+| ------- | ----------------- | --------- |
+| default | Any failed region | task rule |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '620px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                                            | Source   |
+| ----------------------- | ------------------------------------------------------- | -------- |
+| Default                 | Danger border and tint, icon, heading and text in `ink` | D22      |
+| Hover / Focus / Pressed | Belong to the action button                             | n/a      |
+| Disabled                | Not applicable                                          | n/a      |
+| Loading                 | While retrying, the retry button shows `loading`        | proposal |
+| Selected                | Not applicable                                          | n/a      |
+| Error                   | This is the error state                                 | n/a      |
+
+**Disabled:** the error state is not disabled; the retry button may be `loading`.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                | Source     |
+| ------------- | --------------------------------------------------- | ---------- |
+| Keyboard      | Tab reaches the action                              | WAI-ARIA   |
+| Focus order   | The action follows the text                         | WCAG 2.4.3 |
+| Role and name | `role="alert"`: announced when it appears           | WCAG 4.1.3 |
+| Screen reader | Reads the heading, the description, then the button | WAI-ARIA   |
+| Colour        | The icon and the words carry the meaning            | WCAG 1.4.1 |
+| Contrast      | Text is `ink` on the danger tint (more than 15:1)   | WCAG 1.4.3 |
+
+## Content
+
+| Topic            | Rule                                                                      | Source     |
+| ---------------- | ------------------------------------------------------------------------- | ---------- |
+| Heading          | What failed: "Sessions did not load"                                      | task rule  |
+| Description      | What to do, and what was not lost: "Check your connection and try again." | WCAG 3.3.3 |
+| Action           | "Try again", or a link home                                               | task rule  |
+| Longer languages | Wraps; the action grows with its label                                    | proposal   |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '420px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                | Source      |
+| ------- | --------------------------------------- | ----------- |
+| 320 px  | Full width; the retry can be `block`    | WCAG 1.4.10 |
+| 768 px  | Up to the measure                       | proposal    |
+| 1440 px | Does not stretch past the content width | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '320px' }} />
+</Unstyled>
+
+## API
+
+| Input       | Type     | Default  | Description |
+| ----------- | -------- | -------- | ----------- |
+| heading     | `string` | required | What failed |
+| description | `string` | `""`     | What to do  |
+
+Selector: `ui-error-state`. Actions are projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-error-state heading="Sessions did not load" />
+```
+
+In DevMentor:
+
+```html
+<ui-error-state
+  heading="Sessions did not load"
+  description="Check your connection and try again."
+>
+  <button ui-button (click)="reload()">Try again</button>
+</ui-error-state>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '460px' }} />
+</Unstyled>
+
+- Say what happened and offer the next step. Source: WCAG 3.3.3.
+- An error that needs action is never a toast. Source: task rule.
+- The error replaces the failed content in place. Source: proposal.
+
+## Related
+
+- [Alert](?path=/docs/primitives-alert--docs): errors about a form
+- [Empty state](?path=/docs/primitives-empty-state--docs): nothing to show, not a failure
+- Patterns: detail view (no access), list with filters
+
+## Interaction test
+
+The story `RetryByKeyboard` runs in the test script (`npm run test-storybook`): the error is announced as an alert and the retry works with the keyboard.

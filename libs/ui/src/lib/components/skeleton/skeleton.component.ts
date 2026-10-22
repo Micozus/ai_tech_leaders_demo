@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-/** Loading placeholder; the shimmer is a Tailwind `animate-pulse`. */
+/**
+ * Loading placeholder that pulses (decision Q-B) and is static under reduced motion. It is
+ * hidden from assistive technology: the region that loads carries `aria-busy` and a status text.
+ */
 @Component({
   selector: 'ui-skeleton',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { 'aria-hidden': 'true' },
   template: `<span
-    class="block animate-pulse rounded-control bg-line"
+    class="block animate-pulse rounded-control bg-line motion-reduce:animate-none"
     [style.width]="width()"
     [style.height]="height()"
   ></span>`,

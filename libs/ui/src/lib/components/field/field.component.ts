@@ -1,21 +1,29 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  effect,
+  inject,
+  input,
+} from '@angular/core';
 
 /**
- * Label, hint and error around one projected control. The control keeps its own `id`;
- * pass the same value as `controlId` so the label targets it. The error is announced
- * (`role="alert"`); the control should reference them through `aria-describedby`
- * using the ids `<controlId>-hint` and `<controlId>-error`.
+ * Label, hint and error around one projected control. Pass the control's `id` as `controlId`:
+ * the label targets it, and `aria-describedby` on the control is kept in sync with the hint
+ * (`<controlId>-hint`) and the error (`<controlId>-error`, announced with `role="alert"`).
+ * Only optional fields are marked, with "Optional" in the muted colour (decision Q-C).
  */
 @Component({
   selector: 'ui-field',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="mb-groups last:mb-0">
-      <label
-        class="mb-group block text-label text-ink"
-        [attr.for]="controlId()"
-        >{{ label() }}</label
-      >
+      <label class="mb-group block text-label text-ink" [attr.for]="controlId()"
+        >{{ label() }}
+        @if (optional()) {
+          <span class="font-normal text-muted">(Optional)</span>
+        }
+      </label>
       <ng-content />
       @if (hint(); as text) {
         <p class="mt-group text-meta text-muted" [id]="controlId() + '-hint'">
@@ -24,11 +32,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       }
       @if (error(); as text) {
         <p
-          class="mt-group text-meta text-danger"
+          class="mt-group flex items-start gap-group text-meta text-danger"
           role="alert"
           [id]="controlId() + '-error'"
         >
-          {{ text }}
+          <i
+            class="pi pi-exclamation-triangle mt-0.5 shrink-0"
+            aria-hidden="true"
+          ></i>
+          <span>{{ text }}</span>
         </p>
       }
     </div>
@@ -39,4 +51,24 @@ export class FieldComponent {
   readonly controlId = input.required<string>();
   readonly hint = input('');
   readonly error = input('');
+  readonly optional = input(false);
+
+  readonly #host = inject<ElementRef<HTMLElement>>(ElementRef);
+
+  constructor() {
+    effect(() => {
+      const id = this.controlId();
+      const ids = [
+        this.hint() ? `${id}-hint` : '',
+        this.error() ? `${id}-error` : '',
+      ].filter(Boolean);
+      const control = Array.from(
+        this.#host.nativeElement.querySelectorAll('[id]'),
+      ).find((element) => element.id === id);
+      if (!control) return;
+      if (ids.length > 0)
+        control.setAttribute('aria-describedby', ids.join(' '));
+      else control.removeAttribute('aria-describedby');
+    });
+  }
 }

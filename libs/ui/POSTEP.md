@@ -1,25 +1,25 @@
 # POSTEP — DevMentor design system
 
-Last updated: 2026-10-22 · Current stage: **2 (base components) — batch 1 done (button, link, text field, textarea, select, checkbox, radio group); waiting for "dalej" before batch 2**
+Last updated: 2026-10-22 · Current stage: **2 (base components) — batches 1 and 2 done; waiting for "dalej" before batch 3**
 Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/docs`). Branch `feat/design-tokens-and-base-components` (PR #51, open, not merged). Nothing is pushed by this work.
 
 ## Stages
 
-| Stage                                   | Status            |
-| --------------------------------------- | ----------------- |
-| 0 Inventory and plan                    | done, approved    |
-| 1 Foundations                           | done              |
-| 2 Base components                       | batch 1 of 3 done |
-| 3 Product components, patterns, screens | not started       |
-| 4 Teaching pages                        | not started       |
-| 5 Verification and report               | not started       |
+| Stage                                   | Status                    |
+| --------------------------------------- | ------------------------- |
+| 0 Inventory and plan                    | done, approved            |
+| 1 Foundations                           | done                      |
+| 2 Base components                       | batches 1 and 2 of 3 done |
+| 3 Product components, patterns, screens | not started               |
+| 4 Teaching pages                        | not started               |
+| 5 Verification and report               | not started               |
 
 ## Approved decisions
 
 - Base and location: PrimeNG 21 styled by our tokens, in `libs/ui` (no shadcn/Radix, no `packages/ui`). (2026-10-22)
 - Theme: light only. No theme switch; tests run once. (2026-10-22)
 - Icons: PrimeIcons. Font: Inter, self-hosted. (2026-10-22)
-- Stage 2 answers (2026-10-22): disabled = 50% opacity plus the reason as text beside it (D9); skeleton pulses, still during reduced motion (D19); only optional fields are marked, with "Optional" in `muted` (D22/Field); new token `scrim` (`inverse` at 40% via `color-mix`, no blur) for the dialog backdrop (D12).
+- Stage 2 answers (2026-10-22): disabled = 50% opacity plus the reason as text beside it (D9); skeleton pulses and is static under reduced motion (D19); only optional fields are marked, with "Optional" in `muted` (D22/Field); new token `scrim` (`inverse` at 40% via `color-mix`, no blur) for the dialog backdrop (D12).
 - Accent: solid violet is allowed (`accent-600`); A01 forbids violet gradients, not the colour. (2026-10-22)
 - Docs pages use Inter (docs theme sets fonts only, no colours). (2026-10-22)
 - Tokens: `lekcja-06/tokeny.md` approved in bulk (T1–T10). Source of decisions: `lekcja-06/referencje.md` (R01, R02, A01–A05, P1–P11 accepted). (2026-10-22)
@@ -73,6 +73,14 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 - **PrimeNG preset (D24 surface scale)** is deferred to batch 3, when the first PrimeNG component (dialog) appears.
 - **Docs tables** scroll inside themselves at 320 px (one CSS rule in `preview-head.html`); component pages themselves have a narrow-screen story.
 
+### Batch 2 (done, 2026-10-22)
+
+- **Components:** field (restyled: optional marking, error with icon and text, sets `aria-describedby` on the control itself), card (dense and roomy, heading level), status badge, avatar (flat, square), alert (icon per tone, optional heading), skeleton (pulse, static under reduced motion), empty state, error state (new).
+- Each has the 13-section page, the story set (Playground, variants, state matrix, long text, narrow screen, do and don't, interaction test), a unit spec at 100% coverage.
+- **Not given a 13-section page** (not in the planned minimal list): page header and spinner keep their autodocs stories. Add pages if a screen needs them.
+- **Checks:** lint pass · `test:coverage` 100% (ui 134/134 statements, 22/22 branches) · `nx build shell` pass · `tokens:lint` clean · `test-storybook` 125 of 125 stories pass render, `play` and axe · all 15 component docs pages checked at 1440 and 320 px (tables render, no raw pipes, no horizontal page scroll).
+- **Deviation:** the card heading is `role="heading"` with `aria-level` (a div), so the level can follow the page outline; a native `h2` to `h4` would need a template per level.
+
 ### Checks (batch 1)
 
 - `npm run lint` pass · `npm run test:coverage` 100% (ui 107/107 statements, 12/12 branches) · `npx nx build shell` pass · `npx nx build-storybook ui` pass · `npm run tokens:lint` clean.
@@ -81,7 +89,7 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 
 ## Next step
 
-After "dalej": batch 2 of stage 2 (field, card/panel, status badge, avatar, alert, skeleton, empty state, error state), then stop.
+After "dalej": batch 3 of stage 2 (dialog, confirm dialog, menu, popover, tooltip, tabs, toast) with the PrimeNG preset (D24 surface scale, shapes, scrim), then stop.
 
 ---
 
