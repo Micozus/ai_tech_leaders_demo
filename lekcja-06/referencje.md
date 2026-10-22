@@ -30,16 +30,16 @@ Uwaga o źródłach: brak zrzutów, linki nie zostały otwarte. Każda obserwacj
 
 ## Konflikty i rozstrzygnięcia
 
-| Konflikt               | Referencje                                                                    | Rozstrzygnięcie                                                                                             | Kto zdecydował                                                    |
-| ---------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Gęsto czy przestronnie | R01.1 (dużo informacji) vs R02.1, R02.4 (rozmowa w centrum, bez bałaganu)     | gęsto w listach i danych (R01), przestronnie w sesji i formularzach (R02) (P10)                             | zleceniodawczyni, 2026-10-22                                      |
-| Istniejący kod vs A01  | tokeny z prototypu w `libs/ui` (fioletowy akcent, gradient w awatarze) vs A01 | gradient w awatarze do usunięcia (P11). Kolor akcentu: **otwarte**, zależy od odpowiedzi na pytanie o kolor | gradient: zleceniodawczyni, 2026-10-22; akcent: nierozstrzygnięty |
+| Konflikt               | Referencje                                                                    | Rozstrzygnięcie                                                                                                                   | Kto zdecydował               |
+| ---------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Gęsto czy przestronnie | R01.1 (dużo informacji) vs R02.1, R02.4 (rozmowa w centrum, bez bałaganu)     | gęsto w listach i danych (R01), przestronnie w sesji i formularzach (R02) (P10)                                                   | zleceniodawczyni, 2026-10-22 |
+| Istniejący kod vs A01  | tokeny z prototypu w `libs/ui` (fioletowy akcent, gradient w awatarze) vs A01 | gradient w awatarze do usunięcia (P11). Fiolet jednolity jest dopuszczalny: A01 zakazuje fioletowego gradientu, nie samego koloru | zleceniodawczyni, 2026-10-22 |
 
 ## Luki
 
 Rodziny bez żadnej referencji:
 
-- **kolor**: jest tylko opis negatywny (R01.3); brak pozytywnego odniesienia i decyzji, czy fiolet bez gradientu jest dopuszczalny;
+- **kolor**: jest tylko opis negatywny (R01.3); brak pozytywnego odniesienia (decyzja o dopuszczalnym fiolecie jednolitym zapadła 2026-10-22);
 - **typografia tekstu i nagłówków**: jest tylko monospace (R01.2); brak kroju, rozmiarów, proporcji;
 - **ton wypowiedzi**: brak referencji (zdania, które produkt mówi i których nie mówi);
 - **ikony**, **kształt i głębia** (promienie, cienie): jest tylko cienka linia (R01.1);
@@ -49,7 +49,7 @@ Pytania bez odpowiedzi (z 2026-10-22):
 
 1. Zrzuty R01 i R02 (lub zgoda na otwarcie publicznej strony GitHuba).
 2. Co ma być najważniejsze na wierszu listy mentorów i na ekranie rezerwacji.
-3. Referencja koloru; czy jednolity fiolet jest dopuszczalny.
+3. Referencja koloru (czy jednolity fiolet jest dopuszczalny: **odpowiedziane, tak**, 2026-10-22).
 4. Referencja typografii i tonu.
 5. Przykład wyboru terminu i płatności, który się podoba lub nie.
 

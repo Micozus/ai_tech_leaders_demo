@@ -79,7 +79,7 @@ const ROLE_GROUPS: readonly RoleGroup[] = [
         token: '--color-accent',
         use: 'The main action of a screen area, links',
         avoid: 'Decoration, gradients (A01)',
-        source: 'R01.3 (provisional value)',
+        source: 'R01.3, A01 (solid violet confirmed)',
       },
       {
         token: '--color-accent-strong',

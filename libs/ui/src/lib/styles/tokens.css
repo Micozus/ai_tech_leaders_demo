@@ -29,7 +29,7 @@
   --color-neutral-800: #2a2825;
   --color-neutral-900: #1c1b19;
 
-  /* Accent scale. PROVISIONAL: violet vs A01 is an open question (referencje.md, Luki). */
+  /* Accent scale. Solid violet is allowed; A01 forbids violet gradients, not the colour (requester, 2026-10-22). */
   --color-accent-50: #f5f3ff;
   --color-accent-100: #f0edff;
   --color-accent-200: #e4dfff;
@@ -99,7 +99,7 @@
   --color-line: var(--color-neutral-200);
   --color-border-control: var(--color-neutral-400);
 
-  /* Action. R01.3: one clear place for the main action. Value PROVISIONAL (see accent scale). */
+  /* Action. R01.3: one clear place for the main action. Violet confirmed 2026-10-22 (solid only, A01). */
   --color-accent: var(--color-accent-600);
   --color-accent-strong: var(--color-accent-700);
   --color-accent-tint: var(--color-accent-100);

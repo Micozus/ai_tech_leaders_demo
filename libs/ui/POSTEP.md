@@ -19,15 +19,15 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 - Base and location: PrimeNG 21 styled by our tokens, in `libs/ui` (no shadcn/Radix, no `packages/ui`). (2026-10-22)
 - Theme: light only. No theme switch; tests run once. (2026-10-22)
 - Icons: PrimeIcons. Font: Inter, self-hosted. (2026-10-22)
+- Accent: solid violet is allowed (`accent-600`); A01 forbids violet gradients, not the colour. (2026-10-22)
+- Docs pages use Inter (docs theme sets fonts only, no colours). (2026-10-22)
 - Tokens: `lekcja-06/tokeny.md` approved in bulk (T1–T10). Source of decisions: `lekcja-06/referencje.md` (R01, R02, A01–A05, P1–P11 accepted). (2026-10-22)
 - Product UI language and documentation language: English.
 
 ## Open questions
 
-- **Accent colour:** is solid violet allowed under A01? Value `accent-600` is provisional.
-- **Type:** only Inter (provisional, no type reference). Tone of voice: no reference.
-- **No screenshots** for R01, R02: observations are paraphrases. Five questions in `referencje.md` (Luki) are unanswered: screenshots, hierarchy on the list row and booking screen, colour reference, type and tone reference, slot and payment references.
-- **Docs prose font:** Storybook's docs pages use Storybook's own text font, not Inter. Decide whether to theme it.
+- **No type reference and no tone-of-voice reference:** Inter and the type roles are proposals. The requester confirmed Inter and solid violet on 2026-10-22.
+- **No screenshots** for R01, R02: observations are paraphrases. Four questions in `referencje.md` (Luki) are unanswered: screenshots, hierarchy on the list row and booking screen, type and tone reference, slot and payment references. The colour question is answered (solid violet allowed; A01 forbids violet gradients).
 
 ## Done in stage 1
 
