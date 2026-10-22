@@ -90,6 +90,11 @@
   ); /* row hover, section background. R01.1, P10 */
   --color-inverse: var(--color-neutral-900);
   --color-on-inverse: var(--color-neutral-0);
+  --color-scrim: color-mix(
+    in srgb,
+    var(--color-inverse) 40%,
+    transparent
+  ); /* behind a dialog; no blur (A01). Decision Q-D, 2026-10-22 */
 
   /* Text. WCAG 1.4.3: every pair measured (Foundations → Color). */
   --color-ink: var(--color-neutral-900); /* R01.3 */

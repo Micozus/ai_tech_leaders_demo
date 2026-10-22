@@ -19,6 +19,7 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 - Base and location: PrimeNG 21 styled by our tokens, in `libs/ui` (no shadcn/Radix, no `packages/ui`). (2026-10-22)
 - Theme: light only. No theme switch; tests run once. (2026-10-22)
 - Icons: PrimeIcons. Font: Inter, self-hosted. (2026-10-22)
+- Stage 2 answers (2026-10-22): disabled = 50% opacity plus the reason as text beside it (D9); skeleton pulses, still during reduced motion (D19); only optional fields are marked, with "Optional" in `muted` (D22/Field); new token `scrim` (`inverse` at 40% via `color-mix`, no blur) for the dialog backdrop (D12).
 - Accent: solid violet is allowed (`accent-600`); A01 forbids violet gradients, not the colour. (2026-10-22)
 - Docs pages use Inter (docs theme sets fonts only, no colours). (2026-10-22)
 - Tokens: `lekcja-06/tokeny.md` approved in bulk (T1–T10). Source of decisions: `lekcja-06/referencje.md` (R01, R02, A01–A05, P1–P11 accepted). (2026-10-22)
@@ -58,7 +59,7 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 
 ## Stage 2 state (2026-10-22)
 
-- Measured the Aura defaults (`@primeuix/themes/aura`) and wrote the difference list D1–D24 with a decision source for each; shown to the requester, not yet approved. Open questions Q-A…Q-D asked. No component built yet.
+- Measured the Aura defaults (`@primeuix/themes/aura`) and wrote the difference list D1–D24 with a decision source for each. Q-A…Q-D answered (see Approved decisions). Explicit approval of D1–D24 as a whole is still to be confirmed with "dalej". No component built yet.
 - Proposed batches: 1 button, text field, textarea, select, checkbox, radio group · 2 field, card/panel, status badge, avatar, alert, skeleton, empty state, error state · 3 dialog, confirm dialog, menu, popover, tooltip, tabs, toast.
 
 ## Next step
