@@ -1,18 +1,18 @@
 # POSTEP — DevMentor design system
 
-Last updated: 2026-10-22 · Current stage: **1 (foundations) done — waiting for the requester's "dalej" before stage 2**
+Last updated: 2026-10-22 · Current stage: **2 (base components) — differences from the PrimeNG default proposed, awaiting approval before batch 1**
 Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/docs`). Branch `feat/design-tokens-and-base-components` (PR #51, open, not merged). Nothing is pushed by this work.
 
 ## Stages
 
-| Stage                                   | Status                 |
-| --------------------------------------- | ---------------------- |
-| 0 Inventory and plan                    | done, approved         |
-| 1 Foundations                           | done, awaiting "dalej" |
-| 2 Base components                       | not started            |
-| 3 Product components, patterns, screens | not started            |
-| 4 Teaching pages                        | not started            |
-| 5 Verification and report               | not started            |
+| Stage                                   | Status                                  |
+| --------------------------------------- | --------------------------------------- |
+| 0 Inventory and plan                    | done, approved                          |
+| 1 Foundations                           | done                                    |
+| 2 Base components                       | differences proposed, awaiting approval |
+| 3 Product components, patterns, screens | not started                             |
+| 4 Teaching pages                        | not started                             |
+| 5 Verification and report               | not started                             |
 
 ## Approved decisions
 
@@ -55,6 +55,11 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 - **Components:** the 9 existing components and `ui-card` were migrated to the new tokens now (the old tokens were removed), so the app keeps building. Their shape, density, states and full documentation are stage 2.
 - **Pre-existing app code:** `admin-page.component.ts` uses `text-slate-500`; not changed.
 - **`msw`** (API simulation) is not installed yet; it is added in stage 3 for the form pattern.
+
+## Stage 2 state (2026-10-22)
+
+- Measured the Aura defaults (`@primeuix/themes/aura`) and wrote the difference list D1–D24 with a decision source for each; shown to the requester, not yet approved. Open questions Q-A…Q-D asked. No component built yet.
+- Proposed batches: 1 button, text field, textarea, select, checkbox, radio group · 2 field, card/panel, status badge, avatar, alert, skeleton, empty state, error state · 3 dialog, confirm dialog, menu, popover, tooltip, tabs, toast.
 
 ## Next step
 
