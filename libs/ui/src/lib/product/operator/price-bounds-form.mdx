@@ -1,0 +1,92 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './price-bounds-form.component.stories';
+
+<Meta of={Stories} />
+
+# Price bounds form
+
+The operator sets the price bounds and the platform fee.
+
+Backlog: E05-S02 (#36), 1.1
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '900px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+R08 and R10: mentors price within operator bounds; the fee is configurable.
+
+## When to use
+
+- The operator settings screen.
+
+## When not to use
+
+| Situation         | Use instead |
+| ----------------- | ----------- |
+| A mentor's prices | Price form  |
+
+## Anatomy
+
+| Part        | Component          | Notes                                                         |
+| ----------- | ------------------ | ------------------------------------------------------------- |
+| Five fields | Field + Text field | Lowest and highest for 25 and 50 minutes, and the fee percent |
+| Save        | Button             | "Save bounds and fee"                                         |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+| State   | What the person sees                                  | Story                |
+| ------- | ----------------------------------------------------- | -------------------- |
+| Idle    | Empty                                                 | Playground           |
+| Invalid | Per-field errors; highest below lowest; fee above 100 | Validates Then Saves |
+
+## Behavior and accessibility
+
+| Topic  | Rule                 | Source     |
+| ------ | -------------------- | ---------- |
+| Errors | Linked and announced | WCAG 3.3.1 |
+| Input  | Decimal text input   | WCAG 1.3.5 |
+
+## Content
+
+| Topic  | Rule                                            | Source     |
+| ------ | ----------------------------------------------- | ---------- |
+| Errors | "The highest price cannot be below the lowest." | WCAG 3.3.3 |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '900px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '900px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type                       | Default | Description  |
+| --------------- | -------------------------- | ------- | ------------ |
+| saved           | `output<PriceBoundsInput>` |         | Valid values |
+
+## Code
+
+```html
+<ui-price-bounds-form (saved)="saveBounds($event)" />
+```
+
+## Related
+
+- [Price form](?path=/docs/product-e02-mentors-become-bookable-price-form--docs)
+
+## Interaction test
+
+`ValidatesThenSaves`: empty fields error; valid values are saved.

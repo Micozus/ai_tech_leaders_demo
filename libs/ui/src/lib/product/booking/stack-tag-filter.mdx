@@ -1,0 +1,101 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './stack-tag-filter.component.stories';
+
+<Meta of={Stories} />
+
+# Stack tag filter
+
+The only filter of the mentor list: the four stack tags.
+
+Backlog: E03-S01 (#25)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '420px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+R13: the list is filtered by stack tag; there is no search and no sort by score.
+
+## When to use
+
+- Beside the mentor list.
+
+## When not to use
+
+| Situation        | Use instead                               |
+| ---------------- | ----------------------------------------- |
+| Free-text search | Not built (R13)                           |
+| Sorting          | The list is ordered by availability (R13) |
+
+## Anatomy
+
+| Part           | Component                  | Notes                  |
+| -------------- | -------------------------- | ---------------------- |
+| Tags           | Checkboxes in a fieldset   | "Stack tags"           |
+| Count          | Status text                | "12 mentors"           |
+| Active filters | Badges with remove buttons | "Remove Python filter" |
+| Clear          | Ghost button               | "Clear filters"        |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+| State      | What the person sees                               | Story        |
+| ---------- | -------------------------------------------------- | ------------ |
+| No filter  | Count only                                         | Playground   |
+| Filters on | Badges and Clear filters                           | State Matrix |
+| No results | "0 mentors"; the list explains and offers to clear | No Results   |
+| One result | "1 mentor"                                         | One Result   |
+
+## Behavior and accessibility
+
+| Topic  | Rule                                                | Source     |
+| ------ | --------------------------------------------------- | ---------- |
+| Group  | A `fieldset` with a legend                          | WCAG 1.3.1 |
+| Count  | `role="status"`: announced politely when it changes | WCAG 4.1.3 |
+| Remove | Each remove button names the filter                 | WCAG 2.4.6 |
+
+## Content
+
+| Topic | Rule                                 | Source    |
+| ----- | ------------------------------------ | --------- |
+| Count | "1 mentor" or "N mentors"            | task rule |
+| Tags  | TypeScript, React, Python, AI agents | R16       |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '420px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '420px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type                   | Default       | Description      |
+| --------------- | ---------------------- | ------------- | ---------------- |
+| tags            | `StackTag[]`           | the four tags | Offered tags     |
+| resultCount     | `number`               | required      | How many results |
+| selected        | `StackTag[]` (two-way) | `[]`          | Active filters   |
+
+## Code
+
+```html
+<ui-stack-tag-filter [resultCount]="visible().length" [(selected)]="tags" />
+```
+
+## Related
+
+- [List with filters](?path=/docs/patterns-list-with-filters--docs)
+
+## Interaction test
+
+`FiltersAndClears`: choosing a tag shows its removable badge; Clear filters resets.

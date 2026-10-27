@@ -1,0 +1,69 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './slot-publication.stories';
+
+<Meta of={Stories} />
+
+# Slot publication
+
+The mentor publishes slots and sees them taken as they are booked.
+
+Backlog: E02-S03 (#22)
+
+## When to use
+
+- The mentor's availability.
+
+## Rules
+
+| Rule                                                     | Source     |
+| -------------------------------------------------------- | ---------- |
+| Each slot shows Free or Booked as a word                 | WCAG 1.4.1 |
+| Only a free slot can be unpublished                      | E02-S03    |
+| Publishing is confirmed with a short toast, not an alert | task rule  |
+| An empty list says why and offers to publish             | task rule  |
+
+## Components used
+
+- Slot publisher
+- Toast
+- Badge
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Published Slots List
+
+The list.
+
+<Unstyled>
+  <Canvas of={Stories.PublishedSlotsList} story={{ height: '700px' }} />
+</Unstyled>
+
+### Publishing Adds The Slot And Confirms In A Toast
+
+Publishing adds the slot and confirms in a toast.
+
+<Unstyled>
+  <Canvas
+    of={Stories.PublishingAddsTheSlotAndConfirmsInAToast}
+    story={{ height: '800px' }}
+  />
+</Unstyled>
+
+### Only A Free Slot Can Be Unpublished
+
+A booked slot has no Unpublish.
+
+<Unstyled>
+  <Canvas
+    of={Stories.OnlyAFreeSlotCanBeUnpublished}
+    story={{ height: '700px' }}
+  />
+</Unstyled>
+
+## What to avoid
+
+- Unpublishing a booked slot.
+- A modal for adding a slot.
+- A toast for an error that needs action.

@@ -1,0 +1,66 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './note-approval.stories';
+
+<Meta of={Stories} />
+
+# Note approval
+
+The mentor drafts, the mentee approves in full or declines with a comment.
+
+Backlog: E04-S03 (#33), E04-S04 (#34)
+
+## When to use
+
+- After a session, to keep a note both can find again.
+
+## Rules
+
+| Rule                                                                | Source       |
+| ------------------------------------------------------------------- | ------------ |
+| The mentor drafts; there is no co-editing                           | R12          |
+| The mentee approves the whole note or declines it with a comment    | R12          |
+| A decline needs a comment; the mentor sees it first when redrafting | R12          |
+| An approved note is kept privately by both; nothing is published    | N02, E04-S04 |
+
+## Components used
+
+- Note draft
+- Note approval
+- Alert
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Mentor Drafts
+
+The mentor drafts.
+
+<Unstyled>
+  <Canvas of={Stories.MentorDrafts} story={{ height: '700px' }} />
+</Unstyled>
+
+### Mentee Decides In Full
+
+The mentee approves; the note stays private.
+
+<Unstyled>
+  <Canvas of={Stories.MenteeDecidesInFull} story={{ height: '900px' }} />
+</Unstyled>
+
+### Declined Returns To The Mentor With The Comment
+
+A decline returns to the mentor with the comment.
+
+<Unstyled>
+  <Canvas
+    of={Stories.DeclinedReturnsToTheMentorWithTheComment}
+    story={{ height: '900px' }}
+  />
+</Unstyled>
+
+## What to avoid
+
+- Letting the mentee edit the note.
+- Publishing an approved note.
+- Declining without saying what to change.

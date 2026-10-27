@@ -1,0 +1,103 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './mentor-list-row.component.stories';
+
+<Meta of={Stories} />
+
+# Mentor list row
+
+One mentor in the list: name, stack tags, public work, lowest price, next free slot.
+
+Backlog: E03-S01 (#25)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '260px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+The mentee chooses from the mentor's work and tags, never from a score (N02, R13).
+
+## When to use
+
+- Rows of the mentor list, separated by a 1px line.
+
+## When not to use
+
+| Situation          | Use instead          |
+| ------------------ | -------------------- |
+| A rating or rank   | Not built (N02, A03) |
+| A full mentor page | Mentor detail        |
+
+## Anatomy
+
+| Part           | Component        | Notes                         |
+| -------------- | ---------------- | ----------------------------- |
+| Avatar         | Avatar (md)      | Initials                      |
+| Name           | Heading (h3)     | Full name                     |
+| Tags           | Badges (neutral) | Stack tags                    |
+| Public work    | Link (mono)      | The mentor's URL              |
+| Price and slot | Text             | "From €25.00", next free slot |
+| Action         | Button (small)   | "View mentor"                 |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '640px' }} />
+</Unstyled>
+
+| State          | What the person sees      | Story        |
+| -------------- | ------------------------- | ------------ |
+| Next free slot | Shown                     | Playground   |
+| No free slot   | "No free slots now"       | No Free Slot |
+| Several rows   | A list separated by lines | State Matrix |
+| Long text      | Name wraps, URL breaks    | Long Text    |
+
+## Behavior and accessibility
+
+| Topic     | Rule                              | Source     |
+| --------- | --------------------------------- | ---------- |
+| Structure | An `article` with an `h3`         | WCAG 1.3.1 |
+| Link      | The URL is the link text          | WCAG 2.4.4 |
+| No score  | No stars, counts or rank anywhere | N02        |
+
+## Content
+
+| Topic | Rule                                         | Source   |
+| ----- | -------------------------------------------- | -------- |
+| Price | "From €25.00": the lowest of the two lengths | R08      |
+| Slot  | "Next free slot: Thu 5 Nov, 14:00"           | R14      |
+| Never | "Top mentor", reviews, response time         | N02, A03 |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '260px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '260px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type             | Default  | Description   |
+| --------------- | ---------------- | -------- | ------------- |
+| mentor          | `MentorSummary`  | required | The mentor    |
+| view            | `output<string>` |          | The mentor id |
+
+## Code
+
+```html
+<ui-mentor-list-row [mentor]="m" (view)="open($event)" />
+```
+
+## Related
+
+- [List with filters](?path=/docs/patterns-list-with-filters--docs)
+
+## Interaction test
+
+`OpensTheMentor`: View mentor emits the mentor id.

@@ -1,0 +1,96 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './payment-status.component.stories';
+
+<Meta of={Stories} />
+
+# Payment status
+
+The result of paying: awaiting, processing, paid, failed.
+
+Backlog: E03-S03 (#27)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '300px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A booking is confirmed only after the payment provider confirms.
+
+## When to use
+
+- The payment step of the booking flow.
+
+## When not to use
+
+| Situation      | Use instead   |
+| -------------- | ------------- |
+| Mentor payouts | Payout status |
+
+## Anatomy
+
+| Part  | Component      | Notes                                  |
+| ----- | -------------- | -------------------------------------- |
+| Alert | Alert          | Info, success or danger with a heading |
+| Retry | Button (small) | "Try another card", failed only        |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+| State      | What the person sees                | Story      |
+| ---------- | ----------------------------------- | ---------- |
+| Awaiting   | Info: "Pay to confirm your booking" | Playground |
+| Processing | Info: "Waiting for your bank"       | Processing |
+| Paid       | Success: "Booking confirmed"        | Paid       |
+| Failed     | Danger alert with retry             | Failed     |
+
+## Behavior and accessibility
+
+| Topic        | Rule                                                  | Source     |
+| ------------ | ----------------------------------------------------- | ---------- |
+| Announcement | Failure is `role="alert"`, the others `role="status"` | WCAG 4.1.3 |
+| Words        | Each state is a heading, not a colour                 | WCAG 1.4.1 |
+
+## Content
+
+| Topic   | Rule                                                                                  | Source     |
+| ------- | ------------------------------------------------------------------------------------- | ---------- |
+| Failure | What happened and the next step: "Try another card; the slot is held for 10 minutes." | WCAG 3.3.3 |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '300px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '300px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type         | Default       | Description      |
+| --------------- | ------------ | ------------- | ---------------- | ------- | -------- | ------------- |
+| status          | `awaiting \\ | processing \\ | paid \\          | failed` | required | Payment state |
+| retry           | `output`     |               | Try another card |
+
+## Code
+
+```html
+<ui-payment-status [status]="payment()" (retry)="pay()" />
+```
+
+## Related
+
+- [Alert](?path=/docs/primitives-alert--docs)
+- [Booking flow](?path=/docs/patterns-booking-flow--docs)
+
+## Interaction test
+
+`RetriesWithAnotherCard`: a failed payment is an alert and the retry button emits.

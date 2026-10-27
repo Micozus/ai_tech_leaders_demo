@@ -1,0 +1,105 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './mentor-page-form.component.stories';
+
+<Meta of={Stories} />
+
+# Mentor page form
+
+The mentor page: a link to public work, a plain description and stack tags. No ratings.
+
+Backlog: E02-S02 (#21)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '900px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A mentor is chosen from their work and tags (N02), so this is what the page needs. It is the form pattern.
+
+## When to use
+
+- Creating and editing the mentor page.
+
+## When not to use
+
+| Situation                   | Use instead     |
+| --------------------------- | --------------- |
+| Prices                      | Price form      |
+| A rating or a profile score | Not built (N02) |
+
+## Anatomy
+
+| Part             | Component              | Notes                         |
+| ---------------- | ---------------------- | ----------------------------- |
+| Container        | Card (roomy)           | "Your mentor page"            |
+| Public-work link | Field + Text field     | Required, `https://`          |
+| About you        | Field + Textarea       | Optional, marked "(Optional)" |
+| Stack tags       | Fieldset of checkboxes | At least one                  |
+| Save             | Button                 | `loading` while saving        |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+| State                       | What the person sees                            | Story                                   |
+| --------------------------- | ----------------------------------------------- | --------------------------------------- |
+| Idle                        | Optional field marked, nothing invalid          | Playground                              |
+| Field error from the server | Error under the field, focus on it, values kept | Field Error                             |
+| Server error / offline      | Message above the form, values kept             | Server Error, Offline                   |
+| Submitting                  | Busy button, second submit blocked              | Submitting                              |
+| Saved                       | Success alert only after the server confirms    | Saves After Validation And Confirmation |
+
+## Behavior and accessibility
+
+| Topic      | Rule                                                               | Source       |
+| ---------- | ------------------------------------------------------------------ | ------------ |
+| Tags group | A `fieldset` with a legend; the error is linked to it              | WCAG 1.3.1   |
+| Errors     | After leaving a field and on submit; focus goes to the first error | Form pattern |
+| Keyboard   | All controls reachable; Space toggles tags                         | WAI-ARIA     |
+| Colour     | Errors have an icon and text                                       | WCAG 1.4.1   |
+
+## Content
+
+| Topic       | Rule                                                                       | Source     |
+| ----------- | -------------------------------------------------------------------------- | ---------- |
+| Link        | "Add a link to your public work." / "Use a link that starts with https://" | WCAG 3.3.3 |
+| Tags        | The four stacks of the beachhead                                           | R16        |
+| Description | Plain text, optional                                                       | D21        |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '900px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '900px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type                                | Default  | Description          |
+| --------------- | ----------------------------------- | -------- | -------------------- |
+| submitter       | `(value) => Promise<SubmitOutcome>` | required | Saves the page       |
+| saved           | `output`                            |          | The server confirmed |
+
+## Code
+
+```html
+<ui-mentor-page-form [submitter]="save" (saved)="showShareLink()" />
+```
+
+## Related
+
+- [Form pattern](?path=/docs/patterns-form--docs)
+- [Share link field](?path=/docs/product-e02-mentors-become-bookable-share-link-field--docs)
+
+## Interaction test
+
+`SavesAfterValidationAndConfirmation`: an empty save focuses the first field; a valid save shows success after the server confirms.

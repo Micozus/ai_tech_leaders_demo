@@ -1,6 +1,6 @@
 # POSTEP — DevMentor design system
 
-Last updated: 2026-10-22 · Current stage: **2 done (batch 3 included); stage 3 in progress. The requester said to continue without stopping (2026-10-22), so stage gates are skipped; decisions that are the requester's are logged as proposals**
+Last updated: 2026-10-22 · Current stage: **3 done in code (product components, patterns, screens); stage 4 (teaching pages) and 5 (verification, report) not started. Work was interrupted by a process restart on 2026-10-22 and recovered on 2026-10-27**
 Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/docs`). Branch `feat/design-tokens-and-base-components` (PR #51, open, not merged). Nothing is pushed by this work.
 
 ## Stages
@@ -10,7 +10,7 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 | 0 Inventory and plan                    | done, approved   |
 | 1 Foundations                           | done             |
 | 2 Base components                       | done (3 batches) |
-| 3 Product components, patterns, screens | not started      |
+| 3 Product components, patterns, screens | done (see below) |
 | 4 Teaching pages                        | not started      |
 | 5 Verification and report               | not started      |
 
@@ -93,6 +93,14 @@ Location: `libs/ui/` (Storybook in `libs/ui/.storybook`, docs in `libs/ui/src/do
 - Storybook gets PrimeNG through a global `applicationConfig` decorator; story tests run axe on the whole body so overlays are checked.
 - 167 of 167 stories pass render, `play` and axe; lint, 100% coverage (ui 205/205 statements, 27/27 branches), shell build and `tokens:lint` pass.
 - Notes: the confirm dialog moves focus to the way-out button when shown (no `autofocus`, lint forbids it); `ResizeObserver` is stubbed in the lib's test setup (jsdom); `ToastService` has no error tone by design.
+
+### Stage 3 (done, recovered 2026-10-27)
+
+- **Product components (25)** under `libs/ui/src/lib/product/` by epic E01–E05, each with a docs page, stories (data states, long text, narrow screen, interaction test) and a unit spec; `ui-async-region` added as the one place for loading, empty and error.
+- **Patterns (7)** under `libs/ui/src/patterns/`: form (idle, validation, waiting, field error, server error, offline, success), list with filters, detail view, destructive confirmation, booking flow, note approval, slot publication. API responses are simulated at the `fetch` boundary by `.storybook/blocks/api-mock.ts` (no `msw`: no new dependency).
+- **Screens (5 files)** under `libs/ui/src/screens/`: key screens per epic with their data states as separate stories.
+- **Checks:** lint pass · `test:coverage` 100% (ui 683/683 statements, 172/172 branches) · `tokens:lint` clean · `test-storybook` 425 of 425 stories pass render, `play` and axe.
+- **Not done:** the screen-to-state maps on the epic pages (stage 4), E00 and E06 epic pages, "Start here", "Components", "How to choose", "Usage and accessibility", "Content", "What to avoid", "What is missing", "Contributing", `docs/design-system.md` and the AGENTS.md reference, the agent test description, the final report. Pages were not viewed in a browser at 320/768/1440 px since batch 2.
 
 ## Next step
 

@@ -3,6 +3,7 @@
  * Runs every story as a test against the built Storybook (`npm run build-storybook` first):
  *   1. the story renders without an error and its `play` function (interaction test) passes,
  *   2. axe finds no accessibility violation in the story (WCAG 2.2 A and AA rules).
+ * `--filter <text>` runs only the stories whose title contains the text.
  * A story opts out of step 2 with `parameters.a11y.test = 'off'` and must say why in its docs.
  *
  * Why not @storybook/test-runner or the Vitest addon: the Vitest addon needs a Vite-based
@@ -129,8 +130,11 @@ async function runStory(browser, entry) {
 
 await new Promise((done) => server.listen(PORT, '127.0.0.1', done));
 const index = JSON.parse(readFileSync(join(ROOT, 'index.json'), 'utf8'));
+const filterIndex = process.argv.indexOf('--filter');
+const filter = filterIndex >= 0 ? process.argv[filterIndex + 1] : '';
 const stories = Object.values(index.entries).filter(
-  (e) => e.type === 'story' && e.tags?.includes('test'),
+  (e) =>
+    e.type === 'story' && e.tags?.includes('test') && e.title.includes(filter),
 );
 const browser = await chromium.launch();
 let failed = 0;

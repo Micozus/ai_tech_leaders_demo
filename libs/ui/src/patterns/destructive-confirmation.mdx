@@ -1,0 +1,75 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './destructive-confirmation.stories';
+
+<Meta of={Stories} />
+
+# Destructive confirmation
+
+Asking before something that cannot be undone. The example is cancelling a booking.
+
+Backlog: E03-S05 (#29)
+
+## When to use
+
+- Cancelling a booking, declining a note, removing a slot with consequences.
+
+## Rules
+
+| Rule                                                                  | Source                |
+| --------------------------------------------------------------------- | --------------------- |
+| The question names the object                                         | task rule             |
+| The way out is easy to find, comes first and takes focus              | task rule, WCAG 3.3.4 |
+| The confirming button names the action ("Cancel booking"), never "OK" | task rule             |
+| The consequence is written: "the fee is not refunded"                 | R09                   |
+| After the decision the page says what happened                        | WCAG 4.1.3            |
+
+## Components used
+
+- Session row
+- Confirm dialog
+- Cancellation notice
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Closed
+
+The list with Cancel booking.
+
+<Unstyled>
+  <Canvas of={Stories.Closed} story={{ height: '400px' }} />
+</Unstyled>
+
+### Asks Naming The Object
+
+The dialog names the booking; the way out has focus.
+
+<Unstyled>
+  <Canvas of={Stories.AsksNamingTheObject} story={{ height: '500px' }} />
+</Unstyled>
+
+### Keeping The Booking Changes Nothing
+
+Keeping the booking.
+
+<Unstyled>
+  <Canvas
+    of={Stories.KeepingTheBookingChangesNothing}
+    story={{ height: '500px' }}
+  />
+</Unstyled>
+
+### Confirming Names The Action
+
+Confirming cancels it.
+
+<Unstyled>
+  <Canvas of={Stories.ConfirmingNamesTheAction} story={{ height: '500px' }} />
+</Unstyled>
+
+## What to avoid
+
+- "Are you sure?" with "Yes" and "No".
+- A destructive button as the default focus.
+- Closing the dialog by clicking the backdrop and losing input.

@@ -1,0 +1,98 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './payout-status.component.stories';
+
+<Meta of={Stories} />
+
+# Payout status
+
+Whether the mentor can be paid through Stripe Connect.
+
+Backlog: E02-S05 (#24), 1.1
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '360px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A mentor must know why they are not yet paid and what to do.
+
+## When to use
+
+- The mentor home in 1.1 (D13).
+
+## When not to use
+
+| Situation               | Use instead    |
+| ----------------------- | -------------- |
+| The payment of a mentee | Payment status |
+
+## Anatomy
+
+| Part        | Component | Notes             |
+| ----------- | --------- | ----------------- |
+| Container   | Card      | "Payouts"         |
+| State       | Badge     | A word and a tone |
+| Explanation | Text      | What it means     |
+| Action      | Button    | The next step     |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '1100px' }} />
+</Unstyled>
+
+| State      | What the person sees               | Story      |
+| ---------- | ---------------------------------- | ---------- |
+| Not set up | Warning badge, "Set up payouts"    | Playground |
+| Pending    | Warning badge, "Continue setup"    | Pending    |
+| Enabled    | Success badge, quiet button        | Enabled    |
+| Restricted | Danger badge, "Fix payout details" | Restricted |
+
+## Behavior and accessibility
+
+| Topic  | Rule                                 | Source     |
+| ------ | ------------------------------------ | ---------- |
+| State  | A word in the badge, not colour only | WCAG 1.4.1 |
+| Action | A native button                      | WAI-ARIA   |
+
+## Content
+
+| Topic   | Rule                                                                     | Source    |
+| ------- | ------------------------------------------------------------------------ | --------- |
+| Labels  | Payouts not set up, Payouts pending, Payouts enabled, Payouts restricted | E02-S05   |
+| Actions | Verb phrases                                                             | task rule |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '360px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '360px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type            | Default    | Description                   |
+| --------------- | --------------- | ---------- | ----------------------------- | ----------- | -------- | ------------------ |
+| status          | `not-started \\ | pending \\ | enabled \\                    | restricted` | required | Payout setup state |
+| act             | `output`        |            | The person pressed the action |
+
+## Code
+
+```html
+<ui-payout-status [status]="payouts()" (act)="continueSetup()" />
+```
+
+## Related
+
+- [Badge](?path=/docs/primitives-badge--docs)
+
+## Interaction test
+
+`ContinuesSetup`: Continue setup emits the action.

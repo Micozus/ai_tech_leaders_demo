@@ -1,0 +1,92 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './invitation-batch-table.component.stories';
+
+<Meta of={Stories} />
+
+# Invitation batch table
+
+A batch of invitations and who published a slot.
+
+Backlog: E05-S01 (#35), 1.1
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '520px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+R17: invitations go out in batches of 20; fewer than 5 mentors publishing in two weeks stops further invitations.
+
+## When to use
+
+- The operator's invitations screen.
+
+## When not to use
+
+| Situation        | Use instead                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| Inviting someone | The operator does it by hand until the story ships (D19, R18) |
+
+## Anatomy
+
+| Part    | Component     | Notes                                        |
+| ------- | ------------- | -------------------------------------------- |
+| Caption | Table caption | "Invitation batch: N of 20 published a slot" |
+| Rows    | Table rows    | Email as row header, status badge            |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '1000px' }} />
+</Unstyled>
+
+| State      | What the person sees           | Story       |
+| ---------- | ------------------------------ | ----------- |
+| Ready      | Rows                           | Playground  |
+| Full batch | 20 rows                        | Full Batch  |
+| Loading    | Skeleton                       | Loading     |
+| Empty      | "No invitations in this batch" | Empty       |
+| Error      | Retry                          | Error State |
+
+## Behavior and accessibility
+
+| Topic  | Rule                                                   | Source     |
+| ------ | ------------------------------------------------------ | ---------- |
+| Table  | A real `table` with caption and column and row headers | WCAG 1.3.1 |
+| Status | A word in each badge                                   | WCAG 1.4.1 |
+
+## Content
+
+| Topic  | Rule                                            | Source |
+| ------ | ----------------------------------------------- | ------ |
+| Status | Invited, Accepted no slot yet, Published a slot | R17    |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '520px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '520px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type              | Default | Description      |
+| --------------- | ----------------- | ------- | ---------------- |
+| rows            | `InvitationRow[]` | `[]`    | Email and status |
+| state           | `AsyncState`      | `ready` | Data state       |
+
+## Code
+
+```html
+<ui-invitation-batch-table [rows]="rows()" [state]="state()" />
+```
+
+## Related
+
+- [Table pattern](?path=/docs/design-system-what-is-missing--docs)

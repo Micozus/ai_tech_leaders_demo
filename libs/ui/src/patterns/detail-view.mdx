@@ -1,0 +1,82 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './detail-view.stories';
+
+<Meta of={Stories} />
+
+# Detail view
+
+A page about one thing. The example is a mentor's page.
+
+Backlog: E02-S02, E03-S01
+
+## When to use
+
+- A page for one object: a mentor, a session.
+
+## Rules
+
+| Rule                                                                                                          | Source      |
+| ------------------------------------------------------------------------------------------------------------- | ----------- |
+| The most important information and the main action are visible without scrolling                              | task rule   |
+| A page that does not exist or is not the person's says so, with a way on; it does not reveal which of the two | E01-S03     |
+| Loading shows a skeleton and a status text                                                                    | task rule   |
+| Long text wraps; nothing scrolls sideways                                                                     | WCAG 1.4.10 |
+
+## Components used
+
+- Mentor detail
+- Avatar, Badge, Button, Card, Link
+- Access denied
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Ready
+
+The page.
+
+<Unstyled>
+  <Canvas of={Stories.Ready} story={{ height: '700px' }} />
+</Unstyled>
+
+### Main Action Is Visible Without Scrolling
+
+"Book a session" stays in the first screen even with a long description.
+
+<Unstyled>
+  <Canvas
+    of={Stories.MainActionIsVisibleWithoutScrolling}
+    story={{ height: '700px' }}
+  />
+</Unstyled>
+
+### Loading
+
+Loading.
+
+<Unstyled>
+  <Canvas of={Stories.Loading} story={{ height: '500px' }} />
+</Unstyled>
+
+### Does Not Exist Or No Access
+
+Not found or no access.
+
+<Unstyled>
+  <Canvas of={Stories.DoesNotExistOrNoAccess} story={{ height: '500px' }} />
+</Unstyled>
+
+### Long Texts
+
+Long names and URLs.
+
+<Unstyled>
+  <Canvas of={Stories.LongTexts} story={{ height: '700px' }} />
+</Unstyled>
+
+## What to avoid
+
+- A main action below the fold.
+- A "404" that tells whether the page exists or is someone else's.
+- A page with no heading.

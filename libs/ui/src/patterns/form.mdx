@@ -1,0 +1,109 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './form.stories';
+
+<Meta of={Stories} />
+
+# Form
+
+How every form in DevMentor behaves. The example is the mentor page form; the behaviour belongs to every form.
+
+Backlog: E01-S02 (#18), E02-S02 (#21), E02-S04 (#23), E05
+
+## When to use
+
+- Any screen where a person types and saves: sign-in, mentor page, prices, a note.
+
+## Rules
+
+| Rule                                                                                              | Source                |
+| ------------------------------------------------------------------------------------------------- | --------------------- |
+| A label is always visible; the placeholder is only an example                                     | task rule, WCAG 3.3.2 |
+| Only optional fields are marked, with "(Optional)"                                                | Q-C                   |
+| An error appears after the person leaves a field and again on submit                              | task rule             |
+| After a failed submit focus moves to the first field with an error                                | task rule, WCAG 3.3.1 |
+| What the person typed stays after a failure                                                       | task rule             |
+| A second submit is ignored while one is running                                                   | task rule             |
+| Success is shown only after the server confirms                                                   | task rule             |
+| An error says what to do next, not only what is wrong                                             | WCAG 3.3.3            |
+| Server errors come back as field errors, a server error, or no network, each with its own message | task rule             |
+
+## Components used
+
+- Field
+- Text field, Textarea, Select, Checkbox, Radio group
+- Button (`loading`)
+- Alert
+- `FormSubmitState` and `postJson` helpers
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Idle
+
+The idle form.
+
+<Unstyled>
+  <Canvas of={Stories.Idle} story={{ height: '900px' }} />
+</Unstyled>
+
+### Validation On Blur And Submit
+
+Validation after leaving a field and on submit, focus on the first error.
+
+<Unstyled>
+  <Canvas of={Stories.ValidationOnBlurAndSubmit} story={{ height: '900px' }} />
+</Unstyled>
+
+### Submitting Blocks A Second Submit
+
+Waiting for the server; a second submit is blocked.
+
+<Unstyled>
+  <Canvas
+    of={Stories.SubmittingBlocksASecondSubmit}
+    story={{ height: '900px' }}
+  />
+</Unstyled>
+
+### Field Error From The Server
+
+The server rejects one field; focus goes to it, the value stays.
+
+<Unstyled>
+  <Canvas of={Stories.FieldErrorFromTheServer} story={{ height: '900px' }} />
+</Unstyled>
+
+### Server Error Keeps The Data
+
+The server fails; the data stays.
+
+<Unstyled>
+  <Canvas of={Stories.ServerErrorKeepsTheData} story={{ height: '900px' }} />
+</Unstyled>
+
+### Offline Keeps The Data
+
+No network; the data stays.
+
+<Unstyled>
+  <Canvas of={Stories.OfflineKeepsTheData} story={{ height: '900px' }} />
+</Unstyled>
+
+### Success Only After The Server Confirms
+
+Success appears only after the response.
+
+<Unstyled>
+  <Canvas
+    of={Stories.SuccessOnlyAfterTheServerConfirms}
+    story={{ height: '900px' }}
+  />
+</Unstyled>
+
+## What to avoid
+
+- A placeholder in place of a label.
+- A success message before the server answers.
+- Clearing the form after an error.
+- A toast for an error that needs action.
