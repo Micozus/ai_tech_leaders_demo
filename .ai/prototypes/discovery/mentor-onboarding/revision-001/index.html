@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DevMentor — Discovery prototype: Mentor onboarding</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --bg: #ffffff;
+    --surface: #f3f3f3;
+    --border: #b3b3b3;
+    --error: #7a0000;
+    --error-bg: #fbeaea;
+    --muted: #595959;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  a { color: var(--fg); }
+  :focus-visible {
+    outline: 3px solid var(--fg);
+    outline-offset: 2px;
+  }
+  .banner {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  header.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  header.app-header .brand { font-weight: 700; }
+  header.app-header .status { font-size: 0.85rem; color: var(--muted); }
+  button, input[type="submit"] {
+    font: inherit;
+    cursor: pointer;
+  }
+  .btn {
+    display: inline-block;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .btn-secondary {
+    background: var(--bg);
+    color: var(--fg);
+    border: 1px solid var(--border);
+  }
+  .btn-link {
+    background: none;
+    border: none;
+    color: var(--fg);
+    text-decoration: underline;
+    padding: 0.25rem 0;
+  }
+  main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+  }
+  .screen { }
+  .screen[hidden] { display: none; }
+  fieldset {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem 1rem;
+  }
+  label { display: block; margin: 0.75rem 0 0.25rem; font-weight: 600; }
+  .hint { font-size: 0.85rem; color: var(--muted); margin: 0.1rem 0 0; }
+  input[type="text"], input[type="url"], input[type="email"], input[type="password"],
+  input[type="number"], input[type="date"], input[type="time"], textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font: inherit;
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .radio-group label { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; margin: 0.4rem 0; }
+  .error {
+    background: var(--error-bg);
+    border: 1px solid var(--error);
+    color: var(--error);
+    padding: 0.6rem 0.75rem;
+    border-radius: 4px;
+    margin: 0.75rem 0;
+  }
+  .error[hidden] { display: none; }
+  .actions { margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    background: var(--surface);
+  }
+  .slot-list { list-style: none; padding: 0; margin: 0.75rem 0; }
+  .slot-list li {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .status-line { font-weight: 600; }
+  .test-state {
+    margin-top: 2rem;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+  }
+  .test-state legend { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+  }
+  .skip-link:focus {
+    position: static;
+    display: inline-block;
+    padding: 0.5rem;
+  }
+  dl.summary { margin: 0.75rem 0; }
+  dl.summary dt { font-weight: 600; margin-top: 0.5rem; }
+  dl.summary dd { margin: 0 0 0.25rem; }
+  .step-indicator { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="banner">Discovery prototype. Simulated data. Nothing you enter here is saved or sent anywhere.</div>
+<header class="app-header">
+  <span class="brand">DevMentor — mentor onboarding (prototype)</span>
+  <span class="status" id="global-status" aria-live="polite"></span>
+  <button type="button" class="btn-link" id="reset-button">Reset simulation</button>
+</header>
+
+<main id="main-content">
+
+  <section id="invitation" class="screen" aria-labelledby="invitation-heading">
+    <p class="step-indicator">Step 1 of 8 · Invitation</p>
+    <h1 id="invitation-heading" tabindex="-1">You're invited to DevMentor</h1>
+    <p>You've been invited as part of <strong>invitation batch #4</strong> (20 senior engineers from the TypeScript, React, Python, and AI-agent community).</p>
+    <p>Accepting asks you to publish at least one bookable session within two weeks. If fewer than 5 engineers in this batch publish in that window, DevMentor pauses further invitations and follows up with the people who didn't.</p>
+    <div class="actions">
+      <button type="button" class="btn" id="accept-invitation">Accept invitation</button>
+      <button type="button" class="btn btn-secondary" id="decline-invitation">Decline</button>
+    </div>
+    <p><button type="button" class="btn-link" id="no-invite-link">I don't have an invitation — can I sign up anyway?</button></p>
+  </section>
+
+  <section id="no-invite" class="screen" aria-labelledby="no-invite-heading" hidden>
+    <p class="step-indicator">Invite-only</p>
+    <h1 id="no-invite-heading" tabindex="-1">Mentors join by invitation only</h1>
+    <p>DevMentor doesn't have open mentor registration right now. The operator invites senior engineers from the TypeScript, React, Python, and AI-agent community in batches.</p>
+    <p>If you believe you should have received an invitation, that's handled by the DevMentor team directly, outside this product.</p>
+    <div class="actions">
+      <a class="btn btn-secondary" href="#invitation">Back to invitation</a>
+    </div>
+  </section>
+
+  <section id="declined" class="screen" aria-labelledby="declined-heading" hidden>
+    <p class="step-indicator">Invitation declined</p>
+    <h1 id="declined-heading" tabindex="-1">You've declined this invitation</h1>
+    <p>No further steps are needed. If you change your mind within the batch's two-week window, you can still accept.</p>
+    <div class="actions">
+      <a class="btn" href="#invitation">Back to invitation</a>
+    </div>
+  </section>
+
+  <section id="sign-in" class="screen" aria-labelledby="sign-in-heading" hidden>
+    <p class="step-indicator">Step 2 of 8 · Sign in</p>
+    <h1 id="sign-in-heading" tabindex="-1">Sign in to accept</h1>
+    <p>Every DevMentor role signs in the same way.</p>
+    <div class="actions">
+      <button type="button" class="btn" id="github-sign-in">Continue with GitHub</button>
+    </div>
+    <p><button type="button" class="btn-link" id="toggle-email-fallback" aria-expanded="false" aria-controls="email-fallback-form">Or sign in with email and password</button></p>
+    <form id="email-fallback-form" hidden>
+      <div class="error" id="email-sign-in-error" role="alert" hidden></div>
+      <label for="email-input">Email</label>
+      <input type="email" id="email-input" name="email" autocomplete="off">
+      <label for="password-input">Password</label>
+      <input type="password" id="password-input" name="password" autocomplete="off">
+      <div class="actions">
+        <button type="submit" class="btn">Sign in</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="mentor-page-setup" class="screen" aria-labelledby="mentor-page-setup-heading" hidden>
+    <p class="step-indicator">Step 3 of 8 · Mentor page</p>
+    <h1 id="mentor-page-setup-heading" tabindex="-1">Set up your mentor page</h1>
+    <p class="hint">DevMentor mentor pages don't carry ratings or reviews. Your link to public work and your description are what mentees see instead.</p>
+    <form id="mentor-page-form">
+      <div class="error" id="mentor-page-error" role="alert" hidden></div>
+      <label for="public-work-link">Link to your public work</label>
+      <input type="url" id="public-work-link" name="public-work-link" placeholder="https://github.com/your-handle">
+      <p class="hint">For example a GitHub profile, a talk, or an open-source project.</p>
+
+      <label for="mentor-description">Plain description</label>
+      <textarea id="mentor-description" name="mentor-description" rows="4" placeholder="What you help developers with, in your own words."></textarea>
+
+      <fieldset>
+        <legend>Stack tag</legend>
+        <p class="hint">Mentees filter the mentor list by this tag. Choose the one that best fits your work.</p>
+        <div class="radio-group" id="stack-tag-group">
+          <label><input type="radio" name="stack-tag" value="TypeScript"> TypeScript</label>
+          <label><input type="radio" name="stack-tag" value="React"> React</label>
+          <label><input type="radio" name="stack-tag" value="Python"> Python</label>
+          <label><input type="radio" name="stack-tag" value="AI agents"> AI agents</label>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <a class="btn btn-secondary" href="#sign-in">Back</a>
+        <button type="submit" class="btn">Continue</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="pricing" class="screen" aria-labelledby="pricing-heading" hidden>
+    <p class="step-indicator">Step 4 of 8 · Pricing</p>
+    <h1 id="pricing-heading" tabindex="-1">Set your prices</h1>
+    <p class="hint">The operator sets bounds for each session length. Today's bounds: $40–$120 for 25 minutes, $70–$200 for 50 minutes.</p>
+    <form id="pricing-form">
+      <div class="error" id="pricing-error" role="alert" hidden></div>
+      <label for="price-25">25-minute session price (USD)</label>
+      <input type="number" id="price-25" name="price-25" min="0" step="1">
+
+      <label for="price-50">50-minute session price (USD)</label>
+      <input type="number" id="price-50" name="price-50" min="0" step="1">
+
+      <div class="actions">
+        <a class="btn btn-secondary" href="#mentor-page-setup">Back</a>
+        <button type="submit" class="btn">Continue</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="slots" class="screen" aria-labelledby="slots-heading" hidden>
+    <p class="step-indicator">Step 5 of 8 · Slots</p>
+    <h1 id="slots-heading" tabindex="-1">Publish a slot</h1>
+    <p class="hint">A slot is a start time you offer. DevMentor's 1.0 copy makes no promise of how soon a mentee can book — only that a slot must start at least two hours after booking.</p>
+
+    <div id="slots-empty" class="card">No slots published yet.</div>
+    <ul class="slot-list" id="slot-list" hidden></ul>
+
+    <form id="add-slot-form">
+      <div class="error" id="slot-error" role="alert" hidden></div>
+      <label for="slot-date">Date</label>
+      <input type="date" id="slot-date" name="slot-date">
+      <label for="slot-time">Start time</label>
+      <input type="time" id="slot-time" name="slot-time">
+      <div class="actions">
+        <button type="submit" class="btn btn-secondary">Add slot</button>
+      </div>
+    </form>
+
+    <div class="error" id="slots-continue-error" role="alert" hidden></div>
+    <div class="actions">
+      <a class="btn btn-secondary" href="#pricing">Back</a>
+      <button type="button" class="btn" id="slots-continue">Continue</button>
+    </div>
+  </section>
+
+  <section id="share-link" class="screen" aria-labelledby="share-link-heading" hidden>
+    <p class="step-indicator">Step 6 of 8 · Share link</p>
+    <h1 id="share-link-heading" tabindex="-1">Share your page</h1>
+    <p>Mentees can also reach you directly through this link, outside the mentor list.</p>
+    <label for="share-link-value">Your mentor page link</label>
+    <input type="text" id="share-link-value" readonly>
+    <div class="actions">
+      <button type="button" class="btn btn-secondary" id="copy-share-link">Copy link</button>
+    </div>
+    <p class="hint" id="copy-status" role="status" aria-live="polite"></p>
+    <div class="actions">
+      <a class="btn btn-secondary" href="#slots">Back</a>
+      <a class="btn" href="#connect-onboarding">Continue</a>
+    </div>
+  </section>
+
+  <section id="connect-onboarding" class="screen" aria-labelledby="connect-onboarding-heading" hidden>
+    <p class="step-indicator">Step 7 of 8 · Payouts</p>
+    <h1 id="connect-onboarding-heading" tabindex="-1">Set up payouts with Stripe Connect</h1>
+    <p>Complete Stripe Connect onboarding before your first payout. DevMentor keeps 20% of each session; the rest is paid out to you through Stripe Connect.</p>
+
+    <div id="connect-idle">
+      <div class="error" id="connect-error" role="alert" hidden></div>
+      <div class="actions">
+        <button type="button" class="btn" id="connect-start">Start Stripe Connect onboarding</button>
+        <button type="button" class="btn btn-secondary" id="connect-skip">I'll do this later</button>
+      </div>
+    </div>
+
+    <div id="connect-processing" hidden role="status" aria-live="polite">
+      <p>Verifying your Stripe Connect details…</p>
+    </div>
+
+    <fieldset class="test-state">
+      <legend>Test state</legend>
+      <label style="font-weight:400; display:flex; align-items:center; gap:0.5rem;">
+        <input type="checkbox" id="simulate-connect-failure">
+        Simulate a failed Connect verification
+      </label>
+    </fieldset>
+
+    <div class="actions">
+      <a class="btn btn-secondary" href="#share-link">Back</a>
+    </div>
+  </section>
+
+  <section id="connect-failed" class="screen" aria-labelledby="connect-failed-heading" hidden>
+    <p class="step-indicator">Step 7 of 8 · Payouts</p>
+    <h1 id="connect-failed-heading" tabindex="-1">We couldn't verify your Stripe Connect details</h1>
+    <p>Nothing was charged and your mentor page is unaffected. You can try again, or finish setup later from your mentor dashboard.</p>
+    <div class="actions">
+      <button type="button" class="btn" id="connect-retry">Try again</button>
+      <button type="button" class="btn btn-secondary" id="connect-skip-after-failure">I'll do this later</button>
+    </div>
+  </section>
+
+  <section id="complete" class="screen" aria-labelledby="complete-heading" hidden>
+    <p class="step-indicator">Step 8 of 8 · Done</p>
+    <h1 id="complete-heading" tabindex="-1">Your mentor page is live</h1>
+    <p class="status-line" id="complete-status"></p>
+    <dl class="summary" id="complete-summary"></dl>
+    <div class="actions">
+      <a class="btn btn-secondary" href="#connect-onboarding" id="complete-fix-connect" hidden>Finish payout setup</a>
+      <button type="button" class="btn" id="start-over">Start over</button>
+    </div>
+  </section>
+
+  <section id="not-found" class="screen" aria-labelledby="not-found-heading" hidden>
+    <p class="step-indicator">Unknown screen</p>
+    <h1 id="not-found-heading" tabindex="-1">That screen doesn't exist in this prototype</h1>
+    <p>Only the mentor onboarding flow is simulated here.</p>
+    <div class="actions">
+      <a class="btn" href="#invitation">Back to the start</a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var KNOWN_SCREENS = [
+    "invitation", "no-invite", "declined", "sign-in", "mentor-page-setup",
+    "pricing", "slots", "share-link", "connect-onboarding", "connect-failed",
+    "complete"
+  ];
+
+  var PRICE_BOUNDS = {
+    25: { min: 40, max: 120 },
+    50: { min: 70, max: 200 }
+  };
+
+  var initialState = function () {
+    return {
+      invitationStatus: "pending",
+      signedIn: false,
+      mentorPage: { link: "", description: "", stackTag: "" },
+      pricing: { price25: "", price50: "" },
+      slots: [],
+      connectStatus: "not-started"
+    };
+  };
+
+  var state = initialState();
+
+  var screens = {};
+  KNOWN_SCREENS.forEach(function (id) {
+    screens[id] = document.getElementById(id);
+  });
+  var notFoundScreen = document.getElementById("not-found");
+  var globalStatus = document.getElementById("global-status");
+
+  function escapeText(value) {
+    var node = document.createTextNode(value);
+    var holder = document.createElement("span");
+    holder.appendChild(node);
+    return holder.textContent;
+  }
+
+  function setGlobalStatus(text) {
+    globalStatus.textContent = text;
+  }
+
+  function showError(el, message) {
+    el.textContent = message;
+    el.hidden = false;
+  }
+
+  function clearError(el) {
+    el.hidden = true;
+    el.textContent = "";
+  }
+
+  function renderSlots() {
+    var list = document.getElementById("slot-list");
+    var empty = document.getElementById("slots-empty");
+    list.innerHTML = "";
+    if (state.slots.length === 0) {
+      empty.hidden = false;
+      list.hidden = true;
+      return;
+    }
+    empty.hidden = true;
+    list.hidden = false;
+    state.slots.forEach(function (slot, index) {
+      var li = document.createElement("li");
+      var label = document.createElement("span");
+      label.textContent = slot.date + " at " + slot.time;
+      var removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "btn-link";
+      removeBtn.textContent = "Remove";
+      removeBtn.addEventListener("click", function () {
+        state.slots.splice(index, 1);
+        renderSlots();
+      });
+      li.appendChild(label);
+      li.appendChild(removeBtn);
+      list.appendChild(li);
+    });
+  }
+
+  function renderShareLink() {
+    var tag = state.mentorPage.stackTag ? state.mentorPage.stackTag.toLowerCase().replace(/\s+/g, "-") : "mentor";
+    var handle = "jordan-" + tag;
+    document.getElementById("share-link-value").value = "https://devmentor.example/m/" + handle;
+    document.getElementById("copy-status").textContent = "";
+  }
+
+  function renderComplete() {
+    var summary = document.getElementById("complete-summary");
+    var statusLine = document.getElementById("complete-status");
+    var fixConnect = document.getElementById("complete-fix-connect");
+    summary.innerHTML = "";
+
+    function addRow(term, value) {
+      var dt = document.createElement("dt");
+      dt.textContent = term;
+      var dd = document.createElement("dd");
+      dd.textContent = value;
+      summary.appendChild(dt);
+      summary.appendChild(dd);
+    }
+
+    addRow("Stack tag", state.mentorPage.stackTag || "Not set");
+    addRow("25-minute price", state.pricing.price25 ? "$" + state.pricing.price25 : "Not set");
+    addRow("50-minute price", state.pricing.price50 ? "$" + state.pricing.price50 : "Not set");
+    addRow("Published slots", String(state.slots.length));
+    addRow("Share link", document.getElementById("share-link-value").value || "Not generated");
+
+    if (state.connectStatus === "complete") {
+      statusLine.textContent = "Payouts are ready. Mentees can now book and pay for a session.";
+      addRow("Stripe Connect", "Onboarding complete");
+      fixConnect.hidden = true;
+    } else {
+      statusLine.textContent = "Your page is live, but payouts aren't set up yet.";
+      addRow("Stripe Connect", "Onboarding not completed");
+      fixConnect.hidden = false;
+    }
+  }
+
+  function showScreen(id) {
+    var target = screens[id] ? screens[id] : notFoundScreen;
+    KNOWN_SCREENS.forEach(function (screenId) {
+      screens[screenId].hidden = screenId !== id;
+    });
+    notFoundScreen.hidden = target !== notFoundScreen;
+
+    if (id === "slots") { renderSlots(); }
+    if (id === "share-link") { renderShareLink(); }
+    if (id === "complete") { renderComplete(); }
+
+    var heading = target.querySelector("h1");
+    if (heading) {
+      heading.focus();
+    }
+  }
+
+  function navigate(id) {
+    if (window.location.hash === "#" + id) {
+      showScreen(id);
+    } else {
+      window.location.hash = id;
+    }
+  }
+
+  function currentHashId() {
+    var raw = window.location.hash.replace(/^#/, "");
+    return raw || "invitation";
+  }
+
+  window.addEventListener("hashchange", function () {
+    showScreen(currentHashId());
+  });
+
+  // Invitation screen
+  document.getElementById("accept-invitation").addEventListener("click", function () {
+    state.invitationStatus = "accepted";
+    setGlobalStatus("Invitation accepted");
+    navigate("sign-in");
+  });
+  document.getElementById("decline-invitation").addEventListener("click", function () {
+    state.invitationStatus = "declined";
+    setGlobalStatus("Invitation declined");
+    navigate("declined");
+  });
+  document.getElementById("no-invite-link").addEventListener("click", function () {
+    navigate("no-invite");
+  });
+
+  // Sign-in screen
+  document.getElementById("github-sign-in").addEventListener("click", function () {
+    state.signedIn = true;
+    setGlobalStatus("Signed in with GitHub");
+    navigate("mentor-page-setup");
+  });
+
+  var toggleEmailButton = document.getElementById("toggle-email-fallback");
+  var emailForm = document.getElementById("email-fallback-form");
+  toggleEmailButton.addEventListener("click", function () {
+    var expanded = toggleEmailButton.getAttribute("aria-expanded") === "true";
+    toggleEmailButton.setAttribute("aria-expanded", String(!expanded));
+    emailForm.hidden = expanded;
+    if (!expanded) {
+      document.getElementById("email-input").focus();
+    }
+  });
+
+  emailForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var errorEl = document.getElementById("email-sign-in-error");
+    var emailInput = document.getElementById("email-input");
+    var passwordInput = document.getElementById("password-input");
+    if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+      showError(errorEl, "Enter both an email and a password to continue.");
+      (emailInput.value.trim() ? passwordInput : emailInput).focus();
+      return;
+    }
+    clearError(errorEl);
+    state.signedIn = true;
+    setGlobalStatus("Signed in with email");
+    navigate("mentor-page-setup");
+  });
+
+  // Mentor page setup
+  document.getElementById("mentor-page-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    var errorEl = document.getElementById("mentor-page-error");
+    var linkInput = document.getElementById("public-work-link");
+    var descriptionInput = document.getElementById("mentor-description");
+    var stackTagInput = document.querySelector('input[name="stack-tag"]:checked');
+
+    if (!linkInput.value.trim()) {
+      showError(errorEl, "Add a link to your public work to continue.");
+      linkInput.focus();
+      return;
+    }
+    if (!descriptionInput.value.trim()) {
+      showError(errorEl, "Add a plain description of what you help with.");
+      descriptionInput.focus();
+      return;
+    }
+    if (!stackTagInput) {
+      showError(errorEl, "Choose one stack tag.");
+      document.getElementById("stack-tag-group").querySelector("input").focus();
+      return;
+    }
+
+    clearError(errorEl);
+    state.mentorPage.link = escapeText(linkInput.value.trim());
+    state.mentorPage.description = escapeText(descriptionInput.value.trim());
+    state.mentorPage.stackTag = stackTagInput.value;
+    navigate("pricing");
+  });
+
+  // Pricing
+  document.getElementById("pricing-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    var errorEl = document.getElementById("pricing-error");
+    var price25Input = document.getElementById("price-25");
+    var price50Input = document.getElementById("price-50");
+    var price25 = Number(price25Input.value);
+    var price50 = Number(price50Input.value);
+
+    if (!price25Input.value.trim() || !price50Input.value.trim()) {
+      showError(errorEl, "Set a price for both session lengths.");
+      (price25Input.value.trim() ? price50Input : price25Input).focus();
+      return;
+    }
+    if (price25 < PRICE_BOUNDS[25].min || price25 > PRICE_BOUNDS[25].max) {
+      showError(errorEl, "The 25-minute price must be between $" + PRICE_BOUNDS[25].min + " and $" + PRICE_BOUNDS[25].max + ".");
+      price25Input.focus();
+      return;
+    }
+    if (price50 < PRICE_BOUNDS[50].min || price50 > PRICE_BOUNDS[50].max) {
+      showError(errorEl, "The 50-minute price must be between $" + PRICE_BOUNDS[50].min + " and $" + PRICE_BOUNDS[50].max + ".");
+      price50Input.focus();
+      return;
+    }
+
+    clearError(errorEl);
+    state.pricing.price25 = price25;
+    state.pricing.price50 = price50;
+    navigate("slots");
+  });
+
+  // Slots
+  document.getElementById("add-slot-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    var errorEl = document.getElementById("slot-error");
+    var dateInput = document.getElementById("slot-date");
+    var timeInput = document.getElementById("slot-time");
+
+    if (!dateInput.value || !timeInput.value) {
+      showError(errorEl, "Choose both a date and a start time.");
+      (dateInput.value ? timeInput : dateInput).focus();
+      return;
+    }
+
+    clearError(errorEl);
+    state.slots.push({ date: dateInput.value, time: timeInput.value });
+    dateInput.value = "";
+    timeInput.value = "";
+    renderSlots();
+    dateInput.focus();
+  });
+
+  document.getElementById("slots-continue").addEventListener("click", function () {
+    var errorEl = document.getElementById("slots-continue-error");
+    if (state.slots.length === 0) {
+      showError(errorEl, "Publish at least one slot to continue.");
+      return;
+    }
+    clearError(errorEl);
+    navigate("share-link");
+  });
+
+  // Share link
+  document.getElementById("copy-share-link").addEventListener("click", function () {
+    document.getElementById("share-link-value").select();
+    document.getElementById("copy-status").textContent = "Link copied (simulated — nothing left this page).";
+  });
+
+  // Connect onboarding
+  var connectIdle = document.getElementById("connect-idle");
+  var connectProcessing = document.getElementById("connect-processing");
+
+  function runConnectAttempt() {
+    var errorEl = document.getElementById("connect-error");
+    clearError(errorEl);
+    connectIdle.hidden = true;
+    connectProcessing.hidden = false;
+    setGlobalStatus("Verifying Stripe Connect details");
+    window.setTimeout(function () {
+      var shouldFail = document.getElementById("simulate-connect-failure").checked;
+      connectProcessing.hidden = true;
+      connectIdle.hidden = false;
+      if (shouldFail) {
+        navigate("connect-failed");
+      } else {
+        state.connectStatus = "complete";
+        setGlobalStatus("Stripe Connect onboarding complete");
+        navigate("complete");
+      }
+    }, 600);
+  }
+
+  document.getElementById("connect-start").addEventListener("click", runConnectAttempt);
+  document.getElementById("connect-retry").addEventListener("click", runConnectAttempt);
+
+  document.getElementById("connect-skip").addEventListener("click", function () {
+    state.connectStatus = "not-started";
+    setGlobalStatus("Payout setup postponed");
+    navigate("complete");
+  });
+  document.getElementById("connect-skip-after-failure").addEventListener("click", function () {
+    state.connectStatus = "not-started";
+    setGlobalStatus("Payout setup postponed");
+    navigate("complete");
+  });
+
+  // Complete / reset
+  document.getElementById("start-over").addEventListener("click", resetSimulation);
+  document.getElementById("reset-button").addEventListener("click", resetSimulation);
+
+  function resetSimulation() {
+    state = initialState();
+    document.getElementById("mentor-page-form").reset();
+    document.getElementById("pricing-form").reset();
+    document.getElementById("add-slot-form").reset();
+    emailForm.reset();
+    clearError(document.getElementById("mentor-page-error"));
+    clearError(document.getElementById("pricing-error"));
+    clearError(document.getElementById("slot-error"));
+    clearError(document.getElementById("slots-continue-error"));
+    clearError(document.getElementById("email-sign-in-error"));
+    clearError(document.getElementById("connect-error"));
+    document.getElementById("simulate-connect-failure").checked = false;
+    emailForm.hidden = true;
+    toggleEmailButton.setAttribute("aria-expanded", "false");
+    setGlobalStatus("Simulation reset");
+    if (window.location.hash === "#invitation") {
+      showScreen("invitation");
+    } else {
+      window.location.hash = "invitation";
+    }
+  }
+
+  // Initial render
+  showScreen(currentHashId());
+}());
+</script>
+</body>
+</html>
