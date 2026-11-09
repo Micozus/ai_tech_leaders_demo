@@ -18,4 +18,3 @@ coverage
 .ai/qa/test-env.env
 
 # lesson prototype copy, not product code
-libs/ui/.storybook/public/prototypes/
