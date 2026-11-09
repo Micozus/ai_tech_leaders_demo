@@ -1,0 +1,163 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './field.component.stories';
+
+<Meta of={Stories} />
+
+# Field
+
+The label, the hint and the error around one form control. It keeps the control named, described and announced.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '260px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A field makes a control understandable: what it is (label), what to enter (hint) and what went wrong (error).
+
+## When to use
+
+- Around every text field, textarea and select in a form. Source: task rule (label always visible).
+- To mark an optional field with "Optional". Source: Q-C.
+- To show the error of one field under it, with the reason and the next step. Source: WCAG 3.3.1, 3.3.3.
+
+## When not to use
+
+| Situation                               | Use instead                                              |
+| --------------------------------------- | -------------------------------------------------------- |
+| A group of radios or checkboxes         | `fieldset` with a `legend` (radio group, checkbox group) |
+| An error about the whole form           | Alert, above the form                                    |
+| A message that is not about one control | Alert or a plain paragraph                               |
+
+## Anatomy
+
+| Part          | Required     | Notes                                                         |
+| ------------- | ------------ | ------------------------------------------------------------- |
+| Label         | yes          | Always visible, never replaced by a placeholder               |
+| Optional mark | no           | "(Optional)" in `muted`, only on optional fields              |
+| Control       | yes          | Projected: text field, textarea or select; keeps its own `id` |
+| Hint          | no           | `muted` text below the control                                |
+| Error         | when invalid | Icon plus text, announced with `role="alert"`                 |
+
+## Variants
+
+There is one look. Hint, error and the optional mark are inputs.
+
+| Variant    | Choose it when                                  | Source     |
+| ---------- | ----------------------------------------------- | ---------- |
+| default    | A required field: label only                    | Q-C        |
+| optional   | A field the person may skip                     | Q-C        |
+| with hint  | The format or the reason for a disabled control | WCAG 3.3.2 |
+| with error | After a failed check                            | WCAG 3.3.1 |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                                                                            | Source          |
+| ----------------------- | --------------------------------------------------------------------------------------- | --------------- |
+| Default                 | Label above the control                                                                 | task rule       |
+| Hover / Focus / Pressed | Belong to the control, not to the field                                                 | n/a             |
+| Disabled                | The control is dimmed; the hint says why                                                | D9, Q-A         |
+| Loading                 | Not applicable                                                                          | n/a             |
+| Selected                | Not applicable                                                                          | n/a             |
+| Error                   | Error text in `danger` with an icon, below the control; the control gets `aria-invalid` | D22, WCAG 1.4.1 |
+
+**Disabled:** the control is dimmed and the hint under it says why. Source: Q-A, WCAG 3.3.2.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                                        | Source                   |
+| ------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------ |
+| Keyboard      | The field itself is not focusable; the control inside is                                                    | WAI-ARIA                 |
+| Focus order   | Visual order; after a failed submit focus moves to the first field with an error                            | task rule (form pattern) |
+| Role and name | `<label for>` names the control. `aria-describedby` on the control is set to the hint and error ids for you | WCAG 1.3.1, 3.3.2        |
+| Error         | `role="alert"` announces the error when it appears; the icon is decorative                                  | WCAG 3.3.1, 4.1.3        |
+| Colour        | The error is text plus an icon, not only colour                                                             | WCAG 1.4.1               |
+| Target size   | Clicking the label focuses the control                                                                      | WCAG 2.5.8               |
+
+## Content
+
+| Topic    | Rule                                                                     | Source     |
+| -------- | ------------------------------------------------------------------------ | ---------- |
+| Label    | A noun phrase, no colon: "Display name"                                  | task rule  |
+| Optional | Only optional fields are marked: "(Optional)". Do not mark required ones | Q-C        |
+| Hint     | Format or consequence: "Shown on your mentor page."                      | WCAG 3.3.2 |
+| Error    | What happened and what to do: "Enter a link that starts with https://"   | WCAG 3.3.3 |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '320px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                               | Source      |
+| ------- | ------------------------------------------------------ | ----------- |
+| 320 px  | Label, control, hint and error stack; long labels wrap | WCAG 1.4.10 |
+| 768 px  | Same, up to the measure                                | proposal    |
+| 1440 px | Same; never side-by-side labels                        | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '300px' }} />
+</Unstyled>
+
+## API
+
+| Input     | Type      | Default  | Description                       |
+| --------- | --------- | -------- | --------------------------------- |
+| label     | `string`  | required | The visible label                 |
+| controlId | `string`  | required | The `id` of the projected control |
+| hint      | `string`  | `""`     | Help text; empty hides it         |
+| error     | `string`  | `""`     | Error text; empty hides it        |
+| optional  | `boolean` | `false`  | Adds "(Optional)" to the label    |
+
+Selector: `ui-field`. The control inside must carry the `id` given as `controlId`. `ui-field` sets `aria-describedby` on it.
+
+## Code
+
+Minimal:
+
+```html
+<ui-field label="Display name" controlId="name">
+  <input ui-text-field id="name" />
+</ui-field>
+```
+
+In DevMentor:
+
+```html
+<ui-field
+  label="Public-work link"
+  controlId="work"
+  [optional]="true"
+  hint="A repository, a talk or a package."
+  [error]="linkError()"
+>
+  <input ui-text-field id="work" type="url" [invalid]="!!linkError()" />
+</ui-field>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- Mark only optional fields. Source: Q-C.
+- Every error says what to do. Source: WCAG 3.3.3.
+- Never a placeholder in place of a label. Source: task rule.
+
+## Related
+
+- [Text field](?path=/docs/primitives-text-field--docs), [Textarea](?path=/docs/primitives-textarea--docs), [Select](?path=/docs/primitives-select--docs)
+- [Alert](?path=/docs/primitives-alert--docs): for errors about the whole form
+- Patterns: form
+
+## Interaction test
+
+The story `DescribesTheControl` runs in the test script (`npm run test-storybook`): the error is announced, the input is described by the hint and the error, and Tab reaches it.

@@ -1,0 +1,95 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './access-denied.component.stories';
+
+<Meta of={Stories} />
+
+# Access denied
+
+What a person sees on a screen that is not theirs, or when they are signed out.
+
+Backlog: E01-S03 (#19)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '320px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Says why the page cannot be opened and gives the way on. The server enforces access; this is only the message.
+
+## When to use
+
+- A signed-in mentee opening a mentor or operator route.
+- A signed-out visitor opening a protected route.
+- A page that does not exist (same wording, so existence is not revealed).
+
+## When not to use
+
+| Situation                     | Use instead                    |
+| ----------------------------- | ------------------------------ |
+| A failed load                 | Error state                    |
+| An action that is not allowed | Disable it and say why in text |
+
+## Anatomy
+
+| Part      | Component   | Notes                                |
+| --------- | ----------- | ------------------------------------ |
+| Container | Error state | Heading and description              |
+| Way on    | Link        | "Go to your home" or "Go to sign in" |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '520px' }} />
+</Unstyled>
+
+| State      | What the person sees                                     | Story      |
+| ---------- | -------------------------------------------------------- | ---------- |
+| No access  | Heading "You do not have access to this page", link home | Playground |
+| Signed out | Heading "Sign in to open this page", link to sign in     | Signed Out |
+
+## Behavior and accessibility
+
+| Topic        | Rule                                                     | Source             |
+| ------------ | -------------------------------------------------------- | ------------------ |
+| Announcement | `role="alert"` through the error state                   | WCAG 4.1.3         |
+| Server       | The route is also denied on the server (403 or redirect) | standards, E01-S03 |
+| Focus        | The link is the first focusable element                  | WCAG 2.4.3         |
+
+## Content
+
+| Topic     | Rule                                                                     | Source   |
+| --------- | ------------------------------------------------------------------------ | -------- |
+| No access | Says whose page it is, not that it is "forbidden"                        | proposal |
+| Not found | Uses the no-access wording so the page does not reveal whether it exists | proposal |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '320px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '320px' }} />
+</Unstyled>
+
+## API
+
+| Input or output       | Type          | Default             | Description  |
+| --------------------- | ------------- | ------------------- | ------------ | ------------- |
+| reason                | `no-access \\ | signed-out`         | `no-access`  | Which message |
+| homeHref / signInHref | `string`      | `/home`, `/sign-in` | Link targets |
+
+## Code
+
+```html
+<ui-access-denied reason="signed-out" />
+```
+
+## Related
+
+- [Error state](?path=/docs/primitives-error-state--docs)
+- [Detail view](?path=/docs/patterns-detail-view--docs)

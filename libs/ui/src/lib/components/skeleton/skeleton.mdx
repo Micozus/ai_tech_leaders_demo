@@ -1,0 +1,147 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './skeleton.component.stories';
+
+<Meta of={Stories} />
+
+# Skeleton
+
+A pulsing placeholder in the shape of the content that is loading.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '160px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A skeleton shows that content is on its way and roughly how it will look, so the page does not jump.
+
+## When to use
+
+- A list of sessions or mentors while it loads (E03-S01, E03-S04).
+- The body of a card while its data loads.
+- Any content that takes longer than about a second.
+
+## When not to use
+
+| Situation                             | Use instead                                 |
+| ------------------------------------- | ------------------------------------------- |
+| A short wait or an action in progress | Spinner, or the `loading` state of a button |
+| A failed load                         | Error state                                 |
+| Nothing to show                       | Empty state                                 |
+
+## Anatomy
+
+| Part   | Required | Notes                                                                |
+| ------ | -------- | -------------------------------------------------------------------- |
+| Block  | yes      | Width and height set to match the content                            |
+| Region | yes      | The container has `aria-busy="true"` and a text that says what loads |
+
+## Variants
+
+One block; compose lines, avatars and rows from several.
+
+| Variant | Choose it when                          | Source   |
+| ------- | --------------------------------------- | -------- |
+| block   | Any rectangle: set `width` and `height` | proposal |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '420px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                    | Source   |
+| ----------------------- | ------------------------------- | -------- |
+| Default                 | `line` fill, 6px radius, pulses | D19, Q-B |
+| Hover / Focus / Pressed | Not interactive                 | n/a      |
+| Disabled                | Not applicable                  | n/a      |
+| Loading                 | This is the loading state       | n/a      |
+| Selected                | Not applicable                  | n/a      |
+| Error                   | Replace with an error state     | n/a      |
+
+**Disabled:** a skeleton is never disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                                        | Source               |
+| ------------- | ----------------------------------------------------------------------------------------------------------- | -------------------- |
+| Keyboard      | Not focusable                                                                                               | WAI-ARIA             |
+| Focus order   | Not in the order                                                                                            | n/a                  |
+| Role and name | The blocks are `aria-hidden`; the loading region has `aria-busy="true"` and a visible or hidden status text | WCAG 4.1.3           |
+| Motion        | Pulsing is static under reduced motion                                                                      | WCAG 2.3.3           |
+| Colour        | `line` on `surface` is decorative                                                                           | WCAG 1.4.11 (exempt) |
+| Target size   | Not a target                                                                                                | n/a                  |
+
+## Content
+
+| Topic            | Rule                                                                            | Source     |
+| ---------------- | ------------------------------------------------------------------------------- | ---------- |
+| Status text      | Say what loads: "Loading sessions"                                              | WCAG 4.1.3 |
+| Shape            | Match the final layout: lines for text, a square for an avatar                  | proposal   |
+| Duration         | If loading lasts longer than about 10 seconds, show an error state with a retry | proposal   |
+| Longer languages | Not applicable                                                                  | n/a        |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '280px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                 | Source      |
+| ------- | ---------------------------------------- | ----------- |
+| 320 px  | Widths in percent; blocks never overflow | WCAG 1.4.10 |
+| 768 px  | Same                                     | proposal    |
+| 1440 px | Same                                     | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '220px' }} />
+</Unstyled>
+
+## API
+
+| Input  | Type     | Default     | Description                |
+| ------ | -------- | ----------- | -------------------------- |
+| width  | `string` | `100%`      | CSS width                  |
+| height | `string` | `1.0625rem` | CSS height (one text line) |
+
+Selector: `ui-skeleton`. Put `aria-busy="true"` on the region that loads.
+
+## Code
+
+Minimal:
+
+```html
+<ui-skeleton width="60%" />
+```
+
+In DevMentor:
+
+```html
+<section aria-busy="true" aria-labelledby="up">
+  <h2 id="up" class="text-section-title">Upcoming sessions</h2>
+  <p class="text-meta text-muted" role="status">Loading sessions</p>
+  <ui-skeleton width="60%" />
+</section>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- A skeleton in the shape of the content, with a text that says what loads. Source: WCAG 4.1.3.
+- Static under reduced motion. Source: WCAG 2.3.3.
+- No gradient shimmer. Source: A01, D19.
+
+## Related
+
+- [Error state](?path=/docs/primitives-error-state--docs) and [Empty state](?path=/docs/primitives-empty-state--docs): the other outcomes of a load
+- Patterns: list with filters
+
+## Interaction test
+
+The story `HiddenFromAssistiveTech` runs in the test script (`npm run test-storybook`): the skeleton is hidden from assistive technology.

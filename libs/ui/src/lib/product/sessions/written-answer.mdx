@@ -1,0 +1,99 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './written-answer.component.stories';
+
+<Meta of={Stories} />
+
+# Written answer
+
+The mentor's written answer, shown to the mentee after the session.
+
+Backlog: E04-S02 (#32)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '520px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+The answer is what is kept after the session. It reads at a comfortable measure.
+
+## When to use
+
+- After a session, on the mentee's session page.
+
+## When not to use
+
+| Situation         | Use instead   |
+| ----------------- | ------------- |
+| The live exchange | Session panel |
+
+## Anatomy
+
+| Part            | Component                   | Notes                                    |
+| --------------- | --------------------------- | ---------------------------------------- |
+| Container       | Card (roomy)                | "Written answer"                         |
+| Author and time | Text                        | Bold author, muted time                  |
+| Body            | Text at the reading measure | Line breaks kept                         |
+| Privacy         | Text                        | "Only you and the mentor can read this." |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '1400px' }} />
+</Unstyled>
+
+| State     | What the person sees          | Story       |
+| --------- | ----------------------------- | ----------- |
+| Ready     | The answer                    | Playground  |
+| Not ready | "The answer is not ready yet" | Not Ready   |
+| Loading   | Skeleton                      | Loading     |
+| Error     | Retry                         | Error State |
+
+## Behavior and accessibility
+
+| Topic   | Rule                           | Source     |
+| ------- | ------------------------------ | ---------- |
+| Measure | At most 65 characters per line | Typography |
+| Heading | The card heading               | WCAG 1.3.1 |
+
+## Content
+
+| Topic     | Rule                                                                         | Source    |
+| --------- | ---------------------------------------------------------------------------- | --------- |
+| Not ready | Says the mentor writes it after the session and that the mentee will be told | task rule |
+| Privacy   | States who can read it                                                       | D20       |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '520px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '520px' }} />
+</Unstyled>
+
+## API
+
+| Input or output    | Type         | Default | Description     |
+| ------------------ | ------------ | ------- | --------------- |
+| author / at / body | `string`     |         | Who, when, what |
+| state              | `AsyncState` | `ready` | Data state      |
+
+## Code
+
+```html
+<ui-written-answer
+  [state]="state()"
+  author="Ada Lovelace"
+  at="Thu 5 Nov, 15:02"
+  [body]="answer()"
+/>
+```
+
+## Related
+
+- [Session panel](?path=/docs/product-e04-session-written-answer-and-note-session-panel--docs)

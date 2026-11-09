@@ -1,0 +1,150 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './toast.component.stories';
+
+<Meta of={Stories} />
+
+# Toast
+
+A short confirmation that appears in a corner and goes away on its own. Built on PrimeNG, themed by the DevMentor preset.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '320px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A toast confirms a calm result ("Share link copied") without interrupting what the person is doing.
+
+## When to use
+
+- "Share link copied" after copying the mentor page link (E02-S02).
+- "Slots saved as a draft".
+- A result that needs no action and loses nothing if missed.
+
+## When not to use
+
+| Situation                     | Use instead                         |
+| ----------------------------- | ----------------------------------- |
+| An error that needs action    | Alert or error state, never a toast |
+| A failed payment              | Alert on the payment screen         |
+| Anything the person must read | Alert                               |
+| Information to keep           | Text on the page                    |
+
+## Anatomy
+
+| Part         | Required | Notes                      |
+| ------------ | -------- | -------------------------- |
+| Summary      | yes      | What happened, a few words |
+| Detail       | no       | One short sentence         |
+| Close button | yes      | Closes it early            |
+
+## Variants
+
+Only calm tones exist in the API: an error toast cannot be created.
+
+| Variant | Choose it when     | Source    |
+| ------- | ------------------ | --------- |
+| success | A completed action | task rule |
+| info    | A neutral note     | task rule |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '320px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State        | What changes                                                                      | Source     |
+| ------------ | --------------------------------------------------------------------------------- | ---------- |
+| Hidden       | Not rendered                                                                      | n/a        |
+| Shown        | `shadow-overlay` with a 1px border in the tone, 22rem wide, bottom right, no blur | D13, A01   |
+| Auto-dismiss | After 6 seconds; hovering pauses it                                               | WCAG 2.2.1 |
+| Focus        | The close button shows the focus ring                                             | D6         |
+| Disabled     | Not applicable                                                                    | n/a        |
+| Error        | Not available by design                                                           | task rule  |
+
+**Disabled:** a toast is not disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                         | Source     |
+| ------------- | -------------------------------------------------------------------------------------------- | ---------- |
+| Keyboard      | The close button is reachable with Tab; the toast does not take focus                        | WAI-ARIA   |
+| Focus order   | Appears at the end of the page order; focus is not moved                                     | WCAG 3.2.2 |
+| Role and name | `role="alert"` so the text is announced                                                      | WCAG 4.1.3 |
+| Timing        | Stays 6 seconds and pauses on hover; the content is never the only place for the information | WCAG 2.2.1 |
+| Colour        | The summary text states the result; the border colour only supports it                       | WCAG 1.4.1 |
+| Target size   | The close button is at least 24px                                                            | WCAG 2.5.8 |
+
+## Content
+
+| Topic            | Rule                                         | Source    |
+| ---------------- | -------------------------------------------- | --------- |
+| Summary          | Past tense, a few words: "Share link copied" | proposal  |
+| Detail           | One sentence at most                         | proposal  |
+| Never            | Errors, money, or anything needing action    | task rule |
+| Longer languages | Wraps within 22rem                           | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '320px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                      | Source      |
+| ------- | ----------------------------- | ----------- |
+| 320 px  | Spans the width minus margins | WCAG 1.4.10 |
+| 768 px  | 22rem, bottom right           | proposal    |
+| 1440 px | Same                          | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '320px' }} />
+</Unstyled>
+
+## API
+
+| Input                                           | Type              | Default | Description                        |
+| ----------------------------------------------- | ----------------- | ------- | ---------------------------------- |
+| `ToastService.show({ tone, summary, detail? })` | `success \| info` |         | Shows a toast                      |
+| `provideToast()`                                | function          |         | Register once in the app providers |
+| `ui-toast`                                      | component         |         | Place one per app                  |
+
+Selector: `ui-toast`; service `ToastService`. There is no error tone on purpose.
+
+## Code
+
+Minimal:
+
+```html
+toast.show({ tone: 'success', summary: 'Share link copied' });
+```
+
+In DevMentor:
+
+```html
+// app.config.ts: providers: [provideToast()] // app.component:
+<ui-toast /> private readonly toast = inject(ToastService); copyLink(): void {
+navigator.clipboard.writeText(this.url); this.toast.show({ tone: 'success',
+summary: 'Share link copied' }); }
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- A toast confirms; it never reports an error that needs action. Source: task rule.
+- Auto-dismiss pauses on hover. Source: WCAG 2.2.1.
+- The text states the result. Source: WCAG 1.4.1.
+
+## Related
+
+- [Alert](?path=/docs/primitives-alert--docs): messages that must be read
+- [Error state](?path=/docs/primitives-error-state--docs): failures
+
+## Interaction test
+
+The story `AnnouncesAndShowsMessage` runs in the test script (`npm run test-storybook`): pressing the button shows a message announced as an alert.

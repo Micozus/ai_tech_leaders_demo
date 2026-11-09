@@ -1,0 +1,110 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './session-panel.component.stories';
+
+<Meta of={Stories} />
+
+# Session panel
+
+The text session: the "text only" notice, the conversation, and a composer.
+
+Backlog: E04-S01 (#31), E04-S02 (#32)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '900px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Sessions are text only (N01). The conversation is one dominant column (R02.1) with author and time on every message (R02.2) and a composer that stays in place (R02.3).
+
+## When to use
+
+- The session screen, if the exchange takes place in DevMentor (Q18 in the brief is open).
+
+## When not to use
+
+| Situation                | Use instead     |
+| ------------------------ | --------------- |
+| Video or a call          | Not built (N01) |
+| The final written answer | Written answer  |
+
+## Anatomy
+
+| Part     | Component                 | Notes                     |
+| -------- | ------------------------- | ------------------------- |
+| Notice   | Alert (info)              | "Sessions are text only…" |
+| Messages | Ordered list              | Author, time, text        |
+| Composer | Field + Textarea + Button | Always visible            |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+| State   | What the person sees                      | Story         |
+| ------- | ----------------------------------------- | ------------- |
+| Ready   | Messages and composer                     | Playground    |
+| Loading | Skeleton, "Loading the conversation"      | Loading       |
+| Empty   | "No messages yet"                         | Empty         |
+| Error   | Retry                                     | Error State   |
+| Ended   | Composer disabled with the reason in text | Session Ended |
+| Many    | 30 messages                               | Many Messages |
+
+## Behavior and accessibility
+
+| Topic    | Rule                                       | Source          |
+| -------- | ------------------------------------------ | --------------- |
+| Keyboard | Ctrl or Cmd+Enter sends; Enter adds a line | R02.3           |
+| Disabled | The reason is text under the composer      | Q-A, WCAG 3.3.2 |
+| List     | An ordered list                            | WCAG 1.3.1      |
+| Heading  | The session title is an `h2`               | WCAG 1.3.1      |
+
+## Content
+
+| Topic    | Rule                                                                                  | Source |
+| -------- | ------------------------------------------------------------------------------------- | ------ |
+| Notice   | "Sessions are text only. You write, the mentor answers in writing; there is no call." | N01    |
+| Messages | Author and time first, then the text; line breaks kept                                | R02.2  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '900px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '900px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type               | Default | Description                |
+| --------------- | ------------------ | ------- | -------------------------- |
+| messages        | `SessionMessage[]` | `[]`    | The conversation           |
+| state           | `AsyncState`       | `ready` | Data state                 |
+| canWrite        | `boolean`          | `true`  | Whether the composer works |
+| sent / retry    | `output`           |         | Events                     |
+
+## Code
+
+```html
+<ui-session-panel
+  [messages]="messages()"
+  [state]="state()"
+  [canWrite]="open()"
+  (sent)="send($event)"
+  (retry)="reload()"
+/>
+```
+
+## Related
+
+- [Written answer](?path=/docs/product-e04-session-written-answer-and-note-written-answer--docs)
+
+## Interaction test
+
+`SendsWithCtrlEnter`: typing a message and pressing Ctrl+Enter sends it.

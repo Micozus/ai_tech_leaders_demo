@@ -1,0 +1,156 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './select.component.stories';
+
+<Meta of={Stories} />
+
+# Select
+
+A native `<select>` with the DevMentor look. The list and the arrow belong to the platform, so it works with keyboard, touch and screen readers as is.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '220px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A select lets a person choose one value from a list that is too long to show.
+
+## When to use
+
+- A time zone for a mentor's slots (E02-S03): many values, one choice.
+- A country for payouts (E02-S05).
+- Any choice of one from six or more options.
+
+## When not to use
+
+| Situation                                         | Use instead                                    |
+| ------------------------------------------------- | ---------------------------------------------- |
+| Two to five options (25 or 50 minutes, stack tag) | Radio group (one choice) or Checkbox (several) |
+| A long list the user must search                  | A combobox: not built, see "What is missing"   |
+| A list of actions                                 | Menu                                           |
+| Several values at once                            | Checkbox group                                 |
+
+## Anatomy
+
+| Part           | Required            | Notes                                                                        |
+| -------------- | ------------------- | ---------------------------------------------------------------------------- |
+| Label          | yes (in `ui-field`) | Always visible                                                               |
+| Control        | yes                 | Native `<select>`, 40px high; the arrow and the open list are the platform's |
+| Options        | yes                 | Plain text; one may be an empty "Choose…" option                             |
+| Hint and error | no                  | As in the text field                                                         |
+
+## Variants
+
+There is one look.
+
+| Variant | Choose it when                   | Source                                                         |
+| ------- | -------------------------------- | -------------------------------------------------------------- |
+| default | All lists of six or more options | R13 (list filtered by stack tag uses checkboxes, not a select) |
+| invalid | After a failed check             | D22                                                            |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '760px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                    | Source   |
+| -------- | ----------------------------------------------- | -------- |
+| Default  | Same border and fill as the text field          | D1, D5   |
+| Hover    | Border turns `muted`                            | D5       |
+| Focus    | Accent border plus the 3px `focus` ring         | D6       |
+| Pressed  | Platform behaviour                              | n/a      |
+| Disabled | 50% opacity, reason in a hint                   | D9       |
+| Loading  | Not applicable; disable and say what is loading | proposal |
+| Selected | The chosen option shows in the control          | n/a      |
+| Error    | Danger border, `aria-invalid`, error text       | D22      |
+
+**Disabled:** the select is dimmed and a hint says why (for example "This mentor offers only 50-minute sessions"). Source: Q-A.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                  | Source                |
+| ------------- | ------------------------------------------------------------------------------------- | --------------------- |
+| Keyboard      | Tab focuses; Arrow keys change the value on desktop; Space or Alt+Down opens the list | WAI-ARIA APG (native) |
+| Focus order   | Visual order                                                                          | WCAG 2.4.3            |
+| Role and name | Native combobox/listbox; named by its label                                           | WCAG 4.1.2            |
+| Invalid       | `aria-invalid="true"` plus an error                                                   | WCAG 3.3.1            |
+| Screen reader | Announces the label, the selected value and the number of options                     | native                |
+| Target size   | 40px high                                                                             | WCAG 2.5.8            |
+
+## Content
+
+| Topic   | Rule                                                                        | Source    |
+| ------- | --------------------------------------------------------------------------- | --------- |
+| Label   | A noun phrase: "Time zone"                                                  | task rule |
+| Options | Sorted in the order users expect; no jargon                                 | proposal  |
+| Length  | Long option text wraps in the open list and truncates in the closed control | proposal  |
+| Numbers | Include units: "50 minutes · €45.00"                                        | R14       |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '220px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                    | Source      |
+| ------- | ------------------------------------------- | ----------- |
+| 320 px  | Full width; the platform opens its own list | WCAG 1.4.10 |
+| 768 px  | Up to the measure                           | proposal    |
+| 1440 px | Does not grow beyond the measure            | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '220px' }} />
+</Unstyled>
+
+## API
+
+| Input   | Type      | Default | Description                      |
+| ------- | --------- | ------- | -------------------------------- |
+| invalid | `boolean` | `false` | Danger border and `aria-invalid` |
+
+Selector: `select[ui-select]`. Options, `disabled`, `required` and forms bindings stay native.
+
+## Code
+
+Minimal:
+
+```html
+<select ui-select id="tz">
+  <option>Europe/Warsaw</option>
+</select>
+```
+
+In DevMentor:
+
+```html
+<ui-field label="Time zone" controlId="tz">
+  <select ui-select id="tz">
+    <option>Europe/Warsaw</option>
+    <option>America/New_York</option>
+  </select>
+</ui-field>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- Use a select for six or more options. Source: proposal, WAI-ARIA APG.
+- Do not use a select for two or three options. Source: proposal.
+- A visible label on every select. Source: task rule.
+
+## Related
+
+- [Radio group](?path=/docs/primitives-radio-group--docs): few options, one choice
+- [Checkbox](?path=/docs/primitives-checkbox--docs): several choices
+- [Field](?path=/docs/primitives-field--docs)
+
+## Interaction test
+
+The story `ChooseOption` runs in the test script (`npm run test-storybook`): choosing an option sets the value, and the select is reachable with Tab.

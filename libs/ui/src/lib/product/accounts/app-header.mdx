@@ -1,0 +1,97 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './app-header.component.stories';
+
+<Meta of={Stories} />
+
+# App header
+
+The signed-in header: product name, who is signed in and in which role, and the account menu.
+
+Backlog: E01-S01, E01-S03
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '200px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Shows the person where they are and as whom, and holds sign out.
+
+## When to use
+
+- Every signed-in screen, mentee, mentor or operator.
+
+## When not to use
+
+| Situation         | Use instead                               |
+| ----------------- | ----------------------------------------- |
+| A signed-out page | Nothing: the sign-in screen has no header |
+| Page navigation   | Not built; role homes are flat (R02.4)    |
+
+## Anatomy
+
+| Part         | Component       | Notes                               |
+| ------------ | --------------- | ----------------------------------- |
+| Product name | text            | "DevMentor"                         |
+| Person       | Avatar + name   | Initials avatar, small              |
+| Role         | Badge (neutral) | Mentee, Mentor or Operator          |
+| Account      | Menu            | "Account", entries such as Sign out |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '360px' }} />
+</Unstyled>
+
+| State                    | What the person sees        | Story        |
+| ------------------------ | --------------------------- | ------------ |
+| Mentee, mentor, operator | Only the role badge changes | State Matrix |
+| Long name                | The name wraps              | Long Text    |
+
+## Behavior and accessibility
+
+| Topic      | Rule                                                                           | Source       |
+| ---------- | ------------------------------------------------------------------------------ | ------------ |
+| Landmark   | A `header` element                                                             | WCAG 1.3.1   |
+| Menu       | Keyboard-complete menu button                                                  | WAI-ARIA APG |
+| Role       | The role is a word, not a colour                                               | WCAG 1.4.1   |
+| Input name | The role input is `userRole`: a plain `role` would become an invalid ARIA role | WAI-ARIA     |
+
+## Content
+
+| Topic        | Rule                     | Source    |
+| ------------ | ------------------------ | --------- |
+| Role label   | Mentee, Mentor, Operator | D19       |
+| Menu entries | Verb phrases: "Sign out" | task rule |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '200px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '200px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type          | Default   | Description          |
+| --------------- | ------------- | --------- | -------------------- | -------- | -------------------------------- |
+| userName        | `string`      | required  | Display name         |
+| userRole        | `mentee \\    | mentor \\ | operator`            | required | The role of the signed-in person |
+| entries         | `MenuEntry[]` | Sign out  | Account menu entries |
+
+## Code
+
+```html
+<ui-app-header userName="Ada Lovelace" userRole="mentor" [entries]="entries" />
+```
+
+## Related
+
+- [Menu](?path=/docs/primitives-menu--docs)
+- [Avatar](?path=/docs/primitives-avatar--docs)

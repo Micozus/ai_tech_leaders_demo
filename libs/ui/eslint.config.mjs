@@ -19,8 +19,10 @@ export default [
       '@angular-eslint/component-selector': [
         'error',
         {
-          type: 'element',
-          prefix: 'ui',
+          // `attribute` is allowed for components that enhance a native element
+          // (`<button uiButton>`) so it keeps its own semantics.
+          type: ['element', 'attribute'],
+          prefix: ['ui'],
           style: 'kebab-case',
         },
       ],

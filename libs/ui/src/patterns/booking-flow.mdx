@@ -1,0 +1,106 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './booking-flow.stories';
+
+<Meta of={Stories} />
+
+# Booking flow
+
+Pick a slot, pay, be confirmed. Nothing is confirmed until the payment is.
+
+Backlog: E03-S02 (#26), E03-S03 (#27), E03-S04
+
+## When to use
+
+- Booking a session with a mentor.
+
+## Rules
+
+| Rule                                                                              | Source               |
+| --------------------------------------------------------------------------------- | -------------------- |
+| A slot under two hours away cannot be chosen, and the reason is written beside it | R14                  |
+| Prices of both lengths are shown at the mentor's price                            | R08                  |
+| Review shows mentor, time, length (text only) and total                           | N01                  |
+| The cancellation rule is shown before paying                                      | R09                  |
+| The booking is confirmed only after the payment succeeds                          | E03-S03              |
+| A failed payment stays on the payment step with a retry and a reason              | WCAG 3.3.3           |
+| The step is always stated: "Step 2 of 3"                                          | WCAG 2.4.8, proposal |
+
+## Components used
+
+- Slot picker
+- Booking summary
+- Cancellation notice
+- Payment status
+- Button
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Pick A Slot
+
+Step 1.
+
+<Unstyled>
+  <Canvas of={Stories.PickASlot} story={{ height: '700px' }} />
+</Unstyled>
+
+### A Slot Under Two Hours Cannot Be Chosen
+
+The early slot is disabled with its reason.
+
+<Unstyled>
+  <Canvas
+    of={Stories.ASlotUnderTwoHoursCannotBeChosen}
+    story={{ height: '700px' }}
+  />
+</Unstyled>
+
+### Review And Pay
+
+Step 2.
+
+<Unstyled>
+  <Canvas of={Stories.ReviewAndPay} story={{ height: '900px' }} />
+</Unstyled>
+
+### Paying
+
+Waiting for the bank.
+
+<Unstyled>
+  <Canvas of={Stories.Paying} story={{ height: '900px' }} />
+</Unstyled>
+
+### Payment Failed Stays On Payment
+
+The payment fails; the person can retry.
+
+<Unstyled>
+  <Canvas
+    of={Stories.PaymentFailedStaysOnPayment}
+    story={{ height: '900px' }}
+  />
+</Unstyled>
+
+### Confirmed Only After Payment
+
+Step 3 only after payment.
+
+<Unstyled>
+  <Canvas of={Stories.ConfirmedOnlyAfterPayment} story={{ height: '900px' }} />
+</Unstyled>
+
+### Narrow Screen
+
+320 px wide.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '800px' }} />
+</Unstyled>
+
+## What to avoid
+
+- Confirming before the payment is confirmed.
+- Hiding the reason a slot cannot be chosen.
+- A promise of how fast the mentor answers (D22).

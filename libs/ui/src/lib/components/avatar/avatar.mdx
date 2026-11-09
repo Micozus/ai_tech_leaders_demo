@@ -1,0 +1,152 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './avatar.component.stories';
+
+<Meta of={Stories} />
+
+# Avatar
+
+An initials avatar: a flat square with the first letters of a name. It stands for a person next to their name.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '160px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+An avatar helps recognise a person at a glance in a list, a session or a header.
+
+## When to use
+
+- Next to a mentor in the list and on a mentor page (E03-S01).
+- Next to the author of a message or a note, with the time (R02.2).
+- In the account menu.
+
+## When not to use
+
+| Situation                   | Use instead           |
+| --------------------------- | --------------------- |
+| Decoration without a person | Nothing               |
+| A photo (not built)         | See "What is missing" |
+| A group of people           | Not built             |
+
+## Anatomy
+
+| Part            | Required | Notes                                     |
+| --------------- | -------- | ----------------------------------------- |
+| Initials        | yes      | Up to two letters of the name, decorative |
+| Border          | yes      | 1px `line`                                |
+| Accessible name | yes      | The full name, `role="img"`               |
+
+## Variants
+
+Sizes only. A flat fill: no gradient (P11), no circle (A01).
+
+| Variant | Choose it when              | Source   |
+| ------- | --------------------------- | -------- |
+| sm      | 40px: rows, menus           | proposal |
+| md      | 56px: list rows and headers | proposal |
+| lg      | 80px: a profile page        | proposal |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '200px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                                                | Source   |
+| ----------------------- | ----------------------------------------------------------- | -------- |
+| Default                 | Flat `surface-muted`, 1px `line`, 6px radius, bold initials | D16, P11 |
+| Hover / Focus / Pressed | Not interactive; wrap in a link when needed                 | n/a      |
+| Disabled                | Not applicable                                              | n/a      |
+| Loading                 | Use a skeleton of the same size                             | proposal |
+| Selected                | Not applicable                                              | n/a      |
+| Error                   | Not applicable                                              | n/a      |
+
+**Disabled:** an avatar is never disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                        | Source     |
+| ------------- | ----------------------------------------------------------- | ---------- |
+| Keyboard      | Not focusable                                               | WAI-ARIA   |
+| Focus order   | Not in the order                                            | n/a        |
+| Role and name | `role="img"` with the full name; initials are `aria-hidden` | WCAG 1.1.1 |
+| Screen reader | Announces "Ada Lovelace, image"                             | WAI-ARIA   |
+| Contrast      | Initials are `ink` on `surface-muted` (15.5:1)              | WCAG 1.4.3 |
+| Target size   | Not a target                                                | n/a        |
+
+## Content
+
+| Topic            | Rule                                                          | Source     |
+| ---------------- | ------------------------------------------------------------- | ---------- |
+| Initials         | First letters of up to two words, upper case                  | proposal   |
+| Name             | Show the full name next to the avatar; never the avatar alone | WCAG 1.1.1 |
+| Long names       | Initials stay two letters; the name next to it wraps          | proposal   |
+| Longer languages | Works with any script that has letters                        | proposal   |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '200px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                      | Source      |
+| ------- | ----------------------------- | ----------- |
+| 320 px  | Keep the size; the name wraps | WCAG 1.4.10 |
+| 768 px  | Same                          | proposal    |
+| 1440 px | Same                          | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '200px' }} />
+</Unstyled>
+
+## API
+
+| Input | Type             | Default  | Description        |
+| ----- | ---------------- | -------- | ------------------ |
+| name  | `string`         | required | Full display name  |
+| size  | `sm \| md \| lg` | `md`     | 40px, 56px or 80px |
+
+Selector: `ui-avatar`.
+
+## Code
+
+Minimal:
+
+```html
+<ui-avatar name="Ada Lovelace" />
+```
+
+In DevMentor:
+
+```html
+<div class="flex items-center gap-groups">
+  <ui-avatar name="Ada Lovelace" />
+  <div>
+    <p class="text-label">Ada Lovelace</p>
+    <p class="text-meta text-muted">TypeScript · React</p>
+  </div>
+</div>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- Flat fill, no gradient. Source: P11, A01.
+- Square with `radius-control`, never a full circle. Source: A01.
+- Always with the name next to it. Source: WCAG 1.1.1.
+
+## Related
+
+- [Badge](?path=/docs/primitives-badge--docs): next to the avatar for a status
+- Product: mentor list row, session header
+
+## Interaction test
+
+The story `NamedForAssistiveTech` runs in the test script (`npm run test-storybook`): the avatar is exposed as an image named with the full name.

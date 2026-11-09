@@ -1,0 +1,140 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './spinner.component.stories';
+
+<Meta of={Stories} />
+
+# Spinner
+
+A small rotating indicator for a short wait. It stands beside words that say what is happening.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '200px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A spinner shows that something is happening when the wait is short and the shape of the result is unknown.
+
+## When to use
+
+- Inside a button that is saving (the `loading` state).
+- Next to a status text: "Saving your prices".
+
+## When not to use
+
+| Situation                            | Use instead                                 |
+| ------------------------------------ | ------------------------------------------- |
+| A list or a page that loads          | Skeleton in the shape of the content        |
+| A wait longer than about ten seconds | Error state with a retry                    |
+| Progress that can be measured        | Not built; there are no progress bars (A02) |
+
+## Anatomy
+
+| Part | Required     | Notes                                   |
+| ---- | ------------ | --------------------------------------- |
+| Ring | span         | 16px, `line` track and an `accent` head |
+| Name | `aria-label` | "Loading"                               |
+
+## Variants
+
+One size.
+
+| Variant | Choose it when  | Source   |
+| ------- | --------------- | -------- |
+| default | All short waits | proposal |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '260px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                                 | What changes                         | Source     |
+| ------------------------------------- | ------------------------------------ | ---------- |
+| Spinning                              | Rotates; static under reduced motion | WCAG 2.3.3 |
+| Hover / Focus / Pressed               | Not interactive                      | n/a        |
+| Disabled / Loading / Selected / Error | Not applicable                       | n/a        |
+
+**Disabled:** a spinner is never disabled.
+
+## Behavior and accessibility
+
+| Topic       | Rule                                          | Source     |
+| ----------- | --------------------------------------------- | ---------- |
+| Role        | `role="status"` with `aria-label="Loading"`   | WCAG 4.1.3 |
+| Words       | Pair it with text that says what is happening | WCAG 1.1.1 |
+| Motion      | Rotation stops under reduced motion           | WCAG 2.3.3 |
+| Keyboard    | Not focusable                                 | n/a        |
+| Colour      | A ring, not colour alone                      | WCAG 1.4.1 |
+| Target size | Not a target                                  | n/a        |
+
+## Content
+
+| Topic            | Rule                                        | Source    |
+| ---------------- | ------------------------------------------- | --------- |
+| Words            | Say what is happening: "Saving your prices" | task rule |
+| Never            | A lone spinner for more than a moment       | task rule |
+| Longer languages | The text beside it wraps                    | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '200px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior  | Source      |
+| ------- | --------- | ----------- |
+| 320 px  | Unchanged | WCAG 1.4.10 |
+| 768 px  | Unchanged | proposal    |
+| 1440 px | Unchanged | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '200px' }} />
+</Unstyled>
+
+## API
+
+| Input  | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| (none) |      |         | No inputs   |
+
+Selector: `ui-spinner`. The button's `loading` input shows it for you.
+
+## Code
+
+Minimal:
+
+```html
+<ui-spinner />
+```
+
+In DevMentor:
+
+```html
+<div class="flex items-center gap-group">
+  <ui-spinner />
+  <span class="text-body">Saving your prices</span>
+</div>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- A spinner sits next to words. Source: WCAG 1.1.1.
+- A list that loads uses a skeleton. Source: task rule.
+- No progress bars. Source: A02.
+
+## Related
+
+- [Skeleton](?path=/docs/primitives-skeleton--docs): loading content
+- [Button](?path=/docs/primitives-button--docs): the `loading` state
+
+## Interaction test
+
+The story `IsAnnouncedAsLoading` runs in the test script (`npm run test-storybook`): the spinner is announced as "Loading".

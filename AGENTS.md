@@ -30,7 +30,7 @@ Angular 21 (standalone, zoneless, Signals, OnPush) · Nx 22 · TypeScript strict
 - Types, interfaces and named constants go in `*.model.ts`. `interface` for objects, `type` for unions/mapped types.
 - No `any`, unsafe casts or magic indexes. Private fields use `#`; private methods use `private`.
 - Early returns, named helpers, shallow nesting.
-- Styling: Tailwind utility classes in templates first; component SCSS (BEM, co-located `_component-name.scss`) only for what utilities cannot express. Tailwind is wired in `apps/shell/.postcssrc.json` and `styles.scss`.
+- Styling: Tailwind utility classes in templates first; component SCSS (BEM, co-located `_component-name.scss`) only for what utilities cannot express. Tailwind is wired in `apps/shell/.postcssrc.json` and `styles.scss`. Visual values (colour, type, radius, shadow) are tokens in `libs/ui/src/lib/styles/tokens.css` — never literals; see [.ai/docs/style-guide.md](.ai/docs/style-guide.md).
 - Filenames: `*.component.ts`, `*.service.ts`, `*.helper.ts`, `*.model.ts`, `*.spec.ts`.
 - NgRx: functional effects, `createActionGroup`, memoized selectors.
 - Never hand-edit generated code. Prefer existing patterns over new abstractions.

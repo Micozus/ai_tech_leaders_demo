@@ -1,0 +1,17 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Themes" />
+
+# Themes
+
+DevMentor has **one theme: light**. There is no dark mode and none is planned (decision of the requester, 2026-10-22).
+
+## What this means in practice
+
+| Rule                                                                                                                             | Source              |
+| -------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `base.css` sets `color-scheme: light`; PrimeNG gets `darkModeSelector: 'none'`. A dark operating-system setting changes nothing. | decision 2026-10-22 |
+| Do not add `dark:` variants, a dark token set or a theme switch.                                                                 | decision 2026-10-22 |
+| Accessibility tests run once, in the light theme.                                                                                | decision 2026-10-22 |
+| If a second theme is ever approved, it needs its own contrast table before any component work.                                   | WCAG 1.4.3, 1.4.11  |

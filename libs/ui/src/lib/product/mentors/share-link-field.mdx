@@ -1,0 +1,102 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './share-link-field.component.stories';
+
+<Meta of={Stories} />
+
+# Share link field
+
+The mentor's share link with a copy button.
+
+Backlog: E02-S02 (#21)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '260px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Mentors share their page with their own audience; copying should be one action.
+
+## When to use
+
+- After the mentor page is saved, on the mentor home.
+
+## When not to use
+
+| Situation              | Use instead                    |
+| ---------------------- | ------------------------------ |
+| Editing a URL          | Text field                     |
+| Telling copy succeeded | Emit `copied` and show a toast |
+
+## Anatomy
+
+| Part           | Component              | Notes                   |
+| -------------- | ---------------------- | ----------------------- |
+| Label and hint | Field                  | "Your share link"       |
+| Link           | Text field (read only) | The full URL            |
+| Copy           | Button (quiet)         | `pi-copy` + "Copy link" |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '260px' }} />
+</Unstyled>
+
+| State     | What the person sees                                            | Story           |
+| --------- | --------------------------------------------------------------- | --------------- |
+| Default   | Link and button                                                 | Playground      |
+| Copied    | `copied` is emitted; the page shows a toast "Share link copied" | Copies The Link |
+| Long link | The input scrolls; the button stays                             | Long Text       |
+
+## Behavior and accessibility
+
+| Topic        | Rule                                                                    | Source     |
+| ------------ | ----------------------------------------------------------------------- | ---------- |
+| Read only    | The input is read only, not disabled, so it can be focused and selected | WCAG 2.1.1 |
+| Announcement | The toast is announced as an alert                                      | Toast      |
+| Target size  | The button is 40px high                                                 | WCAG 2.5.8 |
+
+## Content
+
+| Topic  | Rule              | Source    |
+| ------ | ----------------- | --------- |
+| Button | "Copy link"       | task rule |
+| Hint   | Where to share it | E02-S02   |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '260px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '260px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type     | Default  | Description    |
+| --------------- | -------- | -------- | -------------- |
+| url             | `string` | required | The link       |
+| copied          | `output` |          | Copy succeeded |
+
+## Code
+
+```html
+<ui-share-link-field
+  [url]="url"
+  (copied)="toast.show({ tone: 'success', summary: 'Share link copied' })"
+/>
+```
+
+## Related
+
+- [Toast](?path=/docs/primitives-toast--docs)
+- [Text field](?path=/docs/primitives-text-field--docs)
+
+## Interaction test
+
+`CopiesTheLink`: pressing Copy link emits `copied`.

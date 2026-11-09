@@ -1,0 +1,157 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './tooltip.directive.stories';
+
+<Meta of={Stories} />
+
+# Tooltip
+
+A short hint on hover and on keyboard focus, as an attribute: `uiTooltip`. Built on PrimeNG.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '200px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A tooltip repeats the name of an icon-only control or adds a few words of context.
+
+## When to use
+
+- The name of an icon-only button: "Copy the share link".
+- A few words of context for a control.
+
+## When not to use
+
+| Situation                       | Use instead                                                    |
+| ------------------------------- | -------------------------------------------------------------- |
+| The reason a button is disabled | Text next to the button                                        |
+| Information needed to act       | Text on the page                                               |
+| More than a few words           | Popover                                                        |
+| Touch-only use                  | Nothing: touch cannot hover; the control needs a visible label |
+
+## Anatomy
+
+| Part    | Required | Notes                                    |
+| ------- | -------- | ---------------------------------------- |
+| Trigger | yes      | Any focusable control with `uiTooltip`   |
+| Text    | yes      | A few words; repeats the accessible name |
+| Bubble  | yes      | `inverse` fill, `on-inverse` text, 12px  |
+
+## Variants
+
+One look; the position is `tooltipPosition`.
+
+| Variant | Choose it when                         | Source   |
+| ------- | -------------------------------------- | -------- |
+| default | Right of the control (PrimeNG default) | proposal |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '260px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State            | What changes                                             | Source      |
+| ---------------- | -------------------------------------------------------- | ----------- |
+| Hidden           | Not rendered                                             | n/a         |
+| Shown on hover   | After the pointer rests on the control                   | WCAG 1.4.13 |
+| Shown on focus   | On keyboard focus too (`tooltipEvent: both`)             | WCAG 1.4.13 |
+| Disabled control | Disabled controls cannot focus: do not rely on a tooltip | WCAG 3.3.2  |
+| Loading          | Not applicable                                           | n/a         |
+| Error            | Not applicable                                           | n/a         |
+
+**Disabled:** never explain a disabled control in a tooltip: write the reason as text beside it.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                     | Source      |
+| ------------- | ---------------------------------------------------------------------------------------- | ----------- |
+| Keyboard      | Appears when the control gets focus; Esc hides it                                        | WCAG 1.4.13 |
+| Focus order   | Not focusable itself                                                                     | WCAG 2.4.3  |
+| Role and name | The bubble is `role="tooltip"`; the control keeps its own accessible name (`aria-label`) | WCAG 4.1.2  |
+| Screen reader | The name comes from the control, not the tooltip alone                                   | WCAG 1.1.1  |
+| Persistence   | Stays while hovered or focused                                                           | WCAG 1.4.13 |
+| Target size   | The control keeps its own size                                                           | WCAG 2.5.8  |
+
+## Content
+
+| Topic            | Rule                                                         | Source    |
+| ---------------- | ------------------------------------------------------------ | --------- |
+| Text             | Two to five words, repeating the name: "Copy the share link" | proposal  |
+| Never            | Essential information, or the reason an action is disabled   | task rule |
+| Length           | Up to about 80 characters; the bubble is at most 20rem wide  | proposal  |
+| Longer languages | The bubble wraps                                             | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '200px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                             | Source      |
+| ------- | ------------------------------------ | ----------- |
+| 320 px  | The bubble stays inside the viewport | WCAG 1.4.10 |
+| 768 px  | Same                                 | proposal    |
+| 1440 px | Same                                 | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '200px' }} />
+</Unstyled>
+
+## API
+
+| Input           | Type                             | Default  | Description              |
+| --------------- | -------------------------------- | -------- | ------------------------ |
+| uiTooltip       | `string`                         | required | The text                 |
+| tooltipPosition | `left \| right \| top \| bottom` | `right`  | Where the bubble appears |
+
+Selector: `[uiTooltip]`, an attribute directive. Shows on hover and keyboard focus.
+
+## Code
+
+Minimal:
+
+```html
+<button
+  ui-button
+  uiTooltip="Copy the share link"
+  aria-label="Copy the share link"
+>
+  …
+</button>
+```
+
+In DevMentor:
+
+```html
+<button
+  ui-button
+  variant="quiet"
+  uiTooltip="Copy the share link"
+  aria-label="Copy the share link"
+>
+  <i class="pi pi-copy" aria-hidden="true"></i>
+</button>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- A tooltip repeats a name; it never holds essential information. Source: task rule.
+- The reason for a disabled action is text on the page. Source: Q-A, WCAG 3.3.2.
+- Visible on keyboard focus, not only hover. Source: WCAG 1.4.13.
+
+## Related
+
+- [Popover](?path=/docs/primitives-popover--docs): more than a few words
+- [Button](?path=/docs/primitives-button--docs): the disabled reason
+
+## Interaction test
+
+The story `ShowsOnKeyboardFocus` runs in the test script (`npm run test-storybook`): the tooltip appears when the control receives keyboard focus.

@@ -1,0 +1,114 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './list-with-filters.stories';
+
+<Meta of={Stories} />
+
+# List with filters
+
+A list a person narrows with filters. The example is the mentor list filtered by stack tag.
+
+Backlog: E03-S01 (#25)
+
+## When to use
+
+- Any list with filters: mentors by stack tag.
+
+## Rules
+
+| Rule                                                                        | Source                |
+| --------------------------------------------------------------------------- | --------------------- |
+| The count of results is visible and announced when it changes               | task rule, WCAG 4.1.3 |
+| Active filters are visible and removable one by one, and all at once        | task rule             |
+| "No results for these filters" is a different state from "nothing here yet" | task rule             |
+| "No results for these filters" offers Clear filters                         | task rule             |
+| "Nothing here yet" says why and, where there is one, offers the next step   | task rule             |
+| The list is ordered by availability, never by a score; no search            | R13, N02              |
+| Loading shows a skeleton with a status text; an error offers a retry        | task rule             |
+
+## Components used
+
+- Stack tag filter
+- Mentor list row
+- Async region (loading, empty, error)
+- Button
+
+## States
+
+Every state is a story, tested for rendering, behaviour and accessibility.
+
+### Results
+
+Three mentors.
+
+<Unstyled>
+  <Canvas of={Stories.Results} story={{ height: '700px' }} />
+</Unstyled>
+
+### Filter Narrows The List And Shows The Count
+
+Choosing a tag narrows the list and updates the count.
+
+<Unstyled>
+  <Canvas
+    of={Stories.FilterNarrowsTheListAndShowsTheCount}
+    story={{ height: '700px' }}
+  />
+</Unstyled>
+
+### Nothing For The Filters Offers To Clear Them
+
+Nothing matches: a clear explanation and Clear filters.
+
+<Unstyled>
+  <Canvas
+    of={Stories.NothingForTheFiltersOffersToClearThem}
+    story={{ height: '700px' }}
+  />
+</Unstyled>
+
+### Nothing Yet
+
+The list itself is empty.
+
+<Unstyled>
+  <Canvas of={Stories.NothingYet} story={{ height: '500px' }} />
+</Unstyled>
+
+### Loading
+
+Loading.
+
+<Unstyled>
+  <Canvas of={Stories.Loading} story={{ height: '500px' }} />
+</Unstyled>
+
+### Error With Retry
+
+Error with a retry.
+
+<Unstyled>
+  <Canvas of={Stories.ErrorWithRetry} story={{ height: '500px' }} />
+</Unstyled>
+
+### Many Results
+
+Thirty mentors.
+
+<Unstyled>
+  <Canvas of={Stories.ManyResults} story={{ height: '900px' }} />
+</Unstyled>
+
+### Long Texts
+
+Long names and URLs.
+
+<Unstyled>
+  <Canvas of={Stories.LongTexts} story={{ height: '700px' }} />
+</Unstyled>
+
+## What to avoid
+
+- Sorting by rating or rank.
+- A search box.
+- One empty message for both "no results" and "nothing yet".
+- A count that is not announced.
