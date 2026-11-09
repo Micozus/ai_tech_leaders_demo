@@ -1,0 +1,128 @@
+/*
+ * Bridge: the names the review engine (prototype.css, prototype.js) expects, mapped onto
+ * DevMentor tokens (libs/ui/src/lib/styles/tokens.css). No values of its own except where the
+ * engine needs a name the design system does not have (marked below).
+ * Replaces lekcja-07/mostek.css, which maps to shadcn/ui tokens.
+ */
+:root {
+  --background: var(--color-canvas);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --border: var(--color-line);
+  --input: var(--color-border-control);
+  --muted: var(--color-surface-muted);
+  --muted-foreground: var(--color-muted);
+  --primary: var(--color-accent);
+  --primary-foreground: var(--color-on-accent);
+  --ring: var(--color-focus);
+  --radius: var(--radius-control);
+
+  --font-geist-sans: var(--font-sans);
+  --font-geist-mono: var(--font-mono);
+  --font-size-overline: var(--text-label);
+  --radius-sm: var(--radius-control);
+  --radius-md: var(--radius-control);
+  --radius-lg: var(--radius-panel);
+  --radius-xl: var(--radius-overlay);
+  --primary-hover: var(--color-accent-strong);
+  --accent-indigo: var(--color-accent);
+  --accent-indigo-foreground: var(--color-on-accent);
+  /* The design system has one shadow (overlays); the engine's lighter ones reuse it. */
+  --shadow-xs: var(--shadow-overlay);
+  --shadow-sm: var(--shadow-overlay);
+  --shadow-md: var(--shadow-overlay);
+  --shadow-xl: var(--shadow-overlay);
+  --shadow-focus: 0 0 0 3px var(--color-focus);
+  --status-success-icon: var(--color-success);
+  --status-warning-icon: var(--color-warning);
+  --status-warning-border: var(--color-warning);
+  --status-warning-bg: var(--color-warning-tint);
+  --status-warning-text: var(--color-ink);
+  --z-index-sticky: var(--z-sticky);
+  --z-index-dropdown: 50;
+  --z-index-overlay: var(--z-overlay);
+  --z-index-modal: 90;
+  --z-index-toast: var(--z-toast);
+  --z-index-top: 120;
+  --z-index-product-overlay: 220;
+  --z-index-product-modal: 221;
+}
+
+/* Review chrome: the toolbar and buttons the engine builds. Separate from product UI (rule 5). */
+.doc-toolbar {
+  position: sticky; top: 0; z-index: var(--z-index-sticky);
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-group);
+  padding: var(--spacing-group) var(--spacing-groups);
+  background: var(--color-inverse); color: var(--color-on-inverse);
+  font-size: var(--text-meta);
+}
+.doc-toolbar label { display: inline-flex; align-items: center; gap: 0.375rem; }
+.doc-toolbar select {
+  height: var(--spacing-control-sm); padding: 0 var(--spacing-group);
+  border-radius: var(--radius-control); border: 1px solid var(--color-border-control);
+  background: var(--color-surface); color: var(--color-ink); font: inherit;
+}
+.proto-badge {
+  padding: 0.125rem var(--spacing-group); border-radius: var(--radius-control);
+  background: var(--color-warning-tint); color: var(--color-warning); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.proto-note { color: var(--color-neutral-300); }
+.proto-banner {
+  padding: var(--spacing-group) var(--spacing-groups);
+  background: var(--color-warning-tint); color: var(--color-ink);
+  border-bottom: 1px solid var(--color-line); font-size: var(--text-meta);
+}
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem;
+  min-height: var(--spacing-control-md); padding: 0 var(--spacing-groups);
+  border: 1px solid transparent; border-radius: var(--radius-control);
+  font: inherit; font-weight: 700; cursor: pointer;
+}
+.btn-sm { min-height: var(--spacing-control-sm); padding: 0 var(--spacing-group); font-size: var(--text-meta); }
+.btn-outline { background: var(--color-surface); color: var(--color-ink); border-color: var(--color-border-control); }
+.btn-primary { background: var(--color-accent); color: var(--color-on-accent); border-color: var(--color-accent); }
+.btn-ghost { background: transparent; color: var(--color-accent); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.segmented { display: inline-flex; border: 1px solid var(--color-border-control); border-radius: var(--radius-control); overflow: hidden; }
+.segmented button {
+  min-height: var(--spacing-control-sm); padding: 0 var(--spacing-group); border: 0;
+  background: var(--color-surface); color: var(--color-ink); font: inherit; font-size: var(--text-meta); cursor: pointer;
+}
+.segmented button[aria-pressed='true'], .segmented button.active { background: var(--color-accent); color: var(--color-on-accent); }
+.toast {
+  padding: var(--spacing-group) var(--spacing-groups); border-radius: var(--radius-panel);
+  background: var(--color-inverse); color: var(--color-on-inverse); box-shadow: var(--shadow-overlay);
+}
+
+/* Screens: the engine shows one at a time in presentation mode. */
+.screen { display: block; margin-top: var(--spacing-section); }
+.screen-meta { padding: var(--spacing-groups); font-size: var(--text-meta); color: var(--color-muted); }
+.frame { background: var(--color-canvas); border: 1px solid var(--color-line); border-radius: var(--radius-panel); }
+.proto-back { left: var(--spacing-groups); bottom: var(--spacing-groups); }
+
+/* Narrow screens: the bar scrolls away instead of covering the screen. */
+.segmented { flex: none; }
+.segmented button { white-space: nowrap; }
+@media (max-width: 40rem) {
+  .doc-toolbar { position: static; }
+  .proto-toolbar { margin-left: 0; flex-wrap: wrap; }
+}
+
+/* Scenario bar: review controls, kept apart from the product's own navigation. */
+.doc-scenarios {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-group);
+  padding: var(--spacing-group) var(--spacing-groups);
+  background: var(--color-neutral-800); color: var(--color-on-inverse); font-size: var(--text-meta);
+}
+.doc-scenarios label { display: inline-flex; align-items: center; gap: 0.375rem; }
+.doc-scenarios select {
+  height: var(--spacing-control-sm); padding: 0 var(--spacing-group);
+  border-radius: var(--radius-control); border: 1px solid var(--color-border-control);
+  background: var(--color-surface); color: var(--color-ink); font: inherit; max-width: 100%;
+}
+.notes { padding: var(--spacing-groups); font-size: var(--text-meta); color: var(--color-muted); display: grid; gap: var(--spacing-group); max-width: var(--container-measure); }
+/* Room under the last screen so the fixed Back button never covers content. */
+.doc { padding-bottom: calc(var(--spacing-control-md) + var(--spacing-section)); }
+.doc-toolbar select:focus-visible, .doc-scenarios select:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }

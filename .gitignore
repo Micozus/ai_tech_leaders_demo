@@ -18,3 +18,6 @@ coverage
 .ai/qa/test-env.env
 
 # lesson prototype copy, not product code
+
+# prototype build output, not design-system code (lekcja-07)
+libs/ui/.storybook/public/prototypes/konta-i-role/

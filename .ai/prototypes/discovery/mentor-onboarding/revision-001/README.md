@@ -1,0 +1,106 @@
+# Discovery prototype — Mentor onboarding (revision 001)
+
+- Brief: `.ai/specs/product-brief.md` (dated 2026-09-03)
+- Selected flow: "Future state, mentor onboarding (1.0)" (brief `## Key flows`)
+- Revision date: 2026-11-09
+- Previous revision: none — first revision for slug `mentor-onboarding`
+- Panel report: none supplied. No `--panel-report` was given and the brief itself notes no synthetic-panel report exists in the research directory (no `walkthroughs/` folder; the only trace is one cited sentence in `decisions/N02-no-ratings.md`).
+
+## Simulation boundary
+
+- **Actor:** an invited mentor — a senior engineer from the beachhead pool (English-speaking TypeScript, React, Python, or AI-agent developers).
+- **Starting point:** the mentor opens their invitation link, one of a batch of 20.
+- **Success outcome:** the mentor's page is published with one stack tag, both session prices, at least one slot, and a share link; the mentor has reached the Stripe Connect step (completed or explicitly postponed).
+- **Included screens/states:** invitation (accept/decline), invite-only explainer, sign-in (GitHub + email/password fallback), mentor page setup, pricing, slot publishing, share link, Stripe Connect onboarding (success, processing, and failure/retry), completion summary, and an unknown-fragment recovery screen.
+- **Excluded destinations (labeled in the artifact, not built):**
+  - Open mentor registration — R07 makes 1.0 invite-only; the "I don't have an invitation" link shows an explainer instead of a signup form.
+  - Operator screens (inviting mentors, setting price bounds, resolving disputes) — D19 has these done by hand in 1.0; not part of this mentor-facing flow.
+  - The booking/session flow (finding a mentor, booking, the text session, note drafting/approval) — a separate key flow in the brief, out of scope here.
+
+## Preserved business rules, decisions and non-goals
+
+| Id | What it constrains in this prototype | Status / owner | Required change path |
+|---|---|---|---|
+| R06 / D07 | Sign-in is GitHub first, email+password as fallback, for every role. | active, founder A | superseding record by founder A |
+| R07 / D08 | Mentors join by invitation only; no open registration screen. | active, founder A | superseding record by founder A |
+| R04 / N02 | No ratings or reviews field on the mentor page; a link to public work and a plain description instead. | active, founder A (N02 names E00-T06 as the reopening test) | superseding record by founder A after E00-T06 |
+| R13 / D21 / D24 | Stack tag is one of TypeScript, React, Python, AI agents — the beachhead pool; it is what the mentor list filters by. | active, founder A | superseding record by founder A |
+| R08 / D09 | Each mentor sets their own 25- and 50-minute prices within operator-set bounds. | active, founder A | superseding record by founder A |
+| R14 / D22 | A slot can only be booked once published; 1.0 copy makes no promise of speed. (Applies to the booking side; shown here as context text on the slots screen.) | active, founder A | superseding record by founder A |
+| R05 / D04 | Stripe is the only payment/payout provider; Connect onboarding happens before the first payout; DevMentor keeps 20% (R10/D11). | active, founder A | a country Stripe doesn't serve reopens it |
+| R17 / D18 | Invitations go out in batches of 20; each asks for at least one bookable session within two weeks of accepting. | active, both founders | superseding record by both founders |
+| D19 | Operator actions without a story are done by hand in 1.0 — reflected by the absence of operator screens. | active, both founders | superseding record by both founders |
+
+## Assumptions `[ASSUMPTION]`
+
+- **A-SLOT-SHAPE** — The prototype models a slot as a single date+start-time entry, not a recurring-hours pattern. *Why needed:* the brief states "the shape of a slot (single start times or recurring hours) ... [is] decided nowhere," written only as "the plain reading of D22" (brief, "Future state, mentor onboarding, still open"). *How to check:* settle with a story before this screen is built for real; the plain reading was chosen only to make the prototype clickable.
+- **A-SLOT-NOTIFY** — How a mentor learns a slot was booked is not simulated. *Why needed:* the same brief line marks this as undecided alongside the slot shape. *How to check:* out of scope for the onboarding flow (it concerns the booking flow); flagged here only so it isn't mistaken for a decided omission.
+- **A-CONNECT-GAP (Q19)** — The Stripe Connect onboarding screen is shown as part of the full 1.0 flow (it is a decided step per D04/R05), but Connect onboarding (backlog id E02-S06) and the fee split (E06-S01) are **not** among the first iteration's 14 stories (D13). The brief leaves open (Q19) whether first-iteration mentors are instead paid out by hand under D19, which would conflict with R05's "Stripe is the only payment provider" unless that manual step is scoped as temporary. *Why needed:* building the screen either way would silently resolve Q19. *How to check:* resolve Q19 before this screen is built for real; the prototype lets a mentor reach the "page is live, but payouts aren't set up yet" state precisely so this gap stays visible rather than hidden behind a forced "success."
+- **Fictitious data** — Operator price bounds ($40–$120 for 25 minutes, $70–$200 for 50 minutes), the invitation batch number, and the generated share-link domain (`devmentor.example`, an RFC 2606 reserved, non-resolving domain) are simulated values with no source in the brief; they exist only to make the forms exercisable.
+
+## Screen/state map
+
+| Screen (`#id`) | Action | Expected next state | Rule/assumption |
+|---|---|---|---|
+| `#invitation` | Accept | `#sign-in` | R17/D18 |
+| `#invitation` | Decline | `#declined` | — |
+| `#invitation` | "I don't have an invitation" | `#no-invite` | R07/D08 |
+| `#sign-in` | Continue with GitHub | `#mentor-page-setup` | R06/D07 |
+| `#sign-in` | Email/password fallback, both fields filled | `#mentor-page-setup` | R06/D07 |
+| `#sign-in` | Email/password fallback, a field empty | inline error, stays on `#sign-in` | — |
+| `#mentor-page-setup` | Submit with link, description, and a stack tag | `#pricing` | R13/D21/D24, R04/N02 |
+| `#mentor-page-setup` | Submit missing any required field | inline error naming the field, focus moves to it | — |
+| `#pricing` | Submit both prices within bounds | `#slots` | R08/D09 |
+| `#pricing` | Submit a price outside bounds, or empty | inline error stating the bound, stays on `#pricing` | R08/D09 |
+| `#slots` | Add a slot with date and time | slot appears in the list; empty state clears | A-SLOT-SHAPE |
+| `#slots` | Add a slot missing date or time | inline error, stays on `#slots` | — |
+| `#slots` | Continue with zero slots | inline error "Publish at least one slot to continue." | — |
+| `#slots` | Continue with ≥1 slot | `#share-link` | — |
+| `#share-link` | Copy link | status text confirms (no real clipboard/network call) | — |
+| `#share-link` | Continue | `#connect-onboarding` | — |
+| `#connect-onboarding` | Start Connect, "simulate failure" unchecked | processing state, then `#complete` with Connect marked complete | R05/D04 |
+| `#connect-onboarding` | Start Connect, "simulate failure" checked | processing state, then `#connect-failed` | — |
+| `#connect-onboarding` | "I'll do this later" | `#complete` with Connect marked not completed | A-CONNECT-GAP |
+| `#connect-failed` | Try again | re-runs the Connect attempt | — |
+| `#connect-failed` | "I'll do this later" | `#complete` with Connect marked not completed | A-CONNECT-GAP |
+| `#complete` | "Finish payout setup" (only shown if Connect incomplete) | `#connect-onboarding` | A-CONNECT-GAP |
+| `#complete` | Start over / header "Reset simulation" | state cleared, returns to `#invitation` | — |
+| any unrecognized `#fragment` | — | `#not-found` with a link back to `#invitation` | — |
+
+Back navigation: every screen after `#invitation` has an explicit in-page "Back" link to its predecessor, in addition to browser back/forward working through `hashchange`.
+
+## Browser verification checklist
+
+Provider: `agent-browser` (per `.ai/agentic.config.json`, `browser.provider`). Descriptor: `.ai/browsers/agent-browser.md`.
+
+| # | Action | Expected result | Observed result | Evidence |
+|---|---|---|---|---|
+| 1 | Open `index.html`, snapshot | `#invitation` screen visible, heading focused | Matched: region/heading "You're invited to DevMentor" with Accept/Decline/no-invite controls. | — |
+| 2 | Click "I don't have an invitation" | `#no-invite` shown, heading focused | Matched: heading "Mentors join by invitation only", link back to invitation. | `evidence/01-no-invite.png` |
+| 3 | Back to invitation, click "Accept invitation" | `#sign-in` shown | Matched. | — |
+| 4 | Click "Continue with GitHub" | `#mentor-page-setup` shown | Matched: link/description fields and 4 stack-tag radios present. | — |
+| 5 | Submit mentor-page form empty | inline error shown, focus on link field | Matched: alert "Add a link to your public work to continue."; `document.activeElement` was the link input. | — |
+| 6 | Fill link + description, no stack tag, submit | inline error "Choose one stack tag." | Matched; focus moved into the stack-tag radio group (`activeElement.tagName === "INPUT"`). | — |
+| 7 | Choose a stack tag, submit | `#pricing` shown | Matched. | — |
+| 8 | Submit pricing with 25-min price above bound ($500) | inline error naming the bound | Matched: "The 25-minute price must be between $40 and $120." | — |
+| 9 | Correct prices within bounds, submit | `#slots` shown, empty-slots message visible | Matched: "No slots published yet." shown, slot list hidden. | — |
+| 10 | Click Continue with zero slots | inline error "Publish at least one slot…" | Matched. | — |
+| 11 | Add a slot (date + time), Continue | `#share-link` shown, derived link reflects the chosen stack tag | Matched: slot "2026-12-15 at 14:30" added; share link `https://devmentor.example/m/jordan-typescript` (and `…/jordan-react` in a repeat run with React chosen). | `evidence/02-share-link.png` |
+| 12 | Click "Copy link" | status text confirms, no navigation/network | Matched: "Link copied (simulated — nothing left this page)."; `window.location.hash` unchanged. | — |
+| 13 | Continue to `#connect-onboarding`, start Connect (failure unchecked) | processing message, then `#complete` with Connect "complete", no "Finish payout setup" link | Matched after the 600ms simulated delay: `#complete-fix-connect` confirmed `hidden === true` via direct DOM check; status line "Payouts are ready…"; summary listed "Stripe Connect: Onboarding complete". | `evidence/05-complete-success.png` |
+| 14 | Check "simulate failure", start Connect | `#connect-failed` shown | Matched: heading "We couldn't verify your Stripe Connect details", "Try again"/"I'll do this later" actions. | `evidence/03-connect-failed.png` |
+| 15 | Click "Try again" while the checkbox is still checked, then uncheck and click "Try again" again | first retry stays on `#connect-failed` (deterministic repeat failure); second retry (failure unchecked) reaches `#complete` | Matched for both: first retry re-rendered `#connect-failed` with the same controls; after unchecking, the retry reached `#complete`. The success branch's `#complete-fix-connect` hidden state was independently re-confirmed in check 13's direct DOM read (connect-start and connect-retry call the same handler); an interim accessibility snapshot taken without re-querying the DOM lagged behind the real state once, which is a tool/timing artifact, not a prototype defect. | — |
+| 16 | From `#connect-onboarding`, click "I'll do this later" | `#complete` shown with "payouts aren't set up yet" and a "Finish payout setup" link | Matched: summary listed "Stripe Connect: Onboarding not completed"; "Finish payout setup" link present and links to `#connect-onboarding`. | `evidence/04-complete-pending-payouts.png` |
+| 17 | Navigate to `#totally-unknown` directly | `#not-found` shown with a link back | Matched: heading "That screen doesn't exist in this prototype", "Back to the start" link. | — |
+| 18 | Click "Back to the start", then call browser back | returns to `#invitation`; back returns to the previous history entry (`#totally-unknown`) | Matched: hash went `#totally-unknown` → `#invitation` → (back) → `#totally-unknown`, confirming `hashchange` drives screen display both ways. | — |
+| 19 | Click header "Reset simulation" from `#complete` | returns to `#invitation`, all form fields cleared, "simulate failure" unchecked | Matched. | — |
+| 20 | Tab through the invitation and not-found screens by keyboard only | visible focus ring on every reachable control; focus exits to `<body>` after the last control instead of trapping | Matched: Tab moved sequentially through in-page links/buttons; no keyboard trap observed. | — |
+| 21 | Narrow viewport (360×740) on `#mentor-page-setup` | all controls remain usable, no clipped actions, focus ring visible | Matched: heading, fields, radios, and Back/Continue actions all visible and unclipped; focus outline visible on the focused heading. | `evidence/06-narrow-viewport-mentor-page.png` |
+
+All 21 required checks ran; none are outstanding. Browser: `agent-browser` 0.39.1 (already installed on `PATH`; used as-is per the descriptor's "use an existing healthy install" rule rather than installing the pinned 0.35.2). Chrome for Testing 155.0.8059.79, headless, local `file://` sessions only — no network navigation.
+
+## How to use this prototype
+
+- Open `index.html` directly in a browser (`file://` path) — no server, build step, or network access required.
+- All data is kept in memory in page-local JavaScript; reloading the page or clicking "Reset simulation" clears it. Nothing is saved, sent to a server, or persisted across reloads.
+- This artifact is a clickable sketch of the flow's sequence, labels, and recovery paths. It is fictitious simulation data and does not establish research evidence or production readiness; it does not satisfy the Definition of Ready on its own.

@@ -1,0 +1,22 @@
+{
+  "format": "discovery-prototype-v1",
+  "skill": "om-mockup-prototype",
+  "slug": "mentor-onboarding",
+  "revision": 1,
+  "revisionPath": ".ai/prototypes/discovery/mentor-onboarding/revision-001",
+  "previousRevision": null,
+  "brief": ".ai/specs/product-brief.md",
+  "flow": "Mentor onboarding (1.0) — \"Future state, mentor onboarding (1.0)\" from the brief's Key flows",
+  "panelReport": null,
+  "verification": "passed",
+  "files": [
+    { "path": "index.html", "sha256": "9c9e1fd007cb303b171ec57875defb178d2b69df7ab13edf72894f50f3d73b05" },
+    { "path": "README.md", "sha256": "ff9cb26836d2e3b750eba5b0191d013ccdb422a39a959540c6e3c032e8121406" },
+    { "path": "evidence/01-no-invite.png", "sha256": "a13160ae277bacfbae4d7c160af9f40ee18b5b9eee2cecb8590761c2c231a77d" },
+    { "path": "evidence/02-share-link.png", "sha256": "d5acf43cac647320a2dc6c5bd259cc961d00b3657d7a8798a5f71292f54b25c2" },
+    { "path": "evidence/03-connect-failed.png", "sha256": "ba518df67a837628578100e7cdbadd8fc5e96f6afb532fb6938bf6f4846c7833" },
+    { "path": "evidence/04-complete-pending-payouts.png", "sha256": "ec72160d750181c0d8ba26b455217688f54a31e80387b1f69628f72733edf504" },
+    { "path": "evidence/05-complete-success.png", "sha256": "4db5bc61529e67a46929fd87d2529f2f08ae2985b1561d514663ff4f1d91a22c" },
+    { "path": "evidence/06-narrow-viewport-mentor-page.png", "sha256": "398b58851eaa56f693c5b5afcc9ac3ded166a39210974574a6957ec3baff8450" }
+  ]
+}
