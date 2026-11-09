@@ -30,7 +30,7 @@ import { AdminViewModelService } from '../services/admin-view-model.service';
       <ul class="mt-4 list-disc pl-5" data-testid="admin-tasks-list">
         @for (task of vm.tasks; track task.id) {
           <li class="py-1">
-            <span class="text-slate-500">#{{ task.id }}</span>
+            <span class="text-muted">#{{ task.id }}</span>
             {{ task.title }}
           </li>
         }
