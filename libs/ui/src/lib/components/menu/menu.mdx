@@ -1,0 +1,152 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './menu.component.stories';
+
+<Meta of={Stories} />
+
+# Menu
+
+A button that opens a short list of actions. Built on PrimeNG, themed by the DevMentor preset.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '300px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A menu keeps a few secondary actions out of the way until they are needed.
+
+## When to use
+
+- The account menu: profile, sign out (E01-S01).
+- Row actions that do not all fit as buttons: copy link, edit, unpublish.
+- Three to seven related actions.
+
+## When not to use
+
+| Situation                                      | Use instead           |
+| ---------------------------------------------- | --------------------- |
+| Choosing a value                               | Select or radio group |
+| One or two actions                             | Buttons               |
+| Navigation between pages                       | Links in a nav        |
+| An action that is the main point of the screen | A primary button      |
+
+## Anatomy
+
+| Part    | Required | Notes                                          |
+| ------- | -------- | ---------------------------------------------- |
+| Trigger | yes      | A button with a visible label and a chevron    |
+| Panel   | yes      | `radius-overlay`, 1px `line`, `shadow-overlay` |
+| Entries | yes      | 32px rows, an optional icon, a label           |
+
+## Variants
+
+One menu. Entries may carry a PrimeIcons icon.
+
+| Variant | Choose it when   | Source |
+| ------- | ---------------- | ------ |
+| default | All action menus | D11    |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '300px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                                       | Source      |
+| -------- | ------------------------------------------------------------------ | ----------- |
+| Closed   | The trigger button, `aria-expanded="false"`                        | D1          |
+| Open     | The panel under the trigger, `aria-expanded="true"`                | D3, D7, D11 |
+| Hover    | An entry takes `surface-muted`                                     | D11         |
+| Focus    | The active entry shows the focus ring                              | D6          |
+| Selected | Not applicable: a menu runs actions                                | n/a         |
+| Disabled | A disabled entry is dimmed; prefer leaving unavailable actions out | D9          |
+
+**Disabled:** prefer not listing an unavailable action. If it must stay, its meaning is in the label.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                          | Source                    |
+| ------------- | --------------------------------------------------------------------------------------------- | ------------------------- |
+| Keyboard      | Enter or Space or Arrow Down opens; Arrow keys move; Enter runs; Esc closes and returns focus | WAI-ARIA APG: Menu Button |
+| Focus order   | Focus moves into the menu on open and back to the trigger on close                            | WCAG 2.4.3                |
+| Role and name | Trigger `aria-haspopup="menu"` with `aria-expanded`; panel `role="menu"`, entries `menuitem`  | WCAG 4.1.2                |
+| Screen reader | Announces "Account, menu button, collapsed"                                                   | WAI-ARIA                  |
+| Target size   | Entries are 32px high; the trigger 40px                                                       | WCAG 2.5.8                |
+| Colour        | Icons are decorative; entries have labels                                                     | WCAG 1.4.1                |
+
+## Content
+
+| Topic            | Rule                                                   | Source    |
+| ---------------- | ------------------------------------------------------ | --------- |
+| Trigger label    | A noun: "Account"; never just an icon                  | task rule |
+| Entries          | A verb or a noun phrase: "Copy share link", "Sign out" | task rule |
+| Length           | Up to about 28 characters; longer text wraps           | proposal  |
+| Longer languages | The panel grows with its longest entry                 | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '300px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                            | Source      |
+| ------- | ----------------------------------- | ----------- |
+| 320 px  | The panel stays inside the viewport | WCAG 1.4.10 |
+| 768 px  | Opens under the trigger             | proposal    |
+| 1440 px | Same                                | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '300px' }} />
+</Unstyled>
+
+## API
+
+| Input    | Type                   | Default  | Description                             |
+| -------- | ---------------------- | -------- | --------------------------------------- |
+| label    | `string`               | required | Trigger text                            |
+| entries  | `readonly MenuEntry[]` | required | `{ label, icon?, disabled?, command? }` |
+| appendTo | `string`               | `body`   | Where the panel renders                 |
+
+Selector: `ui-menu`.
+
+## Code
+
+Minimal:
+
+```html
+<ui-menu label="Account" [entries]="entries" />
+```
+
+In DevMentor:
+
+```html
+<ui-menu
+  label="Account"
+  [entries]="[
+  { label: 'Your profile', icon: 'pi-user' },
+  { label: 'Sign out', icon: 'pi-sign-out', command: signOut },
+]"
+/>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- Three to seven related actions. Source: proposal.
+- A menu is not for choosing a value. Source: WAI-ARIA APG.
+- The trigger has a visible label. Source: task rule.
+
+## Related
+
+- [Select](?path=/docs/primitives-select--docs): choosing a value
+- [Button](?path=/docs/primitives-button--docs): one or two actions
+
+## Interaction test
+
+The story `OpensWithKeyboardAndRunsEntry` runs in the test script (`npm run test-storybook`): the menu opens from its button, announces expanded state and Esc closes it.

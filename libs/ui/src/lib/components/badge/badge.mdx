@@ -1,0 +1,152 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './badge.component.stories';
+
+<Meta of={Stories} />
+
+# Badge
+
+A small status or category label. In DevMentor it is the status badge: "Booked", "Awaiting payment", "Payouts enabled", and the stack tag.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '160px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A badge tells the state of an item or its category at a glance, in a word.
+
+## When to use
+
+- The state of a booking: Booked, Awaiting payment, Cancelled (E03-S04).
+- The state of a payout setup: Payouts enabled, Payouts pending (E02-S05).
+- A stack tag on a mentor row: TypeScript, React, Python, AI agents (E03-S01).
+
+## When not to use
+
+| Situation                       | Use instead                |
+| ------------------------------- | -------------------------- |
+| A rating, a score or a rank     | Not used at all (N02, A03) |
+| A counter or a notification dot | Not used (R02.4, A04)      |
+| An action                       | Button                     |
+| A long sentence                 | Alert or body text         |
+
+## Anatomy
+
+| Part   | Required | Notes                                   |
+| ------ | -------- | --------------------------------------- |
+| Text   | yes      | The status in a word or two             |
+| Border | yes      | 1px; the same colour family as the tone |
+| Fill   | yes      | Tint of the tone                        |
+
+## Variants
+
+Pick the tone by the meaning of the status, not by taste.
+
+| Variant | Choose it when                                        | Source                   |
+| ------- | ----------------------------------------------------- | ------------------------ |
+| neutral | A category or an inactive state: stack tag, Cancelled | proposal                 |
+| accent  | An invited or in-progress state: Invited              | proposal                 |
+| success | A done or healthy state: Booked, Payouts enabled      | WCAG 1.4.1 (with a word) |
+| warning | Something waits: Awaiting payment, Payouts pending    | proposal                 |
+| danger  | Something failed: Payment failed                      | proposal                 |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '200px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                                        | Source     |
+| ----------------------- | --------------------------------------------------- | ---------- |
+| Default                 | Tinted fill, 1px border, 6px radius, 12px bold text | D15, A01   |
+| Hover / Focus / Pressed | A badge is not interactive                          | n/a        |
+| Disabled                | Not applicable                                      | n/a        |
+| Loading                 | Not applicable; show a skeleton instead             | n/a        |
+| Selected                | Not applicable (a selectable tag is a checkbox)     | n/a        |
+| Error                   | Use the danger tone with a word                     | WCAG 1.4.1 |
+
+**Disabled:** a badge is never disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                     | Source     |
+| ------------- | ---------------------------------------- | ---------- |
+| Keyboard      | Not focusable                            | WAI-ARIA   |
+| Focus order   | Not in the order                         | n/a        |
+| Role and name | Plain text; no role                      | WCAG 1.3.1 |
+| Colour        | The status is the word, not the colour   | WCAG 1.4.1 |
+| Contrast      | Every tone is at least 4.5:1 on its tint | WCAG 1.4.3 |
+| Target size   | Not a target                             | n/a        |
+
+## Content
+
+| Topic            | Rule                                           | Source    |
+| ---------------- | ---------------------------------------------- | --------- |
+| Text             | One or two words: "Booked", "Awaiting payment" | task rule |
+| Length           | Up to about 24 characters; longer wraps        | proposal  |
+| Tags             | Use the stack name as is: "AI agents"          | R16       |
+| Longer languages | Wraps inside its width                         | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '200px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                       | Source      |
+| ------- | ------------------------------ | ----------- |
+| 320 px  | Badges wrap onto the next line | WCAG 1.4.10 |
+| 768 px  | Inline next to the title       | proposal    |
+| 1440 px | Same                           | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '200px' }} />
+</Unstyled>
+
+## API
+
+| Input | Type                                                | Default   | Description           |
+| ----- | --------------------------------------------------- | --------- | --------------------- |
+| tone  | `neutral \| accent \| success \| warning \| danger` | `neutral` | Meaning of the status |
+
+Selector: `ui-badge`. The text is projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-badge tone="success">Booked</ui-badge>
+```
+
+In DevMentor:
+
+```html
+<div class="flex items-center justify-between gap-groups">
+  <span class="text-body">Review my pull request</span>
+  <ui-badge tone="warning">Awaiting payment</ui-badge>
+</div>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '320px' }} />
+</Unstyled>
+
+- The word carries the status. Source: WCAG 1.4.1.
+- No ratings, counters or "online now". Source: N02, A03, A04.
+- Radius is `radius-control`, never a pill. Source: A01.
+
+## Related
+
+- [Alert](?path=/docs/primitives-alert--docs): for a message about a state
+- [Checkbox](?path=/docs/primitives-checkbox--docs): a selectable tag
+- Product: mentor list row, booking row
+
+## Interaction test
+
+The story `ReadsAsText` runs in the test script (`npm run test-storybook`): the badge text is visible to a reader.

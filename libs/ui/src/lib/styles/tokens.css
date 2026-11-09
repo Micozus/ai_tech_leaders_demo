@@ -1,0 +1,194 @@
+/*
+ * DevMentor design tokens: the single source of truth for visual values.
+ * Decisions: lekcja-06/tokeny.md (approved 2026-10-22), from lekcja-06/referencje.md.
+ *
+ * Three layers:
+ *   1. RAW         palette and scales. Used only inside this file.
+ *   2. SEMANTIC    names by purpose (surface, text, action, space-panel…). Templates use these.
+ *   3. COMPONENT   only where a component needs a value of its own.
+ *
+ * Tailwind 4 turns every `--color-*`, `--spacing-*`, `--radius-*`, `--shadow-*`, `--font-*`,
+ * `--text-*`, `--container-*`, `--ease-*`, `--breakpoint-*` variable in `@theme` into utilities
+ * and keeps it as a runtime custom property. `static` always emits them (PrimeNG reads them).
+ * Light theme only (requester decision, 2026-10-22). Docs: Storybook → Foundations.
+ */
+@theme static {
+  /* ============ 1. RAW ============ */
+
+  /* Warm neutral scale. Source: R01.3 (warm greys instead of cold grey). Contrast measured in tokeny.md. */
+  --color-neutral-0: #fff;
+  --color-neutral-25: #fbfaf8;
+  --color-neutral-50: #f5f3ef;
+  --color-neutral-100: #ece9e3;
+  --color-neutral-200: #ddd9d1;
+  --color-neutral-300: #c4bfb5;
+  --color-neutral-400: #8a857a;
+  --color-neutral-500: #6b665c;
+  --color-neutral-600: #55514a;
+  --color-neutral-700: #3f3c36;
+  --color-neutral-800: #2a2825;
+  --color-neutral-900: #1c1b19;
+
+  /* Accent scale. Solid violet is allowed; A01 forbids violet gradients, not the colour (requester, 2026-10-22). */
+  --color-accent-50: #f5f3ff;
+  --color-accent-100: #f0edff;
+  --color-accent-200: #e4dfff;
+  --color-accent-300: #c2bcff;
+  --color-accent-400: #9e93ff;
+  --color-accent-500: #7c64fd;
+  --color-accent-600: #6858ef;
+  --color-accent-700: #5444da;
+  --color-accent-800: #4e42bf;
+  --color-accent-900: #3d3399;
+
+  /* Status scales: only the steps the roles below need. */
+  --color-green-50: #e9fcf3;
+  --color-green-600: #17845a;
+  --color-green-800: #177457;
+  --color-red-50: #fff6f7;
+  --color-red-200: #ffdbe3;
+  --color-red-600: #c43d56;
+  --color-red-800: #ab354a;
+  --color-amber-50: #fff6d9;
+  --color-amber-600: #a76c08;
+  --color-amber-800: #825708;
+
+  /* Type. R01.2: monospace for code and identifiers. Font choice: Inter, confirmed 2026-10-22. */
+  --font-sans:
+    'Inter Variable', Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.6875rem;
+
+  --tracking-tight: -0.02em;
+  --tracking-tighter: -0.035em;
+
+  /* Motion. R02.3: fast reaction. */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --duration-fast: 130ms;
+  --duration-base: 150ms;
+
+  /* Layout. */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 90rem;
+  --container-page: 75rem;
+
+  /* ============ 2. SEMANTIC ============ */
+
+  /* Surfaces. R01.3 warm canvas; R01.1 panels without card-in-card. */
+  --color-canvas: var(--color-neutral-25);
+  --color-surface: var(--color-neutral-0);
+  --color-surface-muted: var(
+    --color-neutral-50
+  ); /* row hover, section background. R01.1, P10 */
+  --color-inverse: var(--color-neutral-900);
+  --color-on-inverse: var(--color-neutral-0);
+  --color-scrim: color-mix(
+    in srgb,
+    var(--color-inverse) 40%,
+    transparent
+  ); /* behind a dialog; no blur (A01). Decision Q-D, 2026-10-22 */
+
+  /* Text. WCAG 1.4.3: every pair measured (Foundations → Color). */
+  --color-ink: var(--color-neutral-900); /* R01.3 */
+  --color-muted: var(--color-neutral-500); /* R01.3 */
+
+  /* Lines. R01.1 thin 1px line between rows; border-control WCAG 1.4.11 (3:1). */
+  --color-line: var(--color-neutral-200);
+  --color-border-control: var(--color-neutral-400);
+
+  /* Action. R01.3: one clear place for the main action. Violet confirmed 2026-10-22 (solid only, A01). */
+  --color-accent: var(--color-accent-600);
+  --color-accent-strong: var(--color-accent-700);
+  --color-accent-tint: var(--color-accent-100);
+  --color-accent-pressed: var(
+    --color-accent-800
+  ); /* pressed main action. Stage 2 D10 */
+  --color-on-accent: var(--color-neutral-0);
+  --color-focus: var(
+    --color-accent-500
+  ); /* WCAG 2.4.7, 1.4.11: 3.95:1 or more */
+
+  /* Status. WCAG 1.4.3; colour is never the only carrier of meaning (WCAG 1.4.1). */
+  --color-success: var(--color-green-800);
+  --color-success-tint: var(--color-green-50);
+  --color-danger: var(--color-red-600);
+  --color-danger-tint: var(--color-red-50);
+  --color-danger-border: var(--color-red-200);
+  --color-warning: var(
+    --color-amber-800
+  ); /* amber-600 is 4.38:1 on white: icon only */
+  --color-warning-tint: var(--color-amber-50);
+
+  /* Spacing relations. R01.1, P10: dense in lists and data, roomy in sessions and forms. */
+  --spacing-group: calc(
+    var(--spacing) * 2
+  ); /* 8px  within a group: label + field, tags */
+  --spacing-groups: calc(
+    var(--spacing) * 4
+  ); /* 16px between groups inside a panel */
+  --spacing-panel: calc(
+    var(--spacing) * 4
+  ); /* 16px inside a dense panel or row */
+  --spacing-panel-roomy: calc(
+    var(--spacing) * 6
+  ); /* 24px sessions, forms, detail views */
+  --spacing-section: calc(var(--spacing) * 12); /* 48px between page sections */
+  --spacing-row-y: calc(var(--spacing) * 3); /* 12px list row, vertical */
+  --spacing-row-x: calc(var(--spacing) * 4); /* 16px list row, horizontal */
+  --container-measure: 65ch; /* longest line of running text */
+  --container-dialog: 32rem; /* dialog width, never wider than the screen. Stage 2 D12 */
+
+  /* Type roles. PROPOSAL (no reference): roles, not sizes. */
+  --text-page-title: var(--text-xl);
+  --text-page-title--line-height: 1.25;
+  --text-page-title--font-weight: 800;
+  --text-page-title--letter-spacing: var(--tracking-tighter);
+  --text-section-title: var(--text-lg);
+  --text-section-title--line-height: 1.4;
+  --text-section-title--font-weight: 700;
+  --text-section-title--letter-spacing: var(--tracking-tight);
+  --text-body: var(--text-sm);
+  --text-body--line-height: 1.6;
+  --text-body-long: var(--text-base);
+  --text-body-long--line-height: 1.65;
+  --text-label: var(--text-xs);
+  --text-label--line-height: 1.5;
+  --text-label--font-weight: 700;
+  --text-meta: var(--text-xs);
+  --text-meta--line-height: 1.5;
+  --text-code: 0.8125rem;
+  --text-code--line-height: 1.6;
+
+  /* Shape. PROPOSAL (A01: not everything in pills). */
+  --radius-control: 0.375rem; /* 6px  button, field, badge */
+  --radius-panel: 0.5rem; /* 8px  panel, dialog */
+  --radius-overlay: 0.75rem; /* 12px menu, popover */
+
+  /* Depth. A01: shadow is never the only separator; overlays only, always with a line. */
+  --shadow-overlay: 0 8px 24px rgb(28 27 25 / 0.12);
+
+  /* ============ 3. COMPONENT ============ */
+
+  --spacing-control-md: calc(
+    var(--spacing) * 10
+  ); /* 40px. WCAG 2.5.8: target at least 24px */
+  --spacing-control-sm: calc(var(--spacing) * 8); /* 32px dense lists */
+  --spacing-avatar-sm: calc(var(--spacing) * 10);
+  --spacing-avatar-md: calc(var(--spacing) * 14);
+  --spacing-avatar-lg: calc(var(--spacing) * 20);
+}
+
+/* Layering scale, outside `@theme` (Tailwind has no z-index namespace). */
+:root {
+  --z-sticky: 40;
+  --z-overlay: 80;
+  --z-toast: 100;
+}

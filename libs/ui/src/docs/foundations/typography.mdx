@@ -1,0 +1,25 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+Type is chosen by **role**, not by size. Pick the role that describes the text (page title, label, meta…) and use its utility. The sans font is **Inter** (self-hosted, variable, loaded by `@fontsource-variable/inter`); code and identifiers use the system **monospace** stack.
+
+## Rules
+
+| Rule                                                                                                                 | Source                                                     |
+| -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| Code, repository links and identifiers are set in monospace.                                                         | R01.2                                                      |
+| Running text is at most 65 characters per line (`max-w-measure`).                                                    | Typography guidance, task brief                            |
+| One page title per page; section titles group related content.                                                       | WCAG 1.3.1, 2.4.6                                          |
+| Prices and durations use tabular figures so columns align.                                                           | proposal                                                   |
+| Text sizes in the interface are 12px or more; body is 14px, long text 16px.                                          | proposal (no reference); WCAG 1.4.4 (text resizes to 200%) |
+| Inter is the interface font (confirmed 2026-10-22). There is no type reference yet; sizes and weights are proposals. | requester decision 2026-10-22, referencje.md (Luki)        |
+
+## Roles
+
+<Unstyled>
+  <Canvas of={Blocks.TypeRoles} />
+</Unstyled>

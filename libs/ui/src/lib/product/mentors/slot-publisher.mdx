@@ -1,0 +1,111 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './slot-publisher.component.stories';
+
+<Meta of={Stories} />
+
+# Slot publisher
+
+The mentor's published slots, free or booked, and a row to add one.
+
+Backlog: E02-S03 (#22)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '520px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Slots are what makes a mentor bookable. The mentor must see which are taken.
+
+## When to use
+
+- The mentor home and the mentor set-up screen.
+
+## When not to use
+
+| Situation              | Use instead                                       |
+| ---------------------- | ------------------------------------------------- |
+| Recurring hours        | Not built: single slots only (backlog assumption) |
+| Picking a slot to book | Slot picker                                       |
+
+## Anatomy
+
+| Part      | Component                | Notes                         |
+| --------- | ------------------------ | ----------------------------- |
+| Container | Card                     | "Your slots"                  |
+| Rows      | List with a 1px line     | Time, status badge, Unpublish |
+| Add row   | Date, time, Publish slot | Two fields and a button       |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '1600px' }} />
+</Unstyled>
+
+| State   | What the person sees                                    | Story        |
+| ------- | ------------------------------------------------------- | ------------ |
+| Ready   | Rows with Free or Booked                                | Playground   |
+| Loading | Skeleton, "Loading your slots"                          | Loading      |
+| Empty   | "No slots yet. Publish a slot so mentees can book you." | Empty        |
+| Error   | Retry                                                   | Error State  |
+| Many    | 24 rows in a scrolling page                             | Many Slots   |
+| Partial | One booked slot, no unpublish                           | Partial Data |
+
+## Behavior and accessibility
+
+| Topic  | Rule                                                 | Source     |
+| ------ | ---------------------------------------------------- | ---------- |
+| Names  | Each Unpublish button names its slot in `aria-label` | WCAG 2.4.6 |
+| Status | Free or Booked is a word                             | WCAG 1.4.1 |
+| Form   | Date and time are labelled native controls           | WCAG 1.3.1 |
+| List   | A real list                                          | WCAG 1.3.1 |
+
+## Content
+
+| Topic  | Rule                                         | Source    |
+| ------ | -------------------------------------------- | --------- |
+| Time   | Formatted in the mentor's time zone, 24-hour | proposal  |
+| Status | Free, Booked                                 | E02-S03   |
+| Empty  | Reason and next step                         | task rule |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '520px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '520px' }} />
+</Unstyled>
+
+## API
+
+| Input or output             | Type         | Default         | Description                  |
+| --------------------------- | ------------ | --------------- | ---------------------------- |
+| slots                       | `Slot[]`     | `[]`            | Published slots              |
+| state                       | `AsyncState` | `ready`         | Loading, empty, error, ready |
+| timeZone                    | `string`     | `Europe/Warsaw` | IANA zone for display        |
+| publish / unpublish / retry | `output`     |                 | Events                       |
+
+## Code
+
+```html
+<ui-slot-publisher
+  [slots]="slots()"
+  [state]="state()"
+  (publish)="add($event)"
+  (unpublish)="remove($event)"
+  (retry)="reload()"
+/>
+```
+
+## Related
+
+- [Slot publication pattern](?path=/docs/patterns-slot-publication--docs)
+
+## Interaction test
+
+`UnpublishesAFreeSlot`: Unpublish on a free slot emits its id.

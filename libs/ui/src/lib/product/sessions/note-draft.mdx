@@ -1,0 +1,101 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './note-draft.component.stories';
+
+<Meta of={Stories} />
+
+# Note draft
+
+The mentor drafts the session note and sends it for approval.
+
+Backlog: E04-S03 (#33)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '620px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+R12: the mentor drafts, the mentee approves. Sending is not publishing.
+
+## When to use
+
+- After a session, on the mentor's side; again after a decline.
+
+## When not to use
+
+| Situation             | Use instead   |
+| --------------------- | ------------- |
+| The mentee's decision | Note approval |
+
+## Anatomy
+
+| Part           | Component        | Notes                                   |
+| -------------- | ---------------- | --------------------------------------- |
+| Decline notice | Alert (info)     | The mentee's comment, when there is one |
+| Note           | Field + Textarea | At least 40 characters                  |
+| Send           | Button           | "Send for approval"                     |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '1100px' }} />
+</Unstyled>
+
+| State     | What the person sees                                          | Story                                     |
+| --------- | ------------------------------------------------------------- | ----------------------------------------- |
+| New       | Empty note                                                    | Playground                                |
+| Redraft   | Starts from the previous draft and shows the mentee's comment | Redraft                                   |
+| Too short | Error under the field                                         | Rejects A Short Note And Sends A Long One |
+
+## Behavior and accessibility
+
+| Topic | Rule                            | Source     |
+| ----- | ------------------------------- | ---------- |
+| Error | Linked and announced            | WCAG 3.3.1 |
+| Alert | The decline comment is a status | WCAG 4.1.3 |
+
+## Content
+
+| Topic | Rule                                                        | Source     |
+| ----- | ----------------------------------------------------------- | ---------- |
+| Hint  | "Write what you would want to find again."                  | R12        |
+| Error | "Write at least 40 characters so the note is useful later." | WCAG 3.3.3 |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '620px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '620px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type             | Default | Description            |
+| --------------- | ---------------- | ------- | ---------------------- |
+| initial         | `string`         | `""`    | Starting draft         |
+| menteeComment   | `string`         | `""`    | Comment from a decline |
+| sent            | `output<string>` |         | The text to approve    |
+
+## Code
+
+```html
+<ui-note-draft
+  [initial]="draft()"
+  [menteeComment]="comment()"
+  (sent)="sendForApproval($event)"
+/>
+```
+
+## Related
+
+- [Note approval pattern](?path=/docs/patterns-note-approval--docs)
+
+## Interaction test
+
+`RejectsAShortNoteAndSendsALongOne`: a short note is rejected, a long one is sent.

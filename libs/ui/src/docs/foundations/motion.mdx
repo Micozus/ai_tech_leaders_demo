@@ -1,0 +1,23 @@
+import { Meta, Canvas, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Blocks from './foundations.stories';
+
+<Meta title="Foundations/Motion" />
+
+# Motion
+
+Motion confirms what the user did, quickly, and then gets out of the way. There is no decorative animation.
+
+## Rules
+
+| Rule                                                                                 | Source                                   |
+| ------------------------------------------------------------------------------------ | ---------------------------------------- |
+| Feedback is immediate: colour and border changes take 130ms.                         | R02.3                                    |
+| Overlays open in 150ms. Nothing moves further than it needs to.                      | R02.3, proposal                          |
+| No lift, bounce or parallax on hover.                                                | proposal                                 |
+| No pulsing, live counters or "online now" indicators.                                | A04                                      |
+| With reduced motion every transition is effectively instant and animations run once. | WCAG 2.3.3, WAI-ARIA authoring practices |
+| A spinner never replaces text: say what is loading ("Loading sessions").             | WCAG 4.1.3                               |
+
+<Unstyled>
+  <Canvas of={Blocks.Motion} />
+</Unstyled>

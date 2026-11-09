@@ -1,0 +1,99 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './invitation-accept-panel.component.stories';
+
+<Meta of={Stories} />
+
+# Invitation accept panel
+
+An invited senior engineer accepts and gets a mentor account.
+
+Backlog: E02-S01 (#20)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '360px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Mentors join by invitation only (R07). The panel states the ask: publish at least one bookable session within two weeks (R17).
+
+## When to use
+
+- The page a mentor opens from the invitation link.
+
+## When not to use
+
+| Situation         | Use instead              |
+| ----------------- | ------------------------ |
+| Open registration | Not offered in 1.0 (R07) |
+| A mentee account  | Sign-in panel            |
+
+## Anatomy
+
+| Part        | Component                   | Notes                                    |
+| ----------- | --------------------------- | ---------------------------------------- |
+| Container   | Card (roomy)                | "You are invited to mentor on DevMentor" |
+| Explanation | Text at the reading measure | The two-week ask                         |
+| Action      | Button                      | "Accept the invitation"                  |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '900px' }} />
+</Unstyled>
+
+| State   | What the person sees                                    | Story      |
+| ------- | ------------------------------------------------------- | ---------- |
+| Ready   | The invitation and the button                           | Playground |
+| Loading | Skeleton with "Checking your invitation"                | Loading    |
+| Invalid | Error state: "This invitation cannot be used", no retry | Invalid    |
+
+## Behavior and accessibility
+
+| Topic    | Rule                                              | Source     |
+| -------- | ------------------------------------------------- | ---------- |
+| Keyboard | Tab reaches the button; Enter accepts             | WAI-ARIA   |
+| Invalid  | The error is announced; there is nothing to retry | WCAG 4.1.3 |
+| Focus    | The button is the first focusable element         | WCAG 2.4.3 |
+
+## Content
+
+| Topic   | Rule                                                  | Source     |
+| ------- | ----------------------------------------------------- | ---------- |
+| Invalid | Gives the reason and the next step: ask the operators | WCAG 3.3.3 |
+| Ask     | States what is expected of the mentor in plain words  | R17, D18   |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '360px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '360px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type        | Default                 | Description         |
+| --------------- | ----------- | ----------------------- | ------------------- | ------- | ----------- |
+| state           | `loading \\ | ready \\                | invalid`            | `ready` | Which state |
+| inviter         | `string`    | The DevMentor operators | Who invited         |
+| accept          | `output`    |                         | The person accepted |
+
+## Code
+
+```html
+<ui-invitation-accept-panel [state]="state()" (accept)="accept()" />
+```
+
+## Related
+
+- [Async region](?path=/docs/primitives-async-region--docs)
+
+## Interaction test
+
+`AcceptsWithTheKeyboard`: Tab reaches the accept button and Enter accepts.

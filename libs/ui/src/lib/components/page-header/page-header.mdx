@@ -1,0 +1,150 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './page-header.component.stories';
+
+<Meta of={Stories} />
+
+# Page header
+
+The title block of a page: an optional eyebrow, the heading, an optional description and the page actions.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '240px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Every page says where the person is, in one `h1`, and where its main actions are.
+
+## When to use
+
+- The top of every page below the app header.
+- To place page-level actions, such as Save or Find a mentor.
+
+## When not to use
+
+| Situation               | Use instead                                 |
+| ----------------------- | ------------------------------------------- |
+| A section inside a page | Card heading or a section title             |
+| A greeting              | Nothing: the page title says where they are |
+| A navigation bar        | App header                                  |
+
+## Anatomy
+
+| Part        | Required             | Notes                                         |
+| ----------- | -------------------- | --------------------------------------------- |
+| Eyebrow     | Text (accent, label) | Optional: the role or the area, e.g. "Mentor" |
+| Heading     | `h1`                 | One per page                                  |
+| Description | Text (muted)         | Optional, one short sentence                  |
+| Actions     | Projected            | Buttons on the right; below on narrow screens |
+
+## Variants
+
+One look; the parts are optional.
+
+| Variant          | Choose it when                              | Source   |
+| ---------------- | ------------------------------------------- | -------- |
+| title only       | Most pages                                  | R01.1    |
+| with description | When the page needs one sentence of context | proposal |
+| with actions     | Pages with a main or common action          | R01.3    |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '700px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                                 | What changes                    | Source |
+| ------------------------------------- | ------------------------------- | ------ |
+| Default                               | Left aligned, page-title role   | D10    |
+| Hover / Focus / Pressed               | Belong to the projected actions | n/a    |
+| Disabled / Loading / Selected / Error | Not applicable                  | n/a    |
+
+**Disabled:** the header is never disabled.
+
+## Behavior and accessibility
+
+| Topic       | Rule                                           | Source            |
+| ----------- | ---------------------------------------------- | ----------------- |
+| Heading     | Exactly one `h1` per page                      | WCAG 1.3.1, 2.4.6 |
+| Order       | Actions follow the title in the reading order  | WCAG 2.4.3        |
+| Landmark    | A `header` inside `main`                       | WCAG 1.3.1        |
+| Keyboard    | Actions are reachable with Tab                 | WAI-ARIA          |
+| Colour      | The eyebrow is `accent` on the canvas (4.76:1) | WCAG 1.4.3        |
+| Target size | Actions are standard buttons                   | WCAG 2.5.8        |
+
+## Content
+
+| Topic            | Rule                                           | Source    |
+| ---------------- | ---------------------------------------------- | --------- |
+| Heading          | A noun phrase naming the page: "Your sessions" | task rule |
+| Description      | One sentence; no greeting                      | proposal  |
+| Eyebrow          | A word or two                                  | proposal  |
+| Longer languages | Wraps; the actions move below                  | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '360px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                   | Source      |
+| ------- | ------------------------------------------ | ----------- |
+| 320 px  | Heading, description, then actions stacked | WCAG 1.4.10 |
+| 768 px  | Actions beside the heading                 | proposal    |
+| 1440 px | Same                                       | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '300px' }} />
+</Unstyled>
+
+## API
+
+| Input       | Type     | Default  | Description                |
+| ----------- | -------- | -------- | -------------------------- |
+| heading     | `string` | required | The page title             |
+| eyebrow     | `string` | `""`     | Small line above the title |
+| description | `string` | `""`     | One sentence below         |
+
+Selector: `ui-page-header`. Actions are projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-page-header heading="Your sessions" />
+```
+
+In DevMentor:
+
+```html
+<ui-page-header
+  eyebrow="Mentor"
+  heading="Set up your mentor page"
+  description="Publish at least one bookable session within two weeks."
+>
+  <button ui-button>Save</button>
+</ui-page-header>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '400px' }} />
+</Unstyled>
+
+- One `h1` per page. Source: WCAG 1.3.1.
+- No centered greeting. Source: A01.
+- Keep the description to one sentence. Source: proposal.
+
+## Related
+
+- [Card](?path=/docs/primitives-card--docs): sections inside the page
+- [Button](?path=/docs/primitives-button--docs): the actions
+
+## Interaction test
+
+The story `HasOneLevelOneHeading` runs in the test script (`npm run test-storybook`): the page has exactly one level 1 heading.

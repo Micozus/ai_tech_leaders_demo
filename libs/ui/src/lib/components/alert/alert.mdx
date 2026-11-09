@@ -1,0 +1,151 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './alert.component.stories';
+
+<Meta of={Stories} />
+
+# Alert
+
+An inline message about the page or the form: information, success, or an error that needs reading.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '220px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+An alert tells the person something they must know in the place they are working, and stays until they have read it.
+
+## When to use
+
+- A failed GitHub sign-in (E01-S01): "GitHub sign-in did not complete".
+- "Sessions are text only, 25 or 50 minutes" on every session screen (E04-S01, N01).
+- A failed payment with what to do next (E03-S03).
+- A confirmed booking (E03-S03, E03-S04).
+
+## When not to use
+
+| Situation                         | Use instead                             |
+| --------------------------------- | --------------------------------------- |
+| An error about one field          | Field error                             |
+| A message that vanishes by itself | Toast (non-critical only)               |
+| A message that needs action       | Alert or error state, never a toast     |
+| Nothing is wrong or new           | Nothing; do not add reassurance banners |
+
+## Anatomy
+
+| Part    | Required | Notes                          |
+| ------- | -------- | ------------------------------ |
+| Icon    | yes      | Repeats the tone; decorative   |
+| Heading | no       | Bold first line: what happened |
+| Text    | yes      | What to do next                |
+
+## Variants
+
+Three tones. There is no warning tone in 1.0.
+
+| Variant | Choose it when                                    | Source     |
+| ------- | ------------------------------------------------- | ---------- |
+| info    | Facts the person needs: text-only sessions        | N01        |
+| success | A completed action: booking confirmed             | WCAG 1.4.1 |
+| danger  | Something failed and needs action: payment failed | WCAG 3.3.1 |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '520px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State                   | What changes                               | Source |
+| ----------------------- | ------------------------------------------ | ------ |
+| Default                 | Border and tint of the tone, icon and text | D14    |
+| Hover / Focus / Pressed | Not interactive                            | n/a    |
+| Disabled                | Not applicable                             | n/a    |
+| Loading                 | Not applicable                             | n/a    |
+| Selected                | Not applicable                             | n/a    |
+| Error                   | This is the `danger` tone                  | D22    |
+
+**Disabled:** an alert is never disabled.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                             | Source     |
+| ------------- | ------------------------------------------------------------------------------------------------ | ---------- |
+| Keyboard      | Not focusable; buttons inside are                                                                | WAI-ARIA   |
+| Focus order   | Place it where it is read before the content it concerns                                         | WCAG 2.4.3 |
+| Role and name | `role="alert"` for danger (announced at once), `role="status"` for the rest (announced politely) | WCAG 4.1.3 |
+| Screen reader | The text is read when the alert appears                                                          | WAI-ARIA   |
+| Colour        | Each tone has its own icon and a heading or text; colour is not the only signal                  | WCAG 1.4.1 |
+| Contrast      | Text is at least 4.5:1 on its tint in every tone                                                 | WCAG 1.4.3 |
+
+## Content
+
+| Topic            | Rule                                                                                               | Source     |
+| ---------------- | -------------------------------------------------------------------------------------------------- | ---------- |
+| Heading          | What happened, in a few words: "Payment failed"                                                    | task rule  |
+| Text             | What to do next, with the consequence if any: "Try another card. The slot is held for 10 minutes." | WCAG 3.3.3 |
+| Length           | One or two sentences                                                                               | proposal   |
+| Longer languages | Wraps; the icon stays aligned to the first line                                                    | proposal   |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '320px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                | Source      |
+| ------- | --------------------------------------- | ----------- |
+| 320 px  | Full width; text wraps                  | WCAG 1.4.10 |
+| 768 px  | Up to the measure                       | proposal    |
+| 1440 px | Does not stretch past the content width | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '260px' }} />
+</Unstyled>
+
+## API
+
+| Input   | Type                        | Default | Description              |
+| ------- | --------------------------- | ------- | ------------------------ |
+| tone    | `info \| success \| danger` | `info`  | Meaning and announcement |
+| heading | `string`                    | `""`    | Optional bold first line |
+
+Selector: `ui-alert`. The message is projected.
+
+## Code
+
+Minimal:
+
+```html
+<ui-alert tone="info">Sessions are text only, 25 or 50 minutes.</ui-alert>
+```
+
+In DevMentor:
+
+```html
+<ui-alert tone="danger" heading="Payment failed">
+  Try another card. The slot is held for 10 minutes.
+</ui-alert>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '360px' }} />
+</Unstyled>
+
+- Say what happened and what to do. Source: WCAG 3.3.3.
+- An error that needs action is never a toast. Source: task rule.
+- Tone has an icon and words, not only colour. Source: WCAG 1.4.1.
+
+## Related
+
+- [Error state](?path=/docs/primitives-error-state--docs): when a whole region failed to load
+- [Field](?path=/docs/primitives-field--docs): errors about one control
+- Patterns: form
+
+## Interaction test
+
+The story `AnnouncedByTone` runs in the test script (`npm run test-storybook`): the danger alert is announced as an alert and the info alert as a status.

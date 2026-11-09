@@ -1,1 +1,8 @@
 @use 'tailwindcss';
+@use 'primeicons/primeicons.css';
+@use '@fontsource-variable/inter/wght.css';
+@use '../../../libs/ui/src/lib/styles/tokens.css';
+@use '../../../libs/ui/src/lib/styles/base.css';
+
+/* Utilities used inside `libs/ui` inline templates live outside this project's root. */
+@source '../../../libs/ui/src';

@@ -1,0 +1,97 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './price-form.component.stories';
+
+<Meta of={Stories} />
+
+# Price form
+
+25- and 50-minute prices within the operator's bounds.
+
+Backlog: E02-S04 (#23)
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '520px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+Each mentor sets their own prices within bounds (R08); the form says the allowed range and rejects anything outside.
+
+## When to use
+
+- The mentor home and the mentor set-up screen.
+
+## When not to use
+
+| Situation             | Use instead                  |
+| --------------------- | ---------------------------- |
+| The bounds themselves | Price bounds form (operator) |
+
+## Anatomy
+
+| Part       | Component          | Notes                                            |
+| ---------- | ------------------ | ------------------------------------------------ |
+| Container  | Card (roomy)       | "Your prices"                                    |
+| Two fields | Field + Text field | 25 and 50 minutes, EUR, with the range as a hint |
+| Save       | Button             | Validates before saving                          |
+
+## Data states
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '520px' }} />
+</Unstyled>
+
+| State                   | What the person sees                                                  | Story                                 |
+| ----------------------- | --------------------------------------------------------------------- | ------------------------------------- |
+| Idle                    | Ranges shown as hints                                                 | Playground                            |
+| Out of range            | Error: "The price for 25 minutes must be between €15.00 and €150.00." | Rejects Out Of Bounds And Saves Valid |
+| Missing or not a number | "Enter the price for 25 minutes."                                     | State Matrix                          |
+
+## Behavior and accessibility
+
+| Topic  | Rule                                                 | Source     |
+| ------ | ---------------------------------------------------- | ---------- |
+| Errors | Linked and announced                                 | WCAG 3.3.1 |
+| Input  | `inputmode="decimal"`, comma or dot accepted         | WCAG 1.3.5 |
+| Hints  | The range is always visible, not only after an error | WCAG 3.3.2 |
+
+## Content
+
+| Topic    | Rule                                                 | Source   |
+| -------- | ---------------------------------------------------- | -------- |
+| Currency | EUR in 1.0 (assumption of the mentors-bookable spec) | spec     |
+| Format   | `€45.00`                                             | proposal |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '520px' }} />
+</Unstyled>
+
+## Responsiveness
+
+Stacks to one column at 320 px; nothing scrolls sideways.
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '520px' }} />
+</Unstyled>
+
+## API
+
+| Input or output | Type                         | Default  | Description    |
+| --------------- | ---------------------------- | -------- | -------------- |
+| bounds          | `PriceBounds`                | required | Allowed ranges |
+| saved           | `output<{price25, price50}>` |          | Valid prices   |
+
+## Code
+
+```html
+<ui-price-form [bounds]="bounds" (saved)="savePrices($event)" />
+```
+
+## Related
+
+- [Price bounds form](?path=/docs/product-e05-operator-functions-price-bounds-form--docs)
+
+## Interaction test
+
+`RejectsOutOfBoundsAndSavesValid`: an out-of-range price shows the range; a valid price is saved.

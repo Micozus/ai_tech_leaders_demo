@@ -1,0 +1,154 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './link.component.stories';
+
+<Meta of={Stories} />
+
+# Link
+
+A native `<a>` styled as text. It goes somewhere: another page, a mentor's public work, the cancellation rules.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '120px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A link lets a person read more or open something without leaving a decision half-made.
+
+## When to use
+
+- Inside a sentence: "Read the cancellation rules before you book".
+- A public-work link on a mentor page (E02-S02).
+- Navigation between pages that are not the main action of the screen.
+
+## When not to use
+
+| Situation                                              | Use instead            |
+| ------------------------------------------------------ | ---------------------- |
+| Doing something (booking, saving, deleting)            | Button                 |
+| Going to another page as the main action of the screen | `a[ui-button]` primary |
+| A list of actions on a row                             | Button, ghost variant  |
+| Opening a menu                                         | Menu                   |
+
+## Anatomy
+
+| Part          | Required | Notes                                                       |
+| ------------- | -------- | ----------------------------------------------------------- |
+| Text          | yes      | Describes the destination; never "click here"               |
+| Underline     | yes      | Always visible: colour is not the only signal               |
+| External icon | no       | Not built; add `pi-external-link` beside the text if needed |
+
+## Variants
+
+There is one link style. A link that looks like a button is a button (`a[ui-button]`).
+
+| Variant | Choose it when | Source |
+| ------- | -------------- | ------ |
+| default | All links      | R01.3  |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '140px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                        | Source     |
+| -------- | --------------------------------------------------- | ---------- |
+| Default  | `accent` text, underlined                           | WCAG 1.4.1 |
+| Hover    | Text turns `accent-strong` in 130ms                 | D8         |
+| Focus    | 3px `focus` ring, 2px offset                        | D6         |
+| Pressed  | Not styled separately                               | proposal   |
+| Disabled | Not applicable: remove the link and say why in text | WCAG 3.3.2 |
+| Loading  | Not applicable                                      | n/a        |
+| Selected | Not applicable (navigation current page: not built) | n/a        |
+| Error    | Not applicable                                      | n/a        |
+
+**Disabled:** a link is not disabled. If the destination is unavailable, show text instead and say why.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                                       | Source             |
+| ------------- | ------------------------------------------------------------------------------------------ | ------------------ |
+| Keyboard      | Tab focuses; Enter follows the link                                                        | WAI-ARIA APG: Link |
+| Focus order   | Follows the reading order                                                                  | WCAG 2.4.3         |
+| Role and name | Native `a` with an `href`; the text is the name                                            | WCAG 2.4.4, 4.1.2  |
+| Screen reader | Announces "Cancellation rules, link"                                                       | WAI-ARIA           |
+| Colour        | Underline keeps it distinguishable without colour                                          | WCAG 1.4.1         |
+| Target size   | Inline text links are exempt from the 24px minimum; links in a row stand on their own line | WCAG 2.5.8         |
+
+## Content
+
+| Topic            | Rule                                                                                   | Source     |
+| ---------------- | -------------------------------------------------------------------------------------- | ---------- |
+| Text             | Name the destination: "cancellation rules", "github.com/acme/billing-service/pull/412" | WCAG 2.4.4 |
+| Length           | A few words; long URLs wrap                                                            | proposal   |
+| Code and URLs    | Set repository links in monospace (`font-mono`)                                        | R01.2      |
+| Longer languages | Wraps like any text                                                                    | proposal   |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '160px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                 | Source      |
+| ------- | ---------------------------------------- | ----------- |
+| 320 px  | Long URLs wrap; nothing scrolls sideways | WCAG 1.4.10 |
+| 768 px  | Inline in text at the reading measure    | proposal    |
+| 1440 px | Same; the paragraph stays at 65ch        | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '140px' }} />
+</Unstyled>
+
+## API
+
+| Input  | Type | Default | Description                                                                   |
+| ------ | ---- | ------- | ----------------------------------------------------------------------------- |
+| (none) |      |         | The component only styles `a[ui-link]`. `href`, `target` and `rel` are native |
+
+Selector: `a[ui-link]`. For links that open another site add `rel="noopener noreferrer"` and `target="_blank"` with a visible hint.
+
+## Code
+
+Minimal:
+
+```html
+<a ui-link href="/rules">cancellation rules</a>
+```
+
+In DevMentor:
+
+```html
+<p class="text-body">
+  Public work:
+  <a
+    ui-link
+    class="font-mono text-code"
+    href="https://github.com/acme/billing-service/pull/412"
+    >github.com/acme/billing-service/pull/412</a
+  >
+</p>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '260px' }} />
+</Unstyled>
+
+- Link text names the destination. Source: WCAG 2.4.4.
+- A link keeps its underline. Source: WCAG 1.4.1.
+- Never use a link for an action that changes data. Source: WAI-ARIA APG.
+
+## Related
+
+- [Button](?path=/docs/primitives-button--docs): for actions
+- Patterns: detail view (links to public work)
+
+## Interaction test
+
+The story `KeyboardFocus` runs in the test script (`npm run test-storybook`): Tab moves focus to the link.

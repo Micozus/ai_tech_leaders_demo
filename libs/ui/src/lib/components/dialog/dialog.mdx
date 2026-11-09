@@ -1,0 +1,160 @@
+import { Meta, Canvas, Controls, Unstyled } from '@storybook/addon-docs/blocks';
+import * as Stories from './dialog.component.stories';
+
+<Meta of={Stories} />
+
+# Dialog
+
+A modal window over the page for one short decision or task. Built on PrimeNG, themed by the DevMentor preset.
+
+<Unstyled>
+  <Canvas of={Stories.Playground} story={{ height: '460px' }} />
+</Unstyled>
+<Controls of={Stories.Playground} />
+
+## What it is for
+
+A dialog stops the person for one thing that must be settled before they continue, then gets out of the way.
+
+## When to use
+
+- A short confirmation or choice that cannot wait: publish slots (E02-S03).
+- A small task that belongs to the page: edit a price (E02-S04).
+- A decision with a consequence, wrapped as the confirm dialog (E03-S05).
+
+## When not to use
+
+| Situation                            | Use instead                             |
+| ------------------------------------ | --------------------------------------- |
+| A long form or a multi-step flow     | A page                                  |
+| A message to read                    | Alert                                   |
+| An error                             | Alert or error state                    |
+| Extra explanation                    | Popover or text on the page             |
+| A confirmation of something harmless | Nothing: act, then confirm with a toast |
+
+## Anatomy
+
+| Part         | Required | Notes                                          |
+| ------------ | -------- | ---------------------------------------------- |
+| Heading      | yes      | A question or the task name; labels the dialog |
+| Close button | yes      | In the header, named "Close"                   |
+| Content      | yes      | Short; scrolls if long                         |
+| Footer       | yes      | Actions; always a way to close                 |
+| Backdrop     | yes      | The `scrim` colour: no blur                    |
+
+## Variants
+
+There is one dialog. Use the confirm dialog for destructive decisions.
+
+| Variant | Choose it when                             | Source         |
+| ------- | ------------------------------------------ | -------------- |
+| default | All short tasks and choices                | D12            |
+| confirm | A destructive decision: see Confirm dialog | D12, task rule |
+
+## States
+
+<Unstyled>
+  <Canvas of={Stories.StateMatrix} story={{ height: '460px' }} />
+</Unstyled>
+
+Hover, focus and pressed are frozen previews built from the component's own hover and focus declarations (documentation only).
+
+| State    | What changes                                                                          | Source         |
+| -------- | ------------------------------------------------------------------------------------- | -------------- |
+| Closed   | Not rendered; the page shows the button that opens it                                 | n/a            |
+| Open     | Surface panel, 1px `line`, 8px radius, `shadow-overlay`, backdrop `scrim`             | D3, D7, D12    |
+| Focus    | Focus moves into the dialog and is trapped; the 3px ring shows on the focused control | D6, WCAG 2.4.3 |
+| Disabled | Not applicable; disable the action and say why                                        | Q-A            |
+| Loading  | The confirming button shows `loading`; the dialog stays open                          | proposal       |
+| Error    | Show an alert inside the content                                                      | proposal       |
+
+**Disabled:** the dialog is not disabled. A disabled action inside it says why in text beside it.
+
+## Behavior and accessibility
+
+| Topic         | Rule                                                                     | Source                       |
+| ------------- | ------------------------------------------------------------------------ | ---------------------------- |
+| Keyboard      | Esc closes; Tab and Shift+Tab stay inside; the close button is reachable | WAI-ARIA APG: Dialog (Modal) |
+| Focus order   | Focus goes into the dialog on open and returns to the opener on close    | WCAG 2.4.3                   |
+| Role and name | `role="dialog"`, `aria-modal`, named by the heading                      | WCAG 4.1.2                   |
+| Screen reader | Announces the heading, then the content                                  | WAI-ARIA                     |
+| Backdrop      | Clicking the backdrop does not close it, to avoid losing input           | proposal                     |
+| Target size   | Buttons keep their 40px height; the close button is at least 24px        | WCAG 2.5.8                   |
+
+## Content
+
+| Topic            | Rule                                                                         | Source    |
+| ---------------- | ---------------------------------------------------------------------------- | --------- |
+| Heading          | A question or the task: "Publish these slots?"                               | task rule |
+| Content          | One short paragraph with the consequence                                     | proposal  |
+| Actions          | The way out first; the confirming action names what it does: "Publish slots" | task rule |
+| Longer languages | The dialog is 32rem wide and never wider than the screen; text wraps         | proposal  |
+
+<Unstyled>
+  <Canvas of={Stories.LongText} story={{ height: '520px' }} />
+</Unstyled>
+
+## Responsiveness
+
+| Width   | Behavior                                 | Source      |
+| ------- | ---------------------------------------- | ----------- |
+| 320 px  | Fills the width; the footer actions wrap | WCAG 1.4.10 |
+| 768 px  | 32rem wide, centered                     | proposal    |
+| 1440 px | Same                                     | proposal    |
+
+<Unstyled>
+  <Canvas of={Stories.NarrowScreen} story={{ height: '520px' }} />
+</Unstyled>
+
+## API
+
+| Input    | Type                | Default  | Description                                       |
+| -------- | ------------------- | -------- | ------------------------------------------------- |
+| heading  | `string`            | required | The dialog title                                  |
+| open     | `boolean` (two-way) | `false`  | Shows or hides the dialog                         |
+| appendTo | `string`            | `body`   | Where it renders; `body` puts it above everything |
+
+Selector: `ui-dialog`. Project the content, and the actions with the `uiDialogFooter` attribute.
+
+## Code
+
+Minimal:
+
+```html
+<ui-dialog heading="Publish these slots?" [(open)]="open">
+  <p class="text-body">Mentees can book them.</p>
+  <div uiDialogFooter>…</div>
+</ui-dialog>
+```
+
+In DevMentor:
+
+```html
+<ui-dialog heading="Publish these slots?" [(open)]="open">
+  <p class="text-body">Mentees can book the slots you publish.</p>
+  <div uiDialogFooter class="flex justify-end gap-group">
+    <button ui-button variant="quiet" (click)="open = false">Not now</button>
+    <button ui-button (click)="publish()">Publish slots</button>
+  </div>
+</ui-dialog>
+```
+
+## Do and don't
+
+<Unstyled>
+  <Canvas of={Stories.DoAndDont} story={{ height: '460px' }} />
+</Unstyled>
+
+- Heading is a question or the task, buttons name the action. Source: task rule.
+- A dialog is for one short thing: a long form is a page. Source: proposal.
+- No backdrop blur. Source: A01, Q-D.
+
+## Related
+
+- [Confirm dialog](?path=/docs/primitives-confirm-dialog--docs): destructive decisions
+- [Popover](?path=/docs/primitives-popover--docs): optional background
+- Patterns: destructive confirmation
+
+## Interaction test
+
+The story `OpensTrapsFocusAndCloses` runs in the test script (`npm run test-storybook`): the dialog opens from a button, Esc closes it and focus returns to the button.

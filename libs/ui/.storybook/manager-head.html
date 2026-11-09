@@ -1,0 +1,37 @@
+<!-- The interface shows only the product name: no Storybook title suffix, heading or icon. -->
+<link rel="icon" href="data:," />
+<script>
+  (function () {
+    var NAME = 'DevMentor design system';
+    var descriptor = Object.getOwnPropertyDescriptor(
+      Document.prototype,
+      'title',
+    );
+    Object.defineProperty(document, 'title', {
+      configurable: true,
+      get: function () {
+        return descriptor.get.call(document);
+      },
+      set: function (value) {
+        descriptor.set.call(
+          document,
+          String(value)
+            .replace(/\s*[⋅·|-]\s*Storybook\s*$/i, ' ⋅ ' + NAME)
+            .replace(/^Storybook$/i, NAME),
+        );
+      },
+    });
+    // The screen-reader-only page heading says "Storybook": rename it once, then stop observing.
+    var observer = new MutationObserver(function () {
+      var heading = document.querySelector('h1.sb-sr-only');
+      if (!heading) return;
+      observer.disconnect();
+      if (/^storybook$/i.test(heading.textContent.trim()))
+        heading.textContent = NAME;
+    });
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+  })();
+</script>
